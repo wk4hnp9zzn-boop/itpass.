@@ -1,0 +1,2753 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="ITパスポート試験の用語を、ゲーム感覚で楽しく覚えられる学習サイト">
+  <meta name="theme-color" content="#4f46e5">
+  <title>ITパス ゲームラボ</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+/* =========================================================
+   ITパス ゲームラボ  スタイル
+   色を変えたいときは :root の変数を編集してください
+   ========================================================= */
+:root {
+  --bg: #f6f5fb;
+  --surface: #ffffff;
+  --surface-2: #f0eef8;
+  --text: #1f1d2b;
+  --muted: #6b6880;
+  --line: #e4e1ef;
+  --primary: #4f46e5;
+  --primary-ink: #ffffff;
+  --primary-soft: #eceafd;
+
+  --s: #f08a24;  --s-soft: #fff1e3;  --s-ink: #9a4d00;   /* ストラテジ */
+  --m: #16a37f;  --m-soft: #e0f6ef;  --m-ink: #0b6b52;   /* マネジメント */
+  --t: #2f7de1;  --t-soft: #e3effd;  --t-ink: #144f9c;   /* テクノロジ */
+  --e: #d6336c;  --e-soft: #fde6ef;  --e-ink: #9c1c4b;   /* セキュリティ・倫理（次年度以降版） */
+  --new: #0f9d8a;
+  --calc: #8b5cf6; --calc-soft: #f0e9ff; --calc-ink: #5b2fc4;
+
+  --ok: #16a34a;  --ok-soft: #dcfce7;
+  --ng: #e11d48;  --ng-soft: #ffe4ea;
+
+  --radius: 18px;
+  --shadow: 0 1px 2px rgba(30, 20, 80, .06), 0 8px 24px rgba(30, 20, 80, .07);
+  --font: "M PLUS Rounded 1c", "Hiragino Maru Gothic ProN", "Hiragino Sans", "Yu Gothic UI", "Meiryo", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #14131c;
+    --surface: #1e1c2a;
+    --surface-2: #282636;
+    --text: #eeedf5;
+    --muted: #a3a0b8;
+    --line: #34314a;
+    --primary: #8b84ff;
+    --primary-ink: #15132a;
+    --primary-soft: #2a2752;
+    --s-soft: #3a2a19; --s-ink: #ffb46b;
+    --m-soft: #15342b; --m-ink: #5fe0bb;
+    --t-soft: #172a45; --t-ink: #8cc0ff;
+    --e-soft: #3d1a2a; --e-ink: #ff8fb7;
+    --new: #3fd1bd;
+    --calc-soft: #2c2245; --calc-ink: #c4a8ff;
+    --ok-soft: #133524; --ng-soft: #3d1724;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 8px 24px rgba(0, 0, 0, .3);
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  line-height: 1.6;
+  -webkit-tap-highlight-color: transparent;
+}
+a { color: inherit; }
+button { font: inherit; color: inherit; }
+h1, h2 { line-height: 1.3; margin: 0; }
+[hidden] { display: none !important; }
+#app { max-width: 720px; margin: 0 auto; padding: 16px 16px 64px; outline: none; }
+
+/* ---------- ヘッダー ---------- */
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 10px 16px; padding-top: max(10px, env(safe-area-inset-top));
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line);
+}
+.brand { display: flex; align-items: center; gap: 8px; font-weight: 800; text-decoration: none; font-size: 16px; }
+.brand-mark {
+  display: grid; place-items: center; width: 30px; height: 30px; border-radius: 9px;
+  background: linear-gradient(135deg, var(--s), var(--m) 50%, var(--t));
+  color: #fff; font-size: 12px; letter-spacing: .5px;
+}
+.top-right { display: flex; align-items: center; gap: 8px; }
+.mode-chip {
+  text-decoration: none; font-size: 12px; font-weight: 800; padding: 5px 10px; border-radius: 999px;
+  background: var(--primary-soft); color: var(--primary); white-space: nowrap;
+}
+.mode-chip.mode-next { background: var(--e-soft); color: var(--e-ink); }
+.brand { white-space: nowrap; min-width: 0; overflow: hidden; text-overflow: ellipsis; }
+.topbar { gap: 8px; }
+.top-right { flex: none; }
+.review-link { white-space: nowrap; }
+@media (max-width: 480px) { .review-text { display: none; } }
+@media (max-width: 360px) { .brand-text { display: none; } }
+.filter-label { display: block; font-size: 12px; font-weight: 800; color: var(--muted); margin: 0 0 6px; }
+.review-link {
+  display: inline-flex; align-items: center; gap: 6px; text-decoration: none;
+  padding: 6px 12px; border-radius: 999px; background: var(--surface); border: 1px solid var(--line);
+  font-size: 14px; font-weight: 700;
+}
+.badge { min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px; background: var(--ng); color: #fff; font-size: 12px; display: inline-grid; place-items: center; }
+
+/* ---------- 共通パーツ ---------- */
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow); margin-bottom: 16px; }
+.panel h2 { font-size: 15px; margin-bottom: 10px; }
+.panel-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; }
+.note { color: var(--muted); font-size: 13px; margin: 10px 0 0; }
+.center { text-align: center; }
+.section-title { font-size: 17px; margin: 24px 4px 12px; }
+
+.tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 999px; white-space: nowrap; }
+.tag-s { background: var(--s-soft); color: var(--s-ink); }
+.tag-m { background: var(--m-soft); color: var(--m-ink); }
+.tag-t { background: var(--t-soft); color: var(--t-ink); }
+.tag-calc { background: var(--calc-soft); color: var(--calc-ink); }
+.tag-e { background: var(--e-soft); color: var(--e-ink); }
+.tag-new { background: transparent; color: var(--new); border: 1.5px solid var(--new); padding: 1px 6px; font-size: 10px; letter-spacing: .05em; }
+.muted { color: var(--muted); font-weight: 400; font-size: 12px; }
+.chip small { font-size: 11px; opacity: .65; font-weight: 700; margin-left: 2px; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  min-height: 48px; padding: 10px 18px; border-radius: 14px;
+  border: 1px solid var(--line); background: var(--surface); font-weight: 700; font-size: 15px;
+  text-decoration: none; cursor: pointer; transition: transform .1s ease, background .2s;
+}
+.btn:active { transform: scale(.97); }
+.btn-primary { background: var(--primary); color: var(--primary-ink); border-color: transparent; }
+.btn-ghost { background: transparent; }
+.btn-block { width: 100%; margin-top: 18px; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 18px; }
+.btn-row.left { justify-content: flex-start; margin: 4px 0 14px; }
+.link-btn { background: none; border: none; color: var(--muted); text-decoration: underline; cursor: pointer; font-size: 13px; padding: 8px; }
+:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+.chip {
+  padding: 8px 14px; border-radius: 999px; border: 1.5px solid var(--line); background: var(--surface);
+  font-size: 14px; font-weight: 700; cursor: pointer; min-height: 40px;
+}
+.chip.on { border-color: var(--primary); background: var(--primary-soft); color: var(--primary); }
+.chip-review.on { border-color: var(--ng); background: var(--ng-soft); color: var(--ng); }
+
+.progress-line { height: 6px; border-radius: 999px; background: var(--surface-2); overflow: hidden; margin: 6px 0 12px; }
+.progress-line span { display: block; height: 100%; background: var(--primary); border-radius: inherit; transition: width .3s ease; }
+.counter { font-size: 13px; font-weight: 700; color: var(--muted); }
+
+#toast {
+  position: fixed; left: 50%; bottom: max(24px, env(safe-area-inset-bottom)); z-index: 50;
+  transform: translate(-50%, 20px); opacity: 0; pointer-events: none;
+  background: var(--text); color: var(--bg); padding: 10px 18px; border-radius: 999px;
+  font-size: 14px; font-weight: 700; transition: all .25s ease; max-width: calc(100% - 32px); text-align: center;
+}
+#toast.show { opacity: 1; transform: translate(-50%, 0); }
+#toast.ng { background: var(--ng); color: #fff; }
+
+/* ---------- ホーム ---------- */
+.hero { padding: 20px 4px 8px; }
+.hero-kicker { margin: 0 0 6px; color: var(--primary); font-weight: 800; font-size: 13px; letter-spacing: .1em; }
+.hero h1 { font-size: clamp(26px, 7vw, 36px); font-weight: 800; }
+.hero-sub { color: var(--muted); margin: 10px 0 18px; font-size: 14px; }
+
+.progress-panel .panel-head h2 { margin: 0; }
+.big-pct { font-size: 30px; font-weight: 800; color: var(--primary); }
+.big-pct small { font-size: 15px; }
+.gauge { margin-top: 12px; }
+.gauge-head { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 4px; }
+.gauge-label { font-weight: 800; }
+.gauge-label.s { color: var(--s-ink); } .gauge-label.m { color: var(--m-ink); } .gauge-label.t { color: var(--t-ink); } .gauge-label.e { color: var(--e-ink); }
+.gauge-num { color: var(--muted); }
+.gauge-num b { color: var(--text); font-size: 15px; }
+.gauge-bar { display: flex; height: 12px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+.gauge-bar span { height: 100%; transition: width .6s ease; }
+.seg-m.s { background: var(--s); } .seg-m.m { background: var(--m); } .seg-m.t { background: var(--t); } .seg-m.e { background: var(--e); }
+.seg-l.e { background: color-mix(in srgb, var(--e) 35%, transparent); }
+.seg-l.s { background: color-mix(in srgb, var(--s) 35%, transparent); }
+.seg-l.m { background: color-mix(in srgb, var(--m) 35%, transparent); }
+.seg-l.t { background: color-mix(in srgb, var(--t) 35%, transparent); }
+.legend { font-size: 12px; color: var(--muted); margin: 14px 0 0; }
+.lg { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; }
+.lg-m { background: var(--muted); } .lg-l { background: color-mix(in srgb, var(--muted) 35%, transparent); }
+
+/* 試験の版の切り替え */
+.mode-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (max-width: 420px) { .mode-switch { grid-template-columns: 1fr; } }
+.mode-opt {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 4px; text-align: left;
+  padding: 12px 14px; border-radius: 14px; border: 2px solid var(--line); background: var(--surface); cursor: pointer;
+}
+.mode-opt.on { border-color: var(--primary); background: var(--primary-soft); }
+.mode-name { font-weight: 800; font-size: 15px; }
+.mode-opt.on .mode-name::before { content: "✓ "; color: var(--primary); }
+.mode-exam { font-size: 12px; color: var(--muted); }
+.mode-cats { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 2px; }
+
+.game-card-dict { border-style: dashed; }
+
+.review-banner {
+  display: flex; align-items: center; gap: 12px; text-decoration: none;
+  background: var(--ng-soft); border: 1px solid color-mix(in srgb, var(--ng) 30%, transparent);
+  border-radius: var(--radius); padding: 14px 16px; margin-bottom: 8px;
+}
+.review-banner small { color: var(--muted); }
+.rb-icon { font-size: 26px; }
+.rb-arrow { margin-left: auto; font-size: 26px; color: var(--ng); }
+
+.game-grid { display: grid; gap: 12px; }
+@media (min-width: 640px) { .game-grid { grid-template-columns: 1fr 1fr; } }
+.game-card {
+  display: flex; align-items: center; gap: 14px; text-decoration: none;
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 16px; box-shadow: var(--shadow); transition: transform .15s ease, border-color .15s;
+}
+.game-card:hover { transform: translateY(-2px); border-color: var(--primary); }
+.gc-icon { font-size: 30px; width: 54px; height: 54px; flex: none; display: grid; place-items: center; background: var(--surface-2); border-radius: 14px; }
+.gc-body { display: flex; flex-direction: column; min-width: 0; }
+.gc-name { font-weight: 800; font-size: 16px; }
+.gc-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+.gc-time { margin-left: auto; flex: none; font-size: 11px; font-weight: 700; color: var(--primary); background: var(--primary-soft); padding: 3px 8px; border-radius: 999px; align-self: flex-start; }
+
+.foot { text-align: center; color: var(--muted); font-size: 12px; margin-top: 32px; }
+.foot p { margin: 2px 0; }
+
+/* ---------- ゲーム共通 ---------- */
+.game-head { display: flex; align-items: flex-start; gap: 12px; margin: 4px 0 16px; }
+.game-head h1 { font-size: 20px; font-weight: 800; }
+.game-head p { margin: 4px 0 0; color: var(--muted); font-size: 13px; }
+.back {
+  flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 12px;
+  background: var(--surface); border: 1px solid var(--line); text-decoration: none; font-size: 24px; line-height: 1;
+}
+.setup h2 { margin-top: 4px; }
+.result { text-align: center; }
+.result-big { font-size: 56px; font-weight: 800; color: var(--primary); line-height: 1.1; }
+.result-big small { font-size: 20px; color: var(--muted); }
+.result-sub { font-weight: 700; margin: 8px 0 0; }
+.result-msg { color: var(--muted); font-size: 14px; }
+.badge-new { display: inline-block; background: #facc15; color: #422006; font-weight: 800; font-size: 13px; padding: 4px 12px; border-radius: 999px; margin-bottom: 8px; animation: pop .5s ease; }
+@keyframes pop { 0% { transform: scale(.5); } 70% { transform: scale(1.15); } 100% { transform: scale(1); } }
+
+.term-list { list-style: none; margin: 0; padding: 0; }
+.term-list li { display: grid; grid-template-columns: auto 1fr; gap: 2px 10px; align-items: center; padding: 12px 0; border-top: 1px solid var(--line); }
+.term-list li:first-child { border-top: none; }
+.term-list li b { font-size: 15px; }
+.term-list li b em { font-style: normal; font-size: 12px; color: var(--ok); margin-left: 6px; }
+.term-list li > span:not(.tag) { grid-column: 1 / -1; font-size: 13px; color: var(--muted); }
+.term-list li.is-ng b { color: var(--ng); }
+.term-list.removable li { grid-template-columns: auto 1fr auto; }
+.term-list.removable li > span:not(.tag) { grid-column: 1 / 3; }
+.rm { grid-column: 3; grid-row: 1 / 3; border: 1px solid var(--line); background: var(--surface); border-radius: 10px; padding: 6px 10px; font-size: 12px; font-weight: 700; color: var(--ok); cursor: pointer; white-space: nowrap; }
+
+.best-list { list-style: none; padding: 0; margin: 0; }
+.best-list li { display: flex; justify-content: space-between; padding: 8px 0; border-top: 1px solid var(--line); font-size: 14px; }
+.best-list li:first-child { border-top: none; }
+
+.empty { text-align: center; padding: 36px 20px; }
+.empty-icon { font-size: 48px; }
+.empty .btn { margin-top: 16px; }
+
+/* ---------- ① スワイプ ---------- */
+.swipe-wrap { max-width: 420px; margin: 0 auto; }
+.swipe-wrap .counter { display: block; text-align: center; }
+.swipe-stage { position: relative; height: min(56vh, 400px); min-height: 300px; margin: 8px 0 18px; }
+.swipe-card {
+  position: absolute; inset: 0; cursor: grab; touch-action: none; user-select: none; -webkit-user-select: none;
+  perspective: 1200px; animation: cardIn .3s ease;
+}
+.swipe-card:active { cursor: grabbing; }
+@keyframes cardIn { from { transform: scale(.92); opacity: 0; } to { transform: none; opacity: 1; } }
+.flip { position: relative; width: 100%; height: 100%; transition: transform .45s ease; transform-style: preserve-3d; }
+.swipe-card.flipped .flip { transform: rotateY(180deg); }
+.face {
+  position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 24px; box-shadow: var(--shadow);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 28px; text-align: center;
+}
+.face.face-back { transform: rotateY(180deg); background: var(--surface-2); }
+.sc-term { font-size: clamp(26px, 8vw, 38px); font-weight: 800; word-break: break-word; }
+.sc-term-sm { font-size: 20px; font-weight: 800; }
+.sc-tip { font-size: 13px; color: var(--muted); }
+.sc-desc { font-size: 17px; line-height: 1.75; }
+.stamp {
+  position: absolute; top: 22px; z-index: 3; padding: 4px 12px; border: 3px solid; border-radius: 10px;
+  font-weight: 800; font-size: 20px; opacity: 0; pointer-events: none; background: var(--surface);
+}
+.stamp-yes { left: 20px; color: var(--ok); transform: rotate(-12deg); }
+.stamp-no { right: 20px; color: var(--ng); transform: rotate(12deg); }
+.swipe-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.btn-no { border-color: var(--ng); color: var(--ng); background: var(--ng-soft); }
+.btn-yes { border-color: var(--ok); color: var(--ok); background: var(--ok-soft); }
+
+/* ---------- ② 神経衰弱 ---------- */
+.mem-stats { display: flex; justify-content: space-around; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 10px; margin-bottom: 14px; font-size: 14px; }
+.mem-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.mem-grid.mem-easy { grid-template-columns: repeat(2, 1fr); }
+@media (min-width: 560px) { .mem-grid, .mem-grid.mem-easy { grid-template-columns: repeat(4, 1fr); } }
+.mem-card { position: relative; display: block; border: none; padding: 0; background: none; cursor: pointer; perspective: 900px; }
+/* 2つの面を同じマスに重ね、長い説明文に合わせてカードの高さが伸びるようにする */
+.mem-inner { display: grid; height: 100%; min-height: 128px; transition: transform .4s ease; transform-style: preserve-3d; }
+.mem-easy .mem-inner { min-height: 120px; }
+.mem-card.open .mem-inner, .mem-card.done .mem-inner { transform: rotateY(180deg); }
+.mem-face { grid-area: 1 / 1; border-radius: 14px; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 8px; }
+.mem-back {
+  background: linear-gradient(135deg, var(--primary), color-mix(in srgb, var(--primary) 60%, #ec4899));
+  color: #fff; font-size: 32px; font-weight: 800; box-shadow: var(--shadow);
+}
+.mem-front { transform: rotateY(180deg); background: var(--surface); border: 2px solid var(--line); gap: 4px; text-align: center; }
+.mem-kind { font-size: 10px; font-weight: 800; color: var(--muted); }
+.mem-term .mem-text { font-size: 15px; font-weight: 800; word-break: break-word; }
+.mem-desc .mem-text { font-size: 11.5px; line-height: 1.45; }
+.mem-card.done .mem-front { border-color: var(--ok); background: var(--ok-soft); }
+.mem-card.done { cursor: default; animation: matched .4s ease; }
+@keyframes matched { 50% { transform: scale(1.06); } }
+.mem-card.shake { animation: shake .35s ease; }
+@keyframes shake { 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+
+/* ---------- ③ 仕分け ---------- */
+.howto { margin: 0 0 16px; padding-left: 20px; font-size: 14px; }
+.howto li { margin: 4px 0; }
+kbd { font-family: inherit; font-size: 12px; border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 6px; padding: 0 6px; background: var(--surface-2); }
+.bins-preview { display: grid; grid-template-columns: auto 1fr; gap: 8px 10px; align-items: center; font-size: 13px; color: var(--muted); }
+.sort-hud { position: sticky; top: 58px; z-index: 5; background: var(--bg); padding-bottom: 6px; }
+.time-line { height: 10px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+.time-line span { display: block; height: 100%; width: 100%; background: var(--primary); border-radius: inherit; transition: width .1s linear; }
+.sort-hud.hurry .time-line span { background: var(--ng); }
+.sort-hud.hurry #s-time { color: var(--ng); }
+.hud-row { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; font-size: 14px; }
+.hud-row b { font-size: 20px; }
+.combo { color: var(--s); font-weight: 800; }
+.sort-stage { height: min(38vh, 280px); min-height: 200px; display: grid; place-items: center; }
+.sort-card {
+  background: var(--surface); border: 2px solid var(--line); border-radius: 22px; box-shadow: var(--shadow);
+  padding: 26px 28px; min-width: 220px; max-width: 90%; text-align: center; cursor: grab;
+  touch-action: none; user-select: none; -webkit-user-select: none; animation: dropIn .3s ease; position: relative; z-index: 6;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.sort-card.dragging { cursor: grabbing; box-shadow: 0 16px 40px rgba(30, 20, 80, .25); border-color: var(--primary); transition: none; }
+@keyframes dropIn { from { transform: translateY(-60px); opacity: 0; } to { transform: none; opacity: 1; } }
+.sort-term { font-size: clamp(22px, 6.5vw, 30px); font-weight: 800; word-break: break-word; }
+.sort-tip { font-size: 12px; color: var(--muted); }
+.sort-card.gone-ok { transition: all .18s ease; transform: translateY(160px) scale(.4) !important; opacity: 0; }
+.sort-card.gone-ng { transition: all .4s ease; transform: rotate(-8deg) scale(.9) !important; opacity: 0; border-color: var(--ng); }
+.bins { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.bin {
+  min-height: 96px; border-radius: 18px; border: 3px dashed; font-weight: 800; font-size: 14px; cursor: pointer;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 8px 4px;
+  transition: transform .12s ease, background .2s;
+}
+.bin-s { border-color: var(--s); background: var(--s-soft); color: var(--s-ink); }
+.bin-m { border-color: var(--m); background: var(--m-soft); color: var(--m-ink); }
+.bin-t { border-color: var(--t); background: var(--t-soft); color: var(--t-ink); }
+.bin-e { border-color: var(--e); background: var(--e-soft); color: var(--e-ink); }
+.sort-card .tag-new { align-self: center; }
+.bin.hover { transform: scale(1.06); border-style: solid; }
+.bin.ok { animation: binOk .35s ease; }
+.bin.ng { animation: shake .35s ease; background: var(--ng-soft); border-color: var(--ng); }
+@keyframes binOk { 50% { transform: scale(1.1); } }
+.bin-key { font-size: 11px; opacity: .6; border: 1px solid currentColor; border-radius: 6px; padding: 0 6px; }
+@media (hover: none) { .bin-key { display: none; } }
+
+/* ---------- ⑤ ヒントクイズ / ⑧ 計算 ---------- */
+.point-rule { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 18px; }
+.point-rule div { background: var(--surface-2); border-radius: 12px; padding: 10px 6px; text-align: center; display: flex; flex-direction: column; }
+.point-rule b { font-size: 20px; color: var(--primary); }
+.point-rule small { font-size: 11px; color: var(--muted); }
+.quiz-top { display: flex; justify-content: space-between; align-items: center; }
+.score-pill { background: var(--primary-soft); color: var(--primary); font-weight: 800; padding: 4px 12px; border-radius: 999px; font-size: 14px; }
+.q-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+.q-title { font-weight: 800; }
+.worth { margin-left: auto; font-weight: 800; color: var(--s); }
+.hint-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.hint { border-radius: 12px; padding: 10px 14px; font-size: 15px; }
+.hint.open { background: var(--surface-2); animation: cardIn .3s ease; }
+.hint.locked { border: 2px dashed var(--line); color: var(--muted); }
+.hint-no { display: block; font-size: 11px; font-weight: 800; color: var(--primary); }
+.hint-list + .btn-block { margin-top: 12px; min-height: 42px; font-size: 14px; }
+.choices { display: grid; gap: 10px; margin-bottom: 16px; }
+@media (min-width: 560px) { .choices { grid-template-columns: 1fr 1fr; } }
+.choice {
+  min-height: 56px; padding: 10px 16px; border-radius: 14px; border: 2px solid var(--line); background: var(--surface);
+  font-weight: 700; font-size: 16px; cursor: pointer; text-align: center; transition: border-color .15s, transform .1s;
+}
+.choice:hover:not(:disabled) { border-color: var(--primary); }
+.choice:active:not(:disabled) { transform: scale(.98); }
+.choice:disabled { cursor: default; opacity: .55; }
+.choice.correct { border-color: var(--ok); background: var(--ok-soft); color: var(--ok); opacity: 1; }
+.choice.wrong { border-color: var(--ng); background: var(--ng-soft); color: var(--ng); opacity: 1; }
+.feedback { border-radius: 14px; padding: 14px 16px; animation: cardIn .25s ease; }
+.feedback p { margin: 6px 0 0; font-size: 14px; }
+.fb-ok { background: var(--ok-soft); } .fb-ok b { color: var(--ok); }
+.fb-ng { background: var(--ng-soft); } .fb-ng b { color: var(--ng); }
+.feedback + .btn-block { margin-top: 12px; }
+.calc-q { font-size: 18px; font-weight: 700; margin: 0; line-height: 1.7; }
+.calc-log { list-style: none; margin: 0; padding: 0; }
+.calc-log li { display: flex; gap: 10px; padding: 12px 0; border-top: 1px solid var(--line); align-items: flex-start; }
+.calc-log li:first-child { border-top: none; }
+.calc-log li > div { flex: 1; min-width: 0; }
+.calc-log p { margin: 0; font-size: 14px; }
+.calc-log .cl-ans { margin-top: 4px; }
+.calc-log .cl-exp { color: var(--muted); font-size: 13px; margin-top: 2px; }
+.cl-mark { font-weight: 800; color: var(--ok); font-size: 18px; width: 20px; flex: none; }
+.calc-log li.is-ng .cl-mark { color: var(--ng); }
+.calc-log.removable .rm { flex: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* ---------- 用語辞典 ---------- */
+.dict-tools .chips { margin-bottom: 10px; }
+.dict-tools .chips:last-child { margin-bottom: 0; }
+.search { display: flex; align-items: center; gap: 8px; border: 2px solid var(--line); border-radius: 14px; padding: 0 12px; margin-bottom: 14px; background: var(--surface); }
+.search:focus-within { border-color: var(--primary); }
+.search input { flex: 1; min-width: 0; border: none; outline: none; background: transparent; color: var(--text); font: inherit; font-size: 16px; padding: 12px 0; }
+.dict-list { list-style: none; margin: 8px 0 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
+.dict-list li { padding: 12px 16px; border-top: 1px solid var(--line); }
+.dict-list li:first-child { border-top: none; }
+.dl-head { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.dl-head b { font-size: 16px; }
+.dict-list p { margin: 4px 0 0; font-size: 13px; color: var(--muted); }
+.lv { margin-left: auto; font-size: 11px; letter-spacing: 1px; color: var(--line); }
+.lv-1 { color: var(--s); } .lv-2 { color: var(--ok); }
+.dict-empty { color: var(--muted); text-align: center; }
+
+</style>
+</head>
+<body>
+  <header class="topbar">
+    <a href="#/" class="brand"><span class="brand-mark" aria-hidden="true">IT</span><span class="brand-text">ITパス ゲームラボ</span></a>
+    <div class="top-right">
+      <a href="#/" id="mode-chip" class="mode-chip" title="試験の版（ホームで切り替え）"></a>
+      <a href="#/review" class="review-link">📝<span class="review-text"> 復習</span><span id="review-badge" class="badge" hidden>0</span></a>
+    </div>
+  </header>
+
+  <main id="app" tabindex="-1"></main>
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <!-- データ：用語は data/terms.js・data/terms-next.js、計算問題は data/calc.js の部分を編集します -->
+  <script>
+/* ===== data/terms.js ===== */
+/*
+ * 用語データ（今年度版：シラバスVer.6.4 の3分野で分類）
+ * ------------------------------------------------------------
+ * 次年度以降版でも同じ用語を使います（分野の振り分けは data/terms-next.js で設定）。
+ * 1語 = 1行のオブジェクトです。追加・修正はここを編集するだけで、
+ * すべてのゲーム（スワイプ・神経衰弱・仕分け・ヒントクイズ）に反映されます。
+ *
+ *   term  : 用語（ゲーム内で答えになる文字列。重複しないようにしてください）
+ *   cat   : 分野  "S"=ストラテジ / "M"=マネジメント / "T"=テクノロジ
+ *   desc  : 意味（用語そのものを含めないでください。神経衰弱のカードにも使われます）
+ *   hints : ヒントクイズ用のヒント2つ（ぼんやり → 具体的 の順。3つ目のヒントには desc が使われます）
+ *
+ * ※ 学習記録は term の文字列で保存されるため、term を書き換えるとその語の記録はリセットされます。
+ */
+window.ITP = window.ITP || {};
+ITP.TERMS_NOW = [
+  // ===== ストラテジ系 =====
+  { term: "ROE", cat: "S", desc: "自己資本に対して、どれだけ利益を上げたかを示す指標（当期純利益÷自己資本）", hints: ["財務指標のひとつ", "株主が特に注目する数字"] },
+  { term: "ROI", cat: "S", desc: "投資した金額に対して、どれだけ利益を得られたかを示す指標", hints: ["投資の効果を測る", "利益÷投資額×100(%)"] },
+  { term: "損益分岐点", cat: "S", desc: "売上高と総費用が等しくなり、利益がちょうどゼロになる売上高", hints: ["黒字と赤字の境目", "固定費÷（1−変動費率）で求める"] },
+  { term: "SWOT分析", cat: "S", desc: "強み・弱み・機会・脅威の4つの視点で、企業の内部環境と外部環境を分析する手法", hints: ["4つの英単語の頭文字", "内部環境と外部環境を整理する"] },
+  { term: "PPM", cat: "S", desc: "市場成長率と市場占有率の2軸で、事業を「花形」「金のなる木」などに分類する手法", hints: ["4つの象限に分ける", "「負け犬」「問題児」も登場する"] },
+  { term: "3C分析", cat: "S", desc: "顧客・競合・自社の3つの視点から事業環境を分析する手法", hints: ["3つの頭文字が同じアルファベット", "Customer から始まる"] },
+  { term: "4P", cat: "S", desc: "製品・価格・流通・販売促進の4つの要素でマーケティング施策を考える枠組み", hints: ["売り手側の視点で考える", "Product・Price…"] },
+  { term: "バランススコアカード", cat: "S", desc: "財務・顧客・業務プロセス・学習と成長の4つの視点で業績を評価する手法", hints: ["業績評価の手法", "財務以外の視点も重視する"] },
+  { term: "コアコンピタンス", cat: "S", desc: "他社がまねできない、自社の核となる強み", hints: ["企業の中核", "競争優位の源泉"] },
+  { term: "M&A", cat: "S", desc: "企業の合併や買収のこと", hints: ["企業同士がひとつになる", "「時間を買う」戦略と言われる"] },
+  { term: "アライアンス", cat: "S", desc: "複数の企業が、互いの利益のために協力関係を結ぶこと（業務提携）", hints: ["企業同士の協力", "合併まではしない"] },
+  { term: "CRM", cat: "S", desc: "顧客との関係を深め、長期的に良好な関係を維持するための経営手法", hints: ["顧客情報を一元管理", "顧客満足度とリピーターを重視"] },
+  { term: "ERP", cat: "S", desc: "企業全体の経営資源（ヒト・モノ・カネ・情報）を統合的に管理し、有効活用する考え方", hints: ["基幹業務を統合する", "経営資源計画"] },
+  { term: "SCM", cat: "S", desc: "原材料の調達から製造・物流・販売までの流れを、企業の枠を越えて管理し最適化する手法", hints: ["供給の連鎖", "在庫削減とリードタイム短縮"] },
+  { term: "SFA", cat: "S", desc: "営業活動をITで支援し、商談の進み具合や営業ノウハウを共有する仕組み", hints: ["営業部門向けのシステム", "商談管理・顧客訪問履歴"] },
+  { term: "ロングテール", cat: "S", desc: "ネット販売で、売れ筋ではない多数のニッチ商品の売上合計が大きな割合を占める現象", hints: ["恐竜のしっぽのようなグラフ", "ニッチ商品"] },
+  { term: "著作権", cat: "S", desc: "小説・音楽・プログラムなどの創作物を保護する権利で、創作した時点で自動的に発生する", hints: ["申請や登録は不要", "プログラムも保護対象"] },
+  { term: "産業財産権", cat: "S", desc: "特許権・実用新案権・意匠権・商標権の総称で、特許庁への出願・登録で権利が発生する", hints: ["4つの権利の総称", "特許庁に出願する"] },
+  { term: "特許権", cat: "S", desc: "産業上利用できる、高度な発明を保護する権利", hints: ["発明を守る", "出願から20年で消滅"] },
+  { term: "商標権", cat: "S", desc: "商品やサービスに付けるマークや名前を保護する権利", hints: ["ロゴマーク", "更新すれば永続的に保護できる"] },
+  { term: "不正アクセス禁止法", cat: "S", desc: "他人のID・パスワードを無断で使ってコンピュータにアクセスする行為などを禁止する法律", hints: ["なりすましログインを禁止", "IDを他人に教える行為も対象"] },
+  { term: "個人情報保護法", cat: "S", desc: "個人情報を取り扱う事業者に、適正な取得・利用・管理を義務付ける法律", hints: ["氏名・生年月日など", "利用目的の特定が必要"] },
+  { term: "労働者派遣法", cat: "S", desc: "派遣元・派遣先・派遣労働者の関係やルールを定めた法律で、派遣先が労働者に指揮命令する", hints: ["3者の関係", "二重派遣は禁止"] },
+  { term: "請負契約", cat: "S", desc: "仕事の完成を目的とする契約で、作業者への指揮命令は受注者側が行う", hints: ["成果物の完成が目的", "発注者は作業者に直接指示できない"] },
+  { term: "コンプライアンス", cat: "S", desc: "法令や社会規範、企業倫理を守ること", hints: ["法令遵守", "不祥事の防止"] },
+  { term: "コーポレートガバナンス", cat: "S", desc: "経営者の不正や暴走を防ぎ、企業経営を監視・統制する仕組み", hints: ["企業統治", "社外取締役の設置"] },
+  { term: "CSR", cat: "S", desc: "企業が利益追求だけでなく、社会や環境に対して責任ある行動をとること", hints: ["企業の社会的責任", "環境保護や地域貢献"] },
+  { term: "BCP", cat: "S", desc: "災害や事故が起きても、重要な業務を継続・早期復旧するための計画", hints: ["地震・パンデミックへの備え", "事業継続計画"] },
+  { term: "ABC分析", cat: "S", desc: "売上などを大きい順に並べ、累積比率で3つのグループに分けて重点管理する手法", hints: ["重点管理", "パレート図を使う"] },
+  { term: "パレート図", cat: "S", desc: "項目を値の大きい順に並べた棒グラフと、累積比率の折れ線グラフを組み合わせた図", hints: ["棒グラフ＋折れ線グラフ", "ABC分析で使う"] },
+  { term: "散布図", cat: "S", desc: "2種類のデータを縦軸と横軸にとって点で表し、相関関係を調べる図", hints: ["点がたくさん並ぶ", "正の相関・負の相関"] },
+  { term: "特性要因図", cat: "S", desc: "結果（特性）と原因（要因）の関係を、魚の骨のような形で整理した図", hints: ["魚の骨", "フィッシュボーンチャート"] },
+  { term: "管理図", cat: "S", desc: "品質のばらつきを時系列で表し、上限・下限の管理限界線から工程の異常を見つける図", hints: ["工程の異常を検知", "上方管理限界・下方管理限界"] },
+  { term: "ブレーンストーミング", cat: "S", desc: "批判禁止・自由奔放・質より量・結合便乗のルールで、多くのアイデアを出し合う手法", hints: ["アイデア出しの会議", "批判禁止・質より量"] },
+  { term: "貸借対照表", cat: "S", desc: "決算日時点の資産・負債・純資産の状態を示す財務諸表", hints: ["B/S", "財政状態がわかる"] },
+  { term: "損益計算書", cat: "S", desc: "一定期間の収益と費用から、どれだけ利益が出たかを示す財務諸表", hints: ["P/L", "経営成績がわかる"] },
+  { term: "キャッシュフロー計算書", cat: "S", desc: "一定期間の現金の流れ（入金と出金）を示す財務諸表", hints: ["お金の出入り", "営業・投資・財務の3区分"] },
+  { term: "ビッグデータ", cat: "S", desc: "従来のシステムでは扱いきれない、量・種類・発生頻度が膨大なデータ群", hints: ["3つのV", "大量・多様・高頻度"] },
+  { term: "IoT", cat: "S", desc: "家電や自動車など、さまざまなモノがインターネットにつながり情報をやり取りする仕組み", hints: ["モノのインターネット", "センサーで情報収集"] },
+  { term: "機械学習", cat: "S", desc: "コンピュータが大量のデータからパターンやルールを自動的に学習する技術", hints: ["AIの一分野", "教師あり学習・教師なし学習"] },
+  { term: "ディープラーニング", cat: "S", desc: "人間の脳の神経回路をまねたニューラルネットワークを多層にして、特徴を自動で学習する手法", hints: ["深層学習", "画像認識で大きな成果"] },
+  { term: "RPA", cat: "S", desc: "人がパソコンで行う定型的な事務作業を、ソフトウェアのロボットで自動化する技術", hints: ["ソフトウェアロボット", "定型業務の自動化"] },
+  { term: "DX", cat: "S", desc: "デジタル技術を活用して、ビジネスモデルや組織、企業文化そのものを変革すること", hints: ["デジタルで会社を変える", "「2025年の崖」"] },
+  { term: "フィンテック", cat: "S", desc: "金融とITを組み合わせた、新しいサービスや技術", hints: ["金融×技術", "スマホ決済"] },
+  { term: "シェアリングエコノミー", cat: "S", desc: "個人が持つ車や部屋などの遊休資産を、インターネットを通じて他人と共有・貸し借りする仕組み", hints: ["民泊・カーシェア", "遊休資産の活用"] },
+  { term: "EC", cat: "S", desc: "インターネットを通じて、商品やサービスを売買する取引", hints: ["電子商取引", "BtoC・CtoC"] },
+  { term: "ベンチマーキング", cat: "S", desc: "優れた他社のやり方を指標として、自社の業務を改善する手法", hints: ["優良企業から学ぶ", "ベストプラクティス"] },
+  { term: "アウトソーシング", cat: "S", desc: "自社の業務の一部を、外部の専門業者に委託すること", hints: ["外部委託", "コスト削減・専門性の活用"] },
+  { term: "MOT", cat: "S", desc: "技術を経営の中心に据え、技術革新を事業の成果に結びつける経営手法", hints: ["技術経営", "イノベーション"] },
+  { term: "ファブレス", cat: "S", desc: "自社で工場を持たず、製品の製造を外部に委託する経営形態", hints: ["工場を持たない", "企画・設計に集中"] },
+  { term: "BPR", cat: "S", desc: "既存の業務プロセスを根本的に見直し、抜本的に再設計すること", hints: ["業務改革", "ゼロから作り直す"] },
+  { term: "KPI", cat: "S", desc: "目標達成に向けたプロセスの進み具合を測るための、重要業績評価指標", hints: ["中間目標の数値", "KGIとセットで使う"] },
+  { term: "SaaS", cat: "S", desc: "ソフトウェア（アプリケーション）の機能を、インターネット経由でサービスとして提供する形態", hints: ["クラウドサービスの一種", "Webメールなどが代表例"] },
+  { term: "IaaS", cat: "S", desc: "サーバやストレージなどのインフラを、インターネット経由でサービスとして提供する形態", hints: ["クラウドサービスの一種", "ハードウェア資源を借りる"] },
+  { term: "RFP", cat: "S", desc: "情報システムの調達時に、発注先候補のベンダーに具体的な提案を依頼する文書", hints: ["提案依頼書", "ベンダー選定に使う"] },
+  { term: "RFI", cat: "S", desc: "情報システムの調達で、ベンダーに技術や製品に関する情報の提供を依頼する文書", hints: ["情報提供依頼書", "提案依頼の前に出す"] },
+  { term: "デジタルデバイド", cat: "S", desc: "ITを使いこなせる人とそうでない人の間に生じる、情報や機会の格差", hints: ["情報格差", "年齢や地域による差"] },
+  // --- 企業活動・組織 ---
+  { term: "経営理念", cat: "S", desc: "企業が存在する目的や、経営を行ううえでの基本的な価値観を示したもの", hints: ["企業の存在意義", "社是・ミッション"] },
+  { term: "SDGs", cat: "S", desc: "2030年までの達成を目指して国連で採択された、17の国際目標", hints: ["持続可能な開発目標", "17のゴール"] },
+  { term: "グリーンIT", cat: "S", desc: "IT機器の省電力化や、ITの活用による環境負荷の低減に取り組むこと", hints: ["環境にやさしいIT", "省エネ"] },
+  { term: "ダイバーシティ", cat: "S", desc: "性別・年齢・国籍などが異なる多様な人材を、組織に活かす考え方", hints: ["多様性", "女性・外国人・シニアの活躍"] },
+  { term: "OJT", cat: "S", desc: "職場で実際の業務を通じて、上司や先輩が部下を育成する教育訓練", hints: ["仕事をしながら学ぶ", "職場内訓練"] },
+  { term: "Off-JT", cat: "S", desc: "職場を離れて、研修やセミナーなどで行う教育訓練", hints: ["職場の外での研修", "集合研修"] },
+  { term: "HRテック", cat: "S", desc: "AIやクラウドなどのITを、採用・育成・評価などの人事業務に活用すること", hints: ["人事×技術", "採用や評価の効率化"] },
+  { term: "タレントマネジメント", cat: "S", desc: "従業員のスキルや経歴などの情報を一元管理し、戦略的な人材配置や育成に活かすこと", hints: ["人材情報の一元管理", "適材適所"] },
+  { term: "テレワーク", cat: "S", desc: "ICTを活用して、オフィス以外の場所で柔軟に働く勤務形態", hints: ["在宅勤務", "場所にとらわれない働き方"] },
+  { term: "職能別組織", cat: "S", desc: "営業・製造・経理など、業務の機能ごとに部門を分けた組織形態", hints: ["機能ごとの部門", "専門性が高まる"] },
+  { term: "事業部制組織", cat: "S", desc: "製品や地域ごとに部門を分け、各部門が利益責任を持って独立して運営する組織形態", hints: ["独立採算", "製品別・地域別"] },
+  { term: "マトリックス組織", cat: "S", desc: "職能別と事業別など、2つの命令系統を組み合わせた組織形態", hints: ["縦横の組織", "上司が2人いる"] },
+  { term: "プロジェクト組織", cat: "S", desc: "特定の目的のために各部門から人材を集め、目的を達成したら解散する組織", hints: ["期間限定のチーム", "目的達成で解散"] },
+  { term: "CEO", cat: "S", desc: "企業の経営方針や戦略に、最終的な責任を持つ最高経営責任者", hints: ["経営のトップ", "社長が務めることが多い"] },
+  { term: "CIO", cat: "S", desc: "情報化戦略を立案・実行する責任者である、最高情報責任者", hints: ["情報部門のトップ", "IT戦略の責任者"] },
+  // --- 業務分析・データ利活用 ---
+  { term: "デシジョンツリー", cat: "S", desc: "意思決定の分岐や起こりうる事象を木の枝のように表し、期待値などで最適な選択肢を選ぶ図", hints: ["枝分かれの図", "期待値で比較"] },
+  { term: "ヒストグラム", cat: "S", desc: "データの範囲をいくつかの区間に分け、各区間に入るデータの数を棒グラフで表した図", hints: ["度数分布", "ばらつきの形がわかる"] },
+  { term: "レーダーチャート", cat: "S", desc: "複数の評価項目を放射状の軸にとり、全体のバランスを表すグラフ", hints: ["クモの巣のような形", "バランスの比較"] },
+  { term: "親和図法", cat: "S", desc: "断片的な言語データを、意味の近いもの同士でグループにまとめて整理する手法", hints: ["似たもの同士をまとめる", "KJ法に近い"] },
+  { term: "連関図法", cat: "S", desc: "複雑に絡み合う原因と結果の関係を矢印でつなぎ、因果関係を明らかにする手法", hints: ["因果関係を矢印で表す", "原因の絡み合い"] },
+  { term: "回帰分析", cat: "S", desc: "2つ以上の変数の関係を式で表し、ある値から別の値を予測する分析手法", hints: ["予測の式", "説明変数と目的変数"] },
+  { term: "相関係数", cat: "S", desc: "2つのデータの関係の強さを、−1から1までの値で表したもの", hints: ["−1〜1の値", "1に近いほど正の相関"] },
+  { term: "標準偏差", cat: "S", desc: "データが平均値からどれくらい散らばっているかを示す値", hints: ["ばらつきの指標", "分散の平方根"] },
+  { term: "テキストマイニング", cat: "S", desc: "大量の文章データを分析して、有用な情報や傾向を取り出す技術", hints: ["文章データの分析", "単語の出現頻度"] },
+  { term: "データマイニング", cat: "S", desc: "大量のデータを分析して、隠れた規則性や相関関係を見つけ出す技術", hints: ["データから宝を掘る", "「おむつとビール」の例"] },
+  { term: "オープンデータ", cat: "S", desc: "国や自治体などが保有するデータを、誰でも自由に利用・再配布できる形で公開したもの", hints: ["公開データ", "二次利用OK"] },
+  { term: "BI", cat: "S", desc: "社内に蓄積されたデータを分析・可視化し、経営の意思決定に活用する手法やツール", hints: ["データを経営判断に活かす", "ダッシュボード"] },
+  { term: "データウェアハウス", cat: "S", desc: "業務システムから集めたデータを、分析しやすいように時系列で蓄積したデータベース", hints: ["データの倉庫", "意思決定の支援"] },
+  // --- 会計・財務 ---
+  { term: "流動資産", cat: "S", desc: "現金や売掛金など、1年以内に現金化される予定の資産", hints: ["1年以内に現金化", "貸借対照表の資産の部"] },
+  { term: "固定資産", cat: "S", desc: "土地・建物・機械など、1年を超えて長期間使用する資産", hints: ["長く使う資産", "建物や機械"] },
+  { term: "減価償却", cat: "S", desc: "建物や機械などの取得費用を、使用できる期間にわたって分割して費用にすること", hints: ["費用を分割", "耐用年数"] },
+  { term: "売上総利益", cat: "S", desc: "売上高から売上原価を差し引いた利益", hints: ["粗利", "損益計算書で最初に出てくる利益"] },
+  { term: "営業利益", cat: "S", desc: "売上総利益から販売費及び一般管理費を差し引いた、本業による利益", hints: ["本業のもうけ", "販管費を引いた後"] },
+  { term: "経常利益", cat: "S", desc: "営業利益に営業外収益を加え、営業外費用を差し引いた利益", hints: ["通常の経営活動による利益", "受取利息や支払利息を反映"] },
+  { term: "当期純利益", cat: "S", desc: "税引前の利益から法人税などを差し引いた、最終的な利益", hints: ["最終利益", "税金を引いた後"] },
+  { term: "固定費", cat: "S", desc: "人件費や家賃など、売上高の増減にかかわらず一定額かかる費用", hints: ["売上に関係なく一定", "家賃"] },
+  { term: "変動費", cat: "S", desc: "材料費など、売上高や生産量に比例して増減する費用", hints: ["売上に比例する", "材料費"] },
+  { term: "自己資本比率", cat: "S", desc: "総資本に占める自己資本の割合で、企業の安全性を示す指標", hints: ["安全性の指標", "高いほど借金が少ない"] },
+  { term: "流動比率", cat: "S", desc: "流動負債に対する流動資産の割合で、短期的な支払能力を示す指標", hints: ["短期の支払能力", "200%以上が理想とされる"] },
+  { term: "ROA", cat: "S", desc: "総資産に対して、どれだけ利益を上げたかを示す指標", hints: ["資産の使い方の効率", "利益÷総資産"] },
+  // --- 法務 ---
+  { term: "実用新案権", cat: "S", desc: "物品の形状や構造などに関する考案を保護する権利", hints: ["発明ほど高度でないアイデア", "出願から10年"] },
+  { term: "意匠権", cat: "S", desc: "物品や建築物、画像などのデザインを保護する権利", hints: ["デザインを守る", "見た目の美しさ"] },
+  { term: "不正競争防止法", cat: "S", desc: "営業秘密の不正取得や、他社商品の形態の模倣などの不正な競争を規制する法律", hints: ["企業の秘密を守る", "有名ブランドのまねを禁止"] },
+  { term: "営業秘密", cat: "S", desc: "秘密として管理され、事業に有用で、公然と知られていない技術上・営業上の情報", hints: ["3つの要件がある", "顧客名簿や製造ノウハウ"] },
+  { term: "ソフトウェアライセンス", cat: "S", desc: "ソフトウェアを使用するための許諾条件を定めたもの", hints: ["使用許諾", "ボリュームライセンス"] },
+  { term: "サブスクリプション", cat: "S", desc: "一定期間の利用料を支払って、製品やサービスを利用する方式", hints: ["定額制", "月額・年額"] },
+  { term: "クリエイティブコモンズ", cat: "S", desc: "著作者が条件を示して、作品の自由な利用を認める意思表示の仕組み", hints: ["CCライセンス", "表示・非営利などの条件"] },
+  { term: "GDPR", cat: "S", desc: "EU域内の個人データの保護を定めた規則で、EU域外の企業にも適用される", hints: ["EUの規則", "域外適用あり"] },
+  { term: "特定電子メール法", cat: "S", desc: "広告・宣伝メールの送信に、受信者の事前の同意を原則として義務付ける法律", hints: ["迷惑メール対策", "オプトイン方式"] },
+  { term: "情報流通プラットフォーム対処法", cat: "S", desc: "大規模なSNSなどの事業者に、権利侵害情報への迅速な対応や運用の透明化を求める法律", hints: ["旧プロバイダ責任制限法", "削除申出への対応"] },
+  { term: "サイバーセキュリティ基本法", cat: "S", desc: "国のサイバーセキュリティ戦略や、国・地方公共団体などの責務を定めた法律", hints: ["国の基本方針", "内閣に本部を設置"] },
+  { term: "PL法", cat: "S", desc: "製品の欠陥によって損害が生じた場合の、製造業者などの賠償責任を定めた法律", hints: ["製造物責任法", "欠陥製品"] },
+  { term: "準委任契約", cat: "S", desc: "仕事の完成ではなく、業務を適切に処理すること自体を目的とする契約", hints: ["完成の義務がない", "善管注意義務"] },
+  { term: "公益通報者保護法", cat: "S", desc: "企業の法令違反を通報した労働者が、解雇などの不利益を受けないよう保護する法律", hints: ["内部告発", "通報した人を守る"] },
+  { term: "インボイス制度", cat: "S", desc: "売り手が税率や消費税額を記載した適格請求書を発行し、買い手が仕入税額控除を受ける制度", hints: ["適格請求書", "消費税"] },
+  { term: "電子帳簿保存法", cat: "S", desc: "税に関する帳簿や書類を、電子データで保存するためのルールを定めた法律", hints: ["電子取引のデータ保存", "ペーパーレス"] },
+  { term: "ISO 9001", cat: "S", desc: "品質マネジメントシステムに関する国際規格", hints: ["品質の国際規格", "顧客満足の向上"] },
+  { term: "ISO 14001", cat: "S", desc: "環境マネジメントシステムに関する国際規格", hints: ["環境の国際規格", "環境負荷の低減"] },
+  { term: "JIS", cat: "S", desc: "日本の産業製品や情報処理などに関する国家規格", hints: ["日本の規格", "日本産業規格"] },
+  { term: "デファクトスタンダード", cat: "S", desc: "公的機関が定めたものではなく、市場での競争の結果、事実上の標準となった規格", hints: ["事実上の標準", "市場が決める"] },
+  // --- 経営戦略・マーケティング ---
+  { term: "ファイブフォース分析", cat: "S", desc: "業界内の競争・新規参入・代替品・売り手と買い手の交渉力の5つの要因で業界を分析する手法", hints: ["5つの競争要因", "ポーターが提唱"] },
+  { term: "VRIO分析", cat: "S", desc: "経済価値・希少性・模倣困難性・組織の4つの視点で、経営資源の競争優位性を評価する手法", hints: ["4つの頭文字", "経営資源の評価"] },
+  { term: "PEST分析", cat: "S", desc: "政治・経済・社会・技術の4つの視点で、マクロな外部環境を分析する手法", hints: ["4つの外部環境", "マクロ環境分析"] },
+  { term: "アンゾフの成長マトリクス", cat: "S", desc: "製品と市場を既存・新規に分け、市場浸透・新製品開発・新市場開拓・多角化の4つの戦略を示した枠組み", hints: ["製品×市場", "多角化"] },
+  { term: "ニッチ戦略", cat: "S", desc: "大企業が手をつけていない、特定の小さな市場に集中する戦略", hints: ["すきま市場", "特定分野に集中"] },
+  { term: "差別化戦略", cat: "S", desc: "品質やデザインなど、競合他社と異なる特徴を打ち出して優位に立つ戦略", hints: ["他社との違い", "独自の価値"] },
+  { term: "コストリーダーシップ戦略", cat: "S", desc: "業界で最も低いコストを実現し、価格競争で優位に立つ戦略", hints: ["低コスト", "規模の経済を活かす"] },
+  { term: "規模の経済", cat: "S", desc: "生産量を増やすほど、製品1個あたりのコストが下がる効果", hints: ["大量生産", "単位コストの低下"] },
+  { term: "プロダクトライフサイクル", cat: "S", desc: "製品が市場に出てから消えるまでを、導入期・成長期・成熟期・衰退期に分けた考え方", hints: ["製品の一生", "4つの時期"] },
+  { term: "STP", cat: "S", desc: "市場を細分化し、狙う市場を決め、自社の立ち位置を明確にするマーケティングの手順", hints: ["3つの頭文字", "セグメンテーションから始まる"] },
+  { term: "4C", cat: "S", desc: "顧客価値・顧客コスト・利便性・コミュニケーションの4要素で、買い手の視点から考える枠組み", hints: ["買い手側の視点", "4Pと対になる"] },
+  { term: "アフィリエイト", cat: "S", desc: "Webサイトなどに広告を掲載し、閲覧者がその広告経由で商品を購入すると報酬が得られる仕組み", hints: ["成果報酬型広告", "ブログに広告"] },
+  { term: "オムニチャネル", cat: "S", desc: "実店舗・ECサイト・SNSなど複数の販売経路を連携させ、どこでも同じように買い物できるようにする戦略", hints: ["すべての販売経路を統合", "店舗とネットの連携"] },
+  { term: "O2O", cat: "S", desc: "Webサイトやアプリなどのオンラインから、実店舗などのオフラインへ顧客を誘導する施策", hints: ["オンラインからオフラインへ", "クーポン配信"] },
+  { term: "SEO", cat: "S", desc: "検索エンジンの検索結果で、自社サイトが上位に表示されるように工夫すること", hints: ["検索エンジン対策", "上位表示"] },
+  { term: "リスティング広告", cat: "S", desc: "検索されたキーワードに連動して、検索結果ページに表示される広告", hints: ["検索連動型広告", "キーワードで表示"] },
+  { term: "レコメンデーション", cat: "S", desc: "利用者の購入履歴や閲覧履歴をもとに、興味を持ちそうな商品を推薦する仕組み", hints: ["おすすめ表示", "履歴から推薦"] },
+  { term: "ダイナミックプライシング", cat: "S", desc: "需要と供給の状況に応じて、商品やサービスの価格を変動させる仕組み", hints: ["価格が変わる", "ホテルや航空券"] },
+  { term: "ブルーオーシャン戦略", cat: "S", desc: "競争のない未開拓の市場を切り開き、新たな需要を生み出す戦略", hints: ["競争のない海", "新市場の創造"] },
+  { term: "TOB", cat: "S", desc: "買付け価格や期間などを公表して、不特定多数の株主から株式を買い集めること", hints: ["株式公開買付け", "M&Aの手法"] },
+  { term: "MBO", cat: "S", desc: "経営陣が自社の株式を買い取って、経営権を取得すること", hints: ["経営陣による買収", "非上場化"] },
+  // --- 技術戦略・ビジネスインダストリ ---
+  { term: "イノベーションのジレンマ", cat: "S", desc: "優良企業が既存顧客を重視するあまり、破壊的な新技術への対応が遅れて新興企業に市場を奪われる現象", hints: ["優良企業の落とし穴", "破壊的イノベーション"] },
+  { term: "キャズム", cat: "S", desc: "新製品が初期の利用者から一般の利用者へ広まる際に存在する、越えるのが難しい大きな溝", hints: ["普及の溝", "アーリーアダプターの次"] },
+  { term: "ハッカソン", cat: "S", desc: "エンジニアやデザイナーが集まり、短期間で集中的にソフトウェアなどを開発するイベント", hints: ["短期集中の開発イベント", "ハックとマラソン"] },
+  { term: "デザイン思考", cat: "S", desc: "利用者の視点に立って課題を発見し、試作と検証を繰り返しながら解決策を生み出す考え方", hints: ["共感から始める", "試作と検証"] },
+  { term: "PoC", cat: "S", desc: "新しい技術やアイデアが実現可能かどうかを、本格導入の前に小規模に検証すること", hints: ["概念実証", "本格導入前のお試し"] },
+  { term: "ビジネスモデルキャンバス", cat: "S", desc: "顧客・価値提案・収益の流れなど9つの要素で、ビジネスモデルを1枚の図に整理する手法", hints: ["9つのブロック", "1枚で可視化"] },
+  { term: "リーンスタートアップ", cat: "S", desc: "最小限の製品を素早く作って顧客の反応を確かめ、改良を繰り返しながら事業を立ち上げる手法", hints: ["小さく始める", "MVP"] },
+  { term: "オープンイノベーション", cat: "S", desc: "他社や大学など外部の技術やアイデアを取り入れて、革新を生み出すこと", hints: ["外部の知恵を活用", "産学連携"] },
+  { term: "技術ロードマップ", cat: "S", desc: "将来の技術の進展や製品化の見通しを、時間軸に沿って表したもの", hints: ["技術の道筋", "時間軸の図"] },
+  { term: "コンカレントエンジニアリング", cat: "S", desc: "設計・開発・製造などの工程を並行して進め、開発期間を短縮する手法", hints: ["同時並行", "開発期間の短縮"] },
+  { term: "CAD", cat: "S", desc: "コンピュータを使って、製品や建築物などの設計図面を作成するシステム", hints: ["設計支援", "図面作成"] },
+  { term: "CAM", cat: "S", desc: "設計データなどを使い、コンピュータで製造工程を制御・支援するシステム", hints: ["製造支援", "工作機械を制御"] },
+  { term: "MRP", cat: "S", desc: "生産計画をもとに、必要な部品や資材の量と時期を計算して管理する手法", hints: ["資材所要量計画", "部品の必要量"] },
+  { term: "JIT", cat: "S", desc: "必要なものを、必要なときに、必要な量だけ生産・調達する方式", hints: ["在庫を最小限に", "かんばん方式"] },
+  { term: "セル生産方式", cat: "S", desc: "1人または少人数で、製品の組立ての全工程を担当する生産方式", hints: ["少人数で全工程", "多品種少量生産"] },
+  { term: "POSシステム", cat: "S", desc: "商品の販売時点で、商品名・数量・金額などの情報を収集・管理するシステム", hints: ["販売時点情報管理", "コンビニのレジ"] },
+  { term: "GPS", cat: "S", desc: "人工衛星からの電波を使って、現在位置を測定するシステム", hints: ["位置情報", "衛星を利用"] },
+  { term: "トレーサビリティ", cat: "S", desc: "製品の原材料の調達から生産・流通・消費までの履歴を、追跡できること", hints: ["追跡可能性", "産地や製造履歴"] },
+  { term: "RFID", cat: "S", desc: "電波を使って、非接触でICタグのデータを読み書きする技術", hints: ["非接触で読み取り", "商品にタグを付ける"] },
+  { term: "EDI", cat: "S", desc: "企業間で、受発注などの取引データを標準的な形式で電子的に交換すること", hints: ["電子データ交換", "企業間取引"] },
+  { term: "BtoB", cat: "S", desc: "企業と企業の間で行われる電子商取引", hints: ["企業間取引", "部品の調達"] },
+  { term: "CtoC", cat: "S", desc: "個人と個人の間で行われる電子商取引", hints: ["個人間取引", "フリマアプリ"] },
+  { term: "キャッシュレス決済", cat: "S", desc: "現金を使わずに、クレジットカードや電子マネー、QRコードなどで支払うこと", hints: ["現金を使わない", "スマホで支払う"] },
+  { term: "クラウドファンディング", cat: "S", desc: "インターネットを通じて、不特定多数の人から少額ずつ資金を集める仕組み", hints: ["ネットで資金集め", "群衆から出資"] },
+  { term: "暗号資産", cat: "S", desc: "インターネット上でやり取りされる、法定通貨ではない電子的な財産的価値", hints: ["ビットコイン", "ブロックチェーンで管理"] },
+  { term: "NFT", cat: "S", desc: "ブロックチェーン技術を使い、デジタルデータに唯一性を持たせた非代替性トークン", hints: ["唯一無二のデジタル資産", "デジタルアートの所有証明"] },
+  { term: "スマートシティ", cat: "S", desc: "ICTを活用して、交通・エネルギー・行政などの都市機能を効率化し、住みやすくした都市", hints: ["都市×IT", "交通やエネルギーの最適化"] },
+  { term: "Society 5.0", cat: "S", desc: "サイバー空間とフィジカル空間を高度に融合させ、経済発展と社会課題の解決を両立する人間中心の社会", hints: ["日本が目指す未来社会", "狩猟・農耕・工業・情報の次"] },
+  { term: "MaaS", cat: "S", desc: "電車・バス・タクシーなど複数の交通手段をICTで連携させ、1つのサービスとして提供すること", hints: ["移動のサービス化", "検索・予約・決済を一括"] },
+  { term: "インダストリー4.0", cat: "S", desc: "IoTやAIを活用して製造業の高度化を目指す、ドイツ発の取組み", hints: ["第4次産業革命", "ドイツ"] },
+  { term: "デジタルツイン", cat: "S", desc: "現実世界の物や環境のデータを集め、仮想空間上に双子のように再現する技術", hints: ["仮想空間の双子", "シミュレーション"] },
+  // --- AI ---
+  { term: "生成AI", cat: "S", desc: "学習したデータをもとに、文章・画像・音声などの新しいコンテンツを作り出すAI", hints: ["コンテンツを作るAI", "ChatGPT"] },
+  { term: "大規模言語モデル", cat: "S", desc: "膨大なテキストデータで学習し、人間のように自然な文章を理解・生成できるAIモデル", hints: ["LLM", "文章生成AIの土台"] },
+  { term: "ハルシネーション", cat: "S", desc: "生成AIが、事実とは異なるもっともらしい内容を出力してしまう現象", hints: ["AIの幻覚", "もっともらしいウソ"] },
+  { term: "プロンプトエンジニアリング", cat: "S", desc: "生成AIから望ましい出力を得るために、指示文を工夫・設計する技術", hints: ["AIへの指示文", "質問の工夫"] },
+  { term: "教師あり学習", cat: "S", desc: "正解のラベルが付いたデータを使って、AIに学習させる手法", hints: ["正解付きのデータ", "分類や回帰"] },
+  { term: "教師なし学習", cat: "S", desc: "正解のラベルが付いていないデータから、AIがデータの構造や特徴を見つけ出す手法", hints: ["正解なしのデータ", "クラスタリング"] },
+  { term: "強化学習", cat: "S", desc: "AIが試行錯誤を通じて、報酬が最大になる行動を学習する手法", hints: ["報酬を最大化", "囲碁AI"] },
+  // --- システム戦略・企画 ---
+  { term: "ナレッジマネジメント", cat: "S", desc: "個人が持つ知識やノウハウを組織全体で共有し、活用する経営手法", hints: ["知識の共有", "暗黙知を形式知に"] },
+  { term: "BPM", cat: "S", desc: "業務プロセスを、分析・設計・実行・評価のサイクルで継続的に改善する手法", hints: ["継続的な業務改善", "抜本的改革のBPRとの違い"] },
+  { term: "DFD", cat: "S", desc: "データの流れとその処理を、記号を使って図式化する手法", hints: ["データの流れ図", "プロセス・データストア"] },
+  { term: "E-R図", cat: "S", desc: "業務の対象となる実体（エンティティ）と、その関連を図で表したもの", hints: ["実体と関連", "データベースの設計"] },
+  { term: "グループウェア", cat: "S", desc: "電子メール・スケジュール管理・掲示板など、組織内の共同作業を支援するソフトウェア", hints: ["共同作業の支援", "スケジュールの共有"] },
+  { term: "ハウジングサービス", cat: "S", desc: "顧客が所有するサーバなどの機器を、事業者のデータセンタに設置して運用するサービス", hints: ["機器は顧客のもの", "場所を借りる"] },
+  { term: "ホスティングサービス", cat: "S", desc: "事業者が所有するサーバの機能を、顧客に貸し出すサービス", hints: ["機器は事業者のもの", "レンタルサーバ"] },
+  { term: "PaaS", cat: "S", desc: "アプリケーションを開発・実行するためのプラットフォームを、インターネット経由で提供する形態", hints: ["クラウドサービスの一種", "OSやミドルウェアまで提供"] },
+  { term: "オンプレミス", cat: "S", desc: "情報システムを、自社で保有する設備に導入して運用する形態", hints: ["自社運用", "クラウドの対義語"] },
+  { term: "要件定義", cat: "S", desc: "システムや業務に必要な機能・性能などを明確にし、関係者で合意する工程", hints: ["何を作るかを決める", "機能要件・非機能要件"] },
+  { term: "非機能要件", cat: "S", desc: "性能・信頼性・セキュリティなど、業務の機能以外にシステムが満たすべき要件", hints: ["機能以外の要求", "応答時間や可用性"] },
+
+  // ===== マネジメント系 =====
+  { term: "SLA", cat: "M", desc: "サービスの品質や範囲について、提供者と利用者の間で結ぶ合意", hints: ["サービスレベル合意書", "稼働率や応答時間の目標を決める"] },
+  { term: "ITIL", cat: "M", desc: "ITサービスマネジメントのベストプラクティスをまとめたガイドライン", hints: ["ITサービス管理の教科書", "英国で生まれた"] },
+  { term: "インシデント管理", cat: "M", desc: "サービスの中断や障害が発生したとき、できるだけ早くサービスを復旧させる活動", hints: ["まず復旧を優先", "根本原因の究明は別の活動"] },
+  { term: "問題管理", cat: "M", desc: "障害の根本原因を突き止め、再発を防止する活動", hints: ["根本原因", "再発防止"] },
+  { term: "変更管理", cat: "M", desc: "ITサービスへの変更を、評価や承認を通じて安全かつ効率的に実施するための活動", hints: ["変更要求の評価・承認", "リスクを抑えて変える"] },
+  { term: "サービスデスク", cat: "M", desc: "利用者からの問い合わせや障害の連絡を受け付ける、単一の窓口", hints: ["SPOC（単一窓口）", "ヘルプデスク"] },
+  { term: "WBS", cat: "M", desc: "プロジェクトの作業を階層的に細かく分解して整理した図", hints: ["作業分解構成図", "ワークパッケージ"] },
+  { term: "ガントチャート", cat: "M", desc: "横軸に時間をとり、各作業の予定と実績を横棒で表した工程管理図", hints: ["横棒グラフ", "進捗が一目でわかる"] },
+  { term: "アローダイアグラム", cat: "M", desc: "作業の順序関係を矢印で表し、全体の所要日数を求めるために使う図", hints: ["PERT図", "矢印と結合点"] },
+  { term: "クリティカルパス", cat: "M", desc: "プロジェクトの開始から終了までで最も時間のかかる作業経路で、遅れると全体が遅れる", hints: ["余裕のない経路", "最長経路"] },
+  { term: "ステークホルダ", cat: "M", desc: "プロジェクトや企業活動に関わり、影響を受ける利害関係者", hints: ["利害関係者", "顧客・株主・従業員など"] },
+  { term: "PMBOK", cat: "M", desc: "プロジェクトマネジメントの知識体系をまとめたガイド", hints: ["知識エリア", "米国PMIが発行"] },
+  { term: "ウォーターフォールモデル", cat: "M", desc: "要件定義から設計・開発・テストまで工程を順番に進め、原則として前の工程に戻らない開発手法", hints: ["滝の流れ", "手戻りしない前提"] },
+  { term: "アジャイル", cat: "M", desc: "短い期間で開発とリリースを繰り返し、変化に柔軟に対応する開発手法の総称", hints: ["素早く柔軟", "スクラムやXPを含む"] },
+  { term: "スクラム", cat: "M", desc: "スプリントと呼ばれる短い期間を繰り返し、チームで協力して開発を進める手法", hints: ["ラグビー由来の名前", "スプリント"] },
+  { term: "XP", cat: "M", desc: "ペアプログラミングやテスト駆動開発などの実践を重視するアジャイル開発の手法", hints: ["エクストリーム", "ペアプログラミング"] },
+  { term: "プロトタイピングモデル", cat: "M", desc: "早い段階で試作品を作り、利用者に確認してもらいながら開発を進める手法", hints: ["試作品", "利用者の要求を確かめる"] },
+  { term: "スパイラルモデル", cat: "M", desc: "システムを分割し、設計・開発・評価を繰り返しながら徐々に完成度を高める開発手法", hints: ["渦巻き", "繰り返して完成度を上げる"] },
+  { term: "DevOps", cat: "M", desc: "開発担当と運用担当が密接に連携して、システムの開発・リリースを迅速に行う考え方", hints: ["開発＋運用", "継続的デリバリー"] },
+  { term: "単体テスト", cat: "M", desc: "プログラムをモジュール単位で検証するテスト", hints: ["最小単位で確認", "ホワイトボックステストが中心"] },
+  { term: "結合テスト", cat: "M", desc: "複数のモジュールを組み合わせ、インタフェースが正しく連携するかを確認するテスト", hints: ["モジュール同士", "インタフェースの確認"] },
+  { term: "受入れテスト", cat: "M", desc: "発注者（利用者）が、システムが要件どおりに動くかを確認するテスト", hints: ["発注者が実施", "最終確認"] },
+  { term: "ブラックボックステスト", cat: "M", desc: "内部構造を考慮せず、入力と出力の関係だけに着目して行うテスト", hints: ["中身を見ない", "仕様どおりかを確認"] },
+  { term: "ホワイトボックステスト", cat: "M", desc: "プログラムの内部構造（命令や分岐）に着目し、処理の流れを網羅的に確認するテスト", hints: ["中身を見る", "命令網羅・分岐網羅"] },
+  { term: "回帰テスト", cat: "M", desc: "プログラムを修正したとき、修正していない部分に悪影響が出ていないかを確認するテスト", hints: ["修正後に実施", "デグレードの防止"] },
+  { term: "システム監査", cat: "M", desc: "独立した立場の監査人が、情報システムを総合的に点検・評価し、助言や勧告を行うこと", hints: ["独立性が大切", "監査証拠を集める"] },
+  { term: "内部統制", cat: "M", desc: "業務を適正かつ効率的に行うために、企業内部に設ける仕組みやルール", hints: ["職務分掌", "不正やミスの防止"] },
+  { term: "ITガバナンス", cat: "M", desc: "経営目標を達成するために、IT戦略の策定と実行を組織として統制する仕組み", hints: ["ITの統制", "経営陣が責任を持つ"] },
+  { term: "ファシリティマネジメント", cat: "M", desc: "建物や設備、電源などのIT環境を、最適な状態に保つよう管理すること", hints: ["施設管理", "空調や停電対策"] },
+  { term: "UPS", cat: "M", desc: "停電時に、一定時間コンピュータに電力を供給する装置", hints: ["無停電電源装置", "停電対策"] },
+  { term: "PDCA", cat: "M", desc: "計画・実行・評価・改善のサイクルを繰り返し、業務を継続的に改善する手法", hints: ["4つのステップを回す", "継続的改善"] },
+  { term: "ソフトウェア保守", cat: "M", desc: "稼働中のソフトウェアに対して、不具合の修正や機能の改良を行う作業", hints: ["リリース後の作業", "不具合修正・機能改良"] },
+  { term: "リバースエンジニアリング", cat: "M", desc: "既存のソフトウェアを解析して、その仕様や設計を明らかにすること", hints: ["逆向きに解析", "プログラムから仕様を導く"] },
+  { term: "共通フレーム", cat: "M", desc: "ソフトウェア開発・取引で使う用語や作業内容を標準化し、関係者の認識を合わせるためのガイドライン", hints: ["共通の物差し", "SLCP"] },
+  // --- 開発技術 ---
+  { term: "外部設計", cat: "M", desc: "利用者の視点から、画面や帳票など、システムの外から見える部分を設計する工程", hints: ["利用者から見える部分", "画面設計"] },
+  { term: "内部設計", cat: "M", desc: "利用者から見える部分の設計をもとに、開発者の視点でシステム内部の処理やデータ構造を設計する工程", hints: ["開発者の視点", "プログラムの構造"] },
+  { term: "システムテスト", cat: "M", desc: "システム全体が、要件どおりの機能や性能を満たしているかを開発者側で確認するテスト", hints: ["全体を確認", "性能テストも含む"] },
+  { term: "レビュー", cat: "M", desc: "設計書やプログラムなどの成果物を関係者が確認し、誤りや問題点を見つける活動", hints: ["成果物の点検", "早い段階で誤りを発見"] },
+  { term: "ウォークスルー", cat: "M", desc: "成果物の作成者が中心となり、関係者が集まって成果物を順に確認していく手法", hints: ["作成者が主導", "レビュー手法の一つ"] },
+  { term: "インスペクション", cat: "M", desc: "モデレータと呼ばれる進行役のもとで、公式な手順に従って成果物を確認する手法", hints: ["進行役がいる", "公式なレビュー"] },
+  { term: "テスト駆動開発", cat: "M", desc: "プログラムを書く前にテストケースを作成し、そのテストに合格するようにコードを書く開発手法", hints: ["テストが先", "XPの実践の一つ"] },
+  { term: "ペアプログラミング", cat: "M", desc: "2人1組で、1人がコードを書き、もう1人がチェックしながら進めるプログラミング手法", hints: ["2人1組", "ドライバーとナビゲーター"] },
+  { term: "リファクタリング", cat: "M", desc: "プログラムの外部から見た動作を変えずに、内部の構造を改善すること", hints: ["動作は変えない", "コードの整理"] },
+  { term: "スプリント", cat: "M", desc: "スクラムにおける、1〜4週間程度の短い開発期間の単位", hints: ["短い反復期間", "タイムボックス"] },
+  { term: "プロダクトオーナー", cat: "M", desc: "スクラムで、プロダクトの価値を最大化する責任を持ち、作業の優先順位を決める役割", hints: ["優先順位を決める人", "プロダクトバックログを管理"] },
+  { term: "ユーザーストーリー", cat: "M", desc: "利用者の視点で、「誰が・何のために・何をしたいか」を簡潔に表した要求", hints: ["利用者の言葉で書く要求", "アジャイルで使う"] },
+  { term: "デバッグ", cat: "M", desc: "プログラムの誤り（バグ）を見つけて、修正する作業", hints: ["バグ取り", "誤りの修正"] },
+  { term: "信頼度成長曲線", cat: "M", desc: "テストの経過時間と累積バグ発見数の関係を表し、品質が安定したかを判断するグラフ", hints: ["ゴンペルツ曲線", "収束すれば品質が安定"] },
+  { term: "オブジェクト指向", cat: "M", desc: "データとそれを操作する手続きをひとまとめにしたオブジェクトを単位として、システムを構築する考え方", hints: ["データと処理をまとめる", "カプセル化・継承"] },
+  { term: "カプセル化", cat: "M", desc: "データと手続きをひとまとめにし、内部の詳細を外部から隠すこと", hints: ["情報隠蔽", "内部を隠す"] },
+  { term: "継承", cat: "M", desc: "上位クラスの性質（属性や操作）を、下位クラスが引き継ぐこと", hints: ["インヘリタンス", "親から子へ"] },
+  { term: "UML", cat: "M", desc: "オブジェクト指向の分析・設計で使われる、標準化された図の表記法", hints: ["統一モデリング言語", "クラス図など"] },
+  { term: "ユースケース図", cat: "M", desc: "利用者（アクター）とシステムの機能の関係を表すUMLの図", hints: ["アクター", "利用者から見た機能"] },
+  { term: "RAD", cat: "M", desc: "開発ツールなどを活用し、少人数で短期間にシステムを開発する手法", hints: ["高速開発", "短期間・少人数"] },
+  { term: "ファンクションポイント法", cat: "M", desc: "入出力や内部ファイルなどの機能の数と複雑さから、ソフトウェアの開発規模を見積もる手法", hints: ["機能の数で見積もる", "規模見積り"] },
+  { term: "類推見積法", cat: "M", desc: "過去の似たプロジェクトの実績をもとに、開発規模や工数を見積もる手法", hints: ["過去の実績と比べる", "類似プロジェクト"] },
+  { term: "工数", cat: "M", desc: "作業量を、人数×時間（人月・人日など）で表したもの", hints: ["人月", "作業量"] },
+  { term: "コーディング規約", cat: "M", desc: "プログラムの読みやすさや品質を保つために定めた、書き方のルール", hints: ["書き方のルール", "保守性の向上"] },
+  { term: "システム移行", cat: "M", desc: "新しいシステムへ切り替えるために、データやプログラムを旧システムから移す作業", hints: ["旧システムから新システムへ", "一斉移行・段階移行"] },
+  { term: "並行運用", cat: "M", desc: "新旧のシステムを一定期間同時に動かし、問題がないことを確認してから切り替える方法", hints: ["新旧を同時に動かす", "安全な切替え"] },
+  { term: "CMMI", cat: "M", desc: "組織のソフトウェア開発プロセスの成熟度を、5段階で評価するモデル", hints: ["成熟度モデル", "5段階のレベル"] },
+  // --- プロジェクトマネジメント ---
+  { term: "プロジェクトマネージャ", cat: "M", desc: "プロジェクトを計画・実行し、目標の達成に責任を持つ人", hints: ["プロジェクトの責任者", "PM"] },
+  { term: "プロジェクト憲章", cat: "M", desc: "プロジェクトを正式に認可し、目的や概要、責任者の権限などを記した文書", hints: ["プロジェクト開始時の文書", "正式な認可"] },
+  { term: "スコープ", cat: "M", desc: "プロジェクトで作成する成果物や、そのために必要な作業の範囲", hints: ["作業範囲", "WBSで定義"] },
+  { term: "EVM", cat: "M", desc: "作業の出来高とコストを金額に換算して計画と比較し、進捗やコストを管理する手法", hints: ["アーンドバリュー", "出来高で管理"] },
+  { term: "マイルストーン", cat: "M", desc: "プロジェクトの進行上で、重要な節目となる時点", hints: ["重要な節目", "中間目標"] },
+  { term: "クラッシング", cat: "M", desc: "作業に人員や費用を追加投入して、スケジュールを短縮する手法", hints: ["資源を追加", "期間短縮"] },
+  { term: "ファストトラッキング", cat: "M", desc: "本来は順番に行う作業を並行して進め、スケジュールを短縮する手法", hints: ["作業を並行", "期間短縮"] },
+  { term: "責任分担マトリックス", cat: "M", desc: "作業ごとに、誰がどのような責任を持つかを表にまとめたもの", hints: ["RACI", "役割と責任"] },
+  { term: "ステアリングコミッティ", cat: "M", desc: "経営層や関係部門の責任者で構成され、プロジェクトの方針決定や監督を行う委員会", hints: ["経営層の委員会", "プロジェクトの舵取り"] },
+  // --- サービスマネジメント ---
+  { term: "ITサービスマネジメント", cat: "M", desc: "利用者のニーズに合ったITサービスを、効率的・効果的に提供・管理するための活動", hints: ["ITサービスの管理", "代表的なガイドラインがITIL"] },
+  { term: "サービスレベル管理", cat: "M", desc: "合意したサービス品質を維持・向上させるために、監視・評価・改善を行う活動", hints: ["SLAの達成状況を管理", "PDCA"] },
+  { term: "構成管理", cat: "M", desc: "ITサービスを構成するハードウェア・ソフトウェアなどの情報を、正確に記録・管理する活動", hints: ["構成品目", "CMDB"] },
+  { term: "リリース管理及び展開管理", cat: "M", desc: "承認された変更を、本番環境へ安全に展開するための計画・実施を行う活動", hints: ["本番環境への反映", "変更管理の後"] },
+  { term: "サービス要求管理", cat: "M", desc: "利用者からのパスワード再発行や情報提供などの、定型的な要求に対応する活動", hints: ["定型的な依頼", "パスワードリセット"] },
+  { term: "キャパシティ管理", cat: "M", desc: "ITサービスに必要な処理能力や容量を、現在と将来の需要に合わせて計画・管理する活動", hints: ["処理能力の管理", "将来の需要予測"] },
+  { term: "可用性管理", cat: "M", desc: "ITサービスを、合意したとおりに利用できる状態に保つための活動", hints: ["稼働率の維持", "障害に強い設計"] },
+  { term: "エスカレーション", cat: "M", desc: "自分では解決できない問題を、上位の担当者や専門部署に引き継ぐこと", hints: ["上位者へ引き継ぐ", "段階的な対応"] },
+  { term: "ワークアラウンド", cat: "M", desc: "根本原因が解決するまでの間、一時的にサービスへの影響を回避する方法", hints: ["暫定対処", "回避策"] },
+  { term: "既知のエラー", cat: "M", desc: "根本原因が判明し、回避策が明らかになっている問題", hints: ["原因がわかっている", "問題管理で記録"] },
+  { term: "FAQ", cat: "M", desc: "よくある質問とその回答をまとめたもの", hints: ["よくある質問", "利用者の自己解決を支援"] },
+  { term: "チャットボット", cat: "M", desc: "利用者の問い合わせに対して、AIなどが会話形式で自動応答する仕組み", hints: ["自動会話", "24時間の問い合わせ対応"] },
+  { term: "データセンタ", cat: "M", desc: "サーバや通信機器を設置・運用するための専用の施設", hints: ["サーバの集積施設", "耐震・空調・電源"] },
+  { term: "自家発電装置", cat: "M", desc: "長時間の停電時に、自前で電力を供給する設備", hints: ["長時間の停電対策", "燃料で発電"] },
+  { term: "サージ防護", cat: "M", desc: "落雷などによる瞬間的な異常電圧から、機器を保護すること", hints: ["雷対策", "異常電圧"] },
+  { term: "セキュリティワイヤ", cat: "M", desc: "ノートPCなどを机などにつないで、盗難を防止するための金属製のワイヤ", hints: ["盗難防止", "机に固定"] },
+  // --- システム監査・内部統制 ---
+  { term: "監査証拠", cat: "M", desc: "監査人が監査意見の根拠として集める、記録や資料などの情報", hints: ["意見の裏付け", "記録や資料"] },
+  { term: "監査報告書", cat: "M", desc: "監査の結果や監査人の意見を記載して、依頼者に報告する文書", hints: ["監査の結果", "指摘事項と改善勧告"] },
+  { term: "フォローアップ", cat: "M", desc: "監査で指摘した事項について、改善が適切に行われているかを確認すること", hints: ["改善状況の確認", "監査の後"] },
+  { term: "会計監査", cat: "M", desc: "企業の財務諸表が適正に作成されているかを、監査人が確認すること", hints: ["財務諸表のチェック", "公認会計士"] },
+  { term: "業務監査", cat: "M", desc: "会計以外の業務が、法令や社内規程に従って適切・効率的に行われているかを確認する監査", hints: ["会計以外の業務", "規程への準拠"] },
+  { term: "情報セキュリティ監査", cat: "M", desc: "情報セキュリティ対策が適切に整備・運用されているかを、独立した立場で評価する監査", hints: ["セキュリティ対策の評価", "管理基準に照らす"] },
+  { term: "職務分掌", cat: "M", desc: "業務の担当者や権限を分けて、1人に権限が集中しないようにすること", hints: ["担当を分ける", "不正防止"] },
+  { term: "モニタリング", cat: "M", desc: "内部統制が有効に機能しているかを、継続的に監視・評価すること", hints: ["継続的な監視", "内部統制の基本的要素"] },
+  { term: "内部統制報告制度", cat: "M", desc: "上場企業の経営者が、財務報告に関する社内の統制の有効性を評価し、報告する制度", hints: ["J-SOX", "上場企業"] },
+  { term: "レピュテーションリスク", cat: "M", desc: "企業の評判が悪化することで、信用や売上が低下するリスク", hints: ["評判リスク", "SNSでの炎上"] },
+
+  // ===== テクノロジ系 =====
+  { term: "CPU", cat: "T", desc: "プログラムの命令を解釈・実行し、コンピュータ全体を制御する装置", hints: ["コンピュータの頭脳", "クロック周波数"] },
+  { term: "RAM", cat: "T", desc: "読み書きができ、電源を切ると内容が消える（揮発性の）メモリ", hints: ["揮発性", "主記憶装置に使われる"] },
+  { term: "ROM", cat: "T", desc: "読み出し専用で、電源を切っても内容が消えない（不揮発性の）メモリ", hints: ["読み出し専用", "不揮発性"] },
+  { term: "キャッシュメモリ", cat: "T", desc: "CPUと主記憶装置の速度差を埋めるために使う、高速で小容量のメモリ", hints: ["速度差を埋める", "1次・2次がある"] },
+  { term: "SSD", cat: "T", desc: "フラッシュメモリを使った記憶装置で、HDDより高速で衝撃に強い", hints: ["可動部品がない", "HDDの代わり"] },
+  { term: "GPU", cat: "T", desc: "画像処理を高速に行うための装置で、AIの計算にも活用される", hints: ["並列処理が得意", "画像処理"] },
+  { term: "OS", cat: "T", desc: "ハードウェアを管理し、アプリケーションに共通の機能を提供する基本ソフトウェア", hints: ["基本ソフトウェア", "Windows・Linux"] },
+  { term: "OSS", cat: "T", desc: "ソースコードが公開され、利用・改変・再配布が認められているソフトウェア", hints: ["ソースコード公開", "Linux・Apache"] },
+  { term: "RAID", cat: "T", desc: "複数のHDDを組み合わせて1台のように扱い、信頼性や性能を高める技術", hints: ["ミラーリング", "ストライピング"] },
+  { term: "仮想化", cat: "T", desc: "1台の物理的なコンピュータ上で、複数の仮想的なコンピュータを動かす技術", hints: ["仮想マシン", "資源の有効活用"] },
+  { term: "シンクライアント", cat: "T", desc: "利用者の端末には最小限の機能だけを持たせ、処理やデータをサーバ側で管理する方式", hints: ["端末にデータを残さない", "情報漏えい対策"] },
+  { term: "フェールセーフ", cat: "T", desc: "故障が発生したとき、システムを安全な状態に移行させる設計の考え方", hints: ["安全側に倒す", "故障時に信号機が赤になる"] },
+  { term: "フォールトトレラント", cat: "T", desc: "一部が故障しても、システム全体としては機能を継続できるようにする設計の考え方", hints: ["故障に耐える", "冗長化"] },
+  { term: "フールプルーフ", cat: "T", desc: "利用者が誤った操作をしても、危険な状態にならないようにする設計の考え方", hints: ["誤操作の防止", "ドアを閉めないと動かない電子レンジ"] },
+  { term: "稼働率", cat: "T", desc: "システムが正常に稼働している時間の割合で、MTBF÷（MTBF＋MTTR）で求める", hints: ["信頼性の指標", "99.9%など"] },
+  { term: "MTBF", cat: "T", desc: "システムが故障してから、次に故障するまでの平均時間", hints: ["平均故障間隔", "長いほど信頼性が高い"] },
+  { term: "MTTR", cat: "T", desc: "故障したシステムの修理にかかる平均時間", hints: ["平均修理時間", "短いほど保守性が高い"] },
+  { term: "関係データベース", cat: "T", desc: "データを行と列からなる表の形式で管理するデータベース", hints: ["表形式", "SQLで操作する"] },
+  { term: "SQL", cat: "T", desc: "関係データベースで、データの検索・追加・更新・削除を行うための言語", hints: ["データベース言語", "SELECT文"] },
+  { term: "主キー", cat: "T", desc: "表の中で、各行を一意に識別するための列（項目）", hints: ["重複なし", "空（NULL）は不可"] },
+  { term: "外部キー", cat: "T", desc: "他の表の主キーを参照する列で、表と表を関連付けるために使う", hints: ["他の表を参照", "参照整合性"] },
+  { term: "正規化", cat: "T", desc: "データの重複をなくすように表を分割し、整合性を保ちやすくすること", hints: ["表を分割する", "第1〜第3がある"] },
+  { term: "排他制御", cat: "T", desc: "複数の利用者が同じデータを同時に更新して矛盾が生じないよう、ロックをかけて制御すること", hints: ["ロック", "デッドロックに注意"] },
+  { term: "LAN", cat: "T", desc: "建物内など限られた範囲で、コンピュータ同士を接続するネットワーク", hints: ["構内ネットワーク", "有線・無線"] },
+  { term: "TCP/IP", cat: "T", desc: "インターネットで標準的に使われている通信プロトコル群", hints: ["インターネットの基盤", "4階層モデル"] },
+  { term: "IPアドレス", cat: "T", desc: "ネットワーク上の機器を識別するための番号", hints: ["ネット上の住所", "IPv4・IPv6"] },
+  { term: "DNS", cat: "T", desc: "ドメイン名とIPアドレスを対応付ける仕組み", hints: ["名前解決", "URLを数字の住所に変換"] },
+  { term: "DHCP", cat: "T", desc: "ネットワークに接続した機器に、IPアドレスなどを自動的に割り当てるプロトコル", hints: ["自動割り当て", "設定の手間を省く"] },
+  { term: "ルータ", cat: "T", desc: "異なるネットワーク同士を接続し、IPアドレスをもとにデータの転送経路を選ぶ機器", hints: ["経路選択", "ネットワーク層の機器"] },
+  { term: "MACアドレス", cat: "T", desc: "ネットワーク機器ごとに割り当てられた、原則として世界で一意の識別番号", hints: ["物理アドレス", "48ビット"] },
+  { term: "HTTPS", cat: "T", desc: "Webの通信をSSL/TLSで暗号化し、安全にやり取りするためのプロトコル", hints: ["ブラウザの鍵マーク", "暗号化されたWeb通信"] },
+  { term: "SMTP", cat: "T", desc: "電子メールを送信・転送するためのプロトコル", hints: ["メールの送信", "受信用プロトコルとセット"] },
+  { term: "POP3", cat: "T", desc: "メールサーバから電子メールを受信し、端末にダウンロードするためのプロトコル", hints: ["メールの受信", "受信後はサーバから消すのが基本"] },
+  { term: "IMAP", cat: "T", desc: "メールをサーバ上に保存したまま、受信・管理できるプロトコル", hints: ["複数端末で同期", "サーバ上で管理"] },
+  { term: "VPN", cat: "T", desc: "インターネットなどの公衆網上に、暗号化などを使って仮想的な専用線を作る技術", hints: ["仮想的な専用線", "テレワークで活躍"] },
+  { term: "5G", cat: "T", desc: "高速・大容量、低遅延、多数同時接続を特徴とする第5世代の移動通信システム", hints: ["第5世代", "低遅延"] },
+  { term: "LPWA", cat: "T", desc: "消費電力が少なく、長距離の通信ができる無線通信技術で、IoTに使われる", hints: ["省電力・広域", "IoT向け"] },
+  { term: "ファイアウォール", cat: "T", desc: "外部ネットワークと内部ネットワークの間で、不正な通信を遮断する仕組み", hints: ["防火壁", "パケットフィルタリング"] },
+  { term: "WAF", cat: "T", desc: "Webアプリケーションへの通信を検査し、SQLインジェクションなどの攻撃を防ぐ仕組み", hints: ["Webアプリ専用の防御", "通信の中身を検査"] },
+  { term: "DMZ", cat: "T", desc: "外部ネットワークと内部ネットワークの中間に設ける、公開サーバ用の区域", hints: ["非武装地帯", "Webサーバを置く"] },
+  { term: "多要素認証", cat: "T", desc: "知識・所持・生体のうち、異なる2つ以上の要素を組み合わせて本人確認する方法", hints: ["パスワード＋スマホ", "知識・所持・生体"] },
+  { term: "生体認証", cat: "T", desc: "指紋・顔・静脈など、身体的な特徴を使って本人確認する方法", hints: ["指紋や顔", "バイオメトリクス"] },
+  { term: "シングルサインオン", cat: "T", desc: "一度の認証で、複数のシステムやサービスを利用できる仕組み", hints: ["ログインは1回だけ", "パスワード管理の負担を減らす"] },
+  { term: "公開鍵暗号方式", cat: "T", desc: "暗号化と復号に異なる鍵を使う方式で、受信者の公開鍵で暗号化し秘密鍵で復号する", hints: ["鍵のペア", "RSA"] },
+  { term: "共通鍵暗号方式", cat: "T", desc: "暗号化と復号に同じ鍵を使う暗号方式で、処理が高速", hints: ["同じ鍵を使う", "鍵の受け渡しが課題"] },
+  { term: "デジタル署名", cat: "T", desc: "送信者が本人であることと、データが改ざんされていないことを確認する技術", hints: ["なりすまし・改ざんを検知", "送信者の秘密鍵で作る"] },
+  { term: "ハッシュ関数", cat: "T", desc: "任意の長さのデータから固定長の値を生成する関数で、元のデータに戻すことはできない", hints: ["一方向", "改ざん検知に使う"] },
+  { term: "フィッシング", cat: "T", desc: "実在する企業などを装った偽のメールやWebサイトで、IDやパスワードをだまし取る攻撃", hints: ["偽サイト", "銀行を装ったメール"] },
+  { term: "ランサムウェア", cat: "T", desc: "ファイルを暗号化して使えなくし、元に戻すことと引き換えに金銭を要求するマルウェア", hints: ["身代金", "ファイルが暗号化される"] },
+  { term: "DDoS攻撃", cat: "T", desc: "多数のコンピュータから一斉に大量の通信を送りつけ、サービスを停止させる攻撃", hints: ["大量アクセス", "ボットネットを使う"] },
+  { term: "SQLインジェクション", cat: "T", desc: "Webアプリの入力欄に不正な命令文を入力し、データベースを不正に操作する攻撃", hints: ["入力欄から攻撃", "データベースが狙われる"] },
+  { term: "クロスサイトスクリプティング", cat: "T", desc: "脆弱なWebサイトに悪意のあるスクリプトを埋め込み、閲覧者のブラウザで実行させる攻撃", hints: ["XSS", "スクリプトを埋め込む"] },
+  { term: "ソーシャルエンジニアリング", cat: "T", desc: "人の心理的な隙や行動のミスにつけ込んで、パスワードなどの機密情報を盗み出す手法", hints: ["技術を使わない", "肩越しにのぞき見る"] },
+  { term: "ゼロデイ攻撃", cat: "T", desc: "ソフトウェアの脆弱性が見つかってから、修正プログラムが提供される前に行われる攻撃", hints: ["修正前を狙う", "対策が間に合わない"] },
+  { term: "標的型攻撃", cat: "T", desc: "特定の組織や個人を狙い、業務を装ったメールなどでマルウェアに感染させる攻撃", hints: ["特定の組織を狙う", "取引先を装うメール"] },
+  { term: "ブルートフォース攻撃", cat: "T", desc: "考えられるすべての文字の組合せを総当たりで試し、パスワードを解読する攻撃", hints: ["総当たり", "ログイン試行回数の制限が有効"] },
+  { term: "ISMS", cat: "T", desc: "情報セキュリティを組織的に管理し、継続的に改善するための仕組み", hints: ["ISO/IEC 27001", "組織全体で管理する"] },
+  { term: "機密性", cat: "T", desc: "許可された人だけが情報にアクセスできる状態であること", hints: ["情報セキュリティの3要素", "アクセス制限・暗号化"] },
+  { term: "完全性", cat: "T", desc: "情報が正確で、改ざんや破壊がされていない状態であること", hints: ["情報セキュリティの3要素", "改ざん防止"] },
+  { term: "可用性", cat: "T", desc: "必要なときに、許可された人がいつでも情報やシステムを利用できる状態であること", hints: ["情報セキュリティの3要素", "システムを止めない"] },
+  { term: "ブロックチェーン", cat: "T", desc: "取引の記録をブロック単位でつなげ、多数の参加者で共有・管理する改ざんが困難な技術", hints: ["暗号資産の基盤", "分散型台帳"] },
+  { term: "2進数", cat: "T", desc: "0と1の2つの数字だけで数を表す方法で、コンピュータ内部の表現に使われる", hints: ["0と1", "桁が増えると2倍"] },
+  { term: "ビット", cat: "T", desc: "コンピュータで扱う情報の最小単位で、0か1のどちらかを表す", hints: ["最小単位", "8個集まると1バイト"] },
+  { term: "アルゴリズム", cat: "T", desc: "問題を解決するための処理の手順", hints: ["処理手順", "フローチャートで表す"] },
+  { term: "スタック", cat: "T", desc: "最後に入れたデータを最初に取り出す（後入れ先出し）データ構造", hints: ["LIFO", "積み重ねた本"] },
+  { term: "キュー", cat: "T", desc: "最初に入れたデータを最初に取り出す（先入れ先出し）データ構造", hints: ["FIFO", "レジの行列"] },
+  { term: "AR", cat: "T", desc: "現実の風景に、コンピュータが作った情報を重ねて表示する技術", hints: ["拡張現実", "スマホ越しにキャラクターが現れる"] },
+  { term: "Cookie", cat: "T", desc: "Webサイトの閲覧情報などを、利用者のブラウザに一時的に保存する仕組み", hints: ["ブラウザに保存", "ログイン状態の保持"] },
+  { term: "ボット", cat: "T", desc: "感染したコンピュータを、外部から遠隔操作できるようにするマルウェア", hints: ["遠隔操作", "指令サーバ（C&Cサーバ）"] },
+  // --- 基礎理論・アルゴリズム・プログラミング ---
+  { term: "16進数", cat: "T", desc: "0〜9とA〜Fの16種類の記号で数を表す方法", hints: ["A〜Fを使う", "2進数4桁を1桁で表せる"] },
+  { term: "バイト", cat: "T", desc: "8ビットをひとまとまりにした情報の単位", hints: ["8ビット", "ファイルサイズの単位"] },
+  { term: "論理積", cat: "T", desc: "2つの条件が両方とも真のときだけ、真になる論理演算", hints: ["AND", "「かつ」"] },
+  { term: "論理和", cat: "T", desc: "2つの条件の少なくとも一方が真のとき、真になる論理演算", hints: ["OR", "「または」"] },
+  { term: "排他的論理和", cat: "T", desc: "2つの条件のどちらか一方だけが真のとき、真になる論理演算", hints: ["XOR", "同じなら偽"] },
+  { term: "標本化", cat: "T", desc: "音声などのアナログ信号を一定の時間間隔で区切り、その時点の値を取り出すこと", hints: ["サンプリング", "時間を区切る"] },
+  { term: "量子化", cat: "T", desc: "取り出したアナログの値を、段階的な数値に置き換えること", hints: ["値を段階に分ける", "ビット数で精度が決まる"] },
+  { term: "配列", cat: "T", desc: "同じ型のデータを連続して並べ、番号（添字）で各要素を指定できるデータ構造", hints: ["添字でアクセス", "連続した領域"] },
+  { term: "リスト", cat: "T", desc: "各データが次のデータの位置（ポインタ）を持ち、数珠つなぎにしたデータ構造", hints: ["ポインタでつなぐ", "挿入・削除が簡単"] },
+  { term: "木構造", cat: "T", desc: "データを親子関係で階層的に表したデータ構造", hints: ["ツリー", "根と葉"] },
+  { term: "2分探索法", cat: "T", desc: "整列済みデータの中央の値と比較し、探す範囲を半分ずつ絞り込んで目的のデータを探す方法", hints: ["半分ずつ絞る", "データの整列が前提"] },
+  { term: "線形探索法", cat: "T", desc: "データを先頭から順番に1つずつ調べて、目的のデータを探す方法", hints: ["先頭から順に", "整列していなくても使える"] },
+  { term: "フローチャート", cat: "T", desc: "処理の流れを、決められた記号と矢印で図式化したもの", hints: ["流れ図", "ひし形は判断"] },
+  { term: "Python", cat: "T", desc: "文法がシンプルで読みやすく、AIやデータ分析の分野で広く使われているプログラム言語", hints: ["読みやすい文法", "AI・データ分析"] },
+  { term: "HTML", cat: "T", desc: "Webページの構造を、タグを使って記述するマークアップ言語", hints: ["Webページの骨組み", "タグ"] },
+  { term: "CSS", cat: "T", desc: "Webページの文字の色や大きさ、レイアウトなどの見た目を指定する言語", hints: ["スタイルシート", "見た目を指定"] },
+  { term: "JavaScript", cat: "T", desc: "Webブラウザ上で動作し、Webページに動きを付けることができるスクリプト言語", hints: ["ブラウザで動く", "Webページに動き"] },
+  { term: "コンパイラ", cat: "T", desc: "高水準言語で書かれたプログラムを、まとめて機械語に翻訳するソフトウェア", hints: ["一括翻訳", "機械語へ変換"] },
+  { term: "インタプリタ", cat: "T", desc: "プログラムを1命令ずつ解釈しながら実行するソフトウェア", hints: ["逐次翻訳", "1行ずつ実行"] },
+  { term: "ニューラルネットワーク", cat: "T", desc: "人間の脳の神経細胞のつながりをモデルにした、機械学習の計算モデル", hints: ["脳をまねたモデル", "入力層・中間層・出力層"] },
+  // --- コンピュータ構成要素・システム構成 ---
+  { term: "クロック周波数", cat: "T", desc: "CPUが動作するタイミングを合わせる信号の、1秒間あたりの回数", hints: ["GHz", "大きいほど高速"] },
+  { term: "マルチコアプロセッサ", cat: "T", desc: "1つのCPUの中に、演算処理を行う中核部分を複数持つプロセッサ", hints: ["複数のコア", "並列処理"] },
+  { term: "主記憶装置", cat: "T", desc: "CPUが直接読み書きする、実行中のプログラムやデータを記憶する装置", hints: ["メインメモリ", "電源を切ると消える"] },
+  { term: "補助記憶装置", cat: "T", desc: "HDDやSSDなど、プログラムやデータを長期的に保存する装置", hints: ["ストレージ", "電源を切っても消えない"] },
+  { term: "フラッシュメモリ", cat: "T", desc: "電気的にデータを書き換えることができ、電源を切っても内容が消えない半導体メモリ", hints: ["USBメモリ・SDカード", "不揮発性"] },
+  { term: "Bluetooth", cat: "T", desc: "数m〜数十m程度の近距離で、機器同士を無線で接続する規格", hints: ["近距離無線", "ワイヤレスイヤホン"] },
+  { term: "NFC", cat: "T", desc: "10cm程度の至近距離で、かざすだけで通信できる近距離無線通信技術", hints: ["かざすだけ", "交通系ICカード"] },
+  { term: "デバイスドライバ", cat: "T", desc: "周辺機器を制御し、OSから利用できるようにするためのソフトウェア", hints: ["周辺機器の制御", "プラグアンドプレイ"] },
+  { term: "センサ", cat: "T", desc: "温度・光・加速度などの物理量を検知し、電気信号に変換する装置", hints: ["検知する装置", "IoTの入力"] },
+  { term: "アクチュエータ", cat: "T", desc: "電気信号などのエネルギーを、回転や移動などの物理的な動きに変換する装置", hints: ["動かす装置", "モーター"] },
+  { term: "エッジコンピューティング", cat: "T", desc: "利用者や機器に近い場所でデータを処理し、通信の遅延やサーバの負荷を減らす技術", hints: ["端末の近くで処理", "遅延の削減"] },
+  { term: "クライアントサーバシステム", cat: "T", desc: "サービスを要求する側と、サービスを提供する側に役割を分けて処理するシステム形態", hints: ["要求と提供", "役割分担"] },
+  { term: "ピアツーピア", cat: "T", desc: "端末同士が、サーバを介さずに対等な立場で直接通信する方式", hints: ["P2P", "対等な関係"] },
+  { term: "デュアルシステム", cat: "T", desc: "2つのシステムで同じ処理を同時に行い、結果を照合して信頼性を高める方式", hints: ["同時に処理して照合", "高信頼"] },
+  { term: "デュプレックスシステム", cat: "T", desc: "主系と待機系の2つのシステムを用意し、主系の故障時に待機系に切り替える方式", hints: ["主系と待機系", "切り替え"] },
+  { term: "スループット", cat: "T", desc: "システムが単位時間あたりに処理できる仕事の量", hints: ["処理能力", "単位時間あたり"] },
+  { term: "レスポンスタイム", cat: "T", desc: "システムに処理を要求してから、最初の応答が返ってくるまでの時間", hints: ["応答時間", "短いほど快適"] },
+  { term: "フェールソフト", cat: "T", desc: "故障した部分を切り離し、機能を縮小してでもシステムの運転を継続させる設計の考え方", hints: ["縮退運転", "機能を落として継続"] },
+  { term: "仮想記憶", cat: "T", desc: "補助記憶装置の一部を利用して、主記憶装置の容量より大きな記憶空間を使えるようにする仕組み", hints: ["メモリ不足を補う", "ページング"] },
+  { term: "ミドルウェア", cat: "T", desc: "OSとアプリケーションの間で、多くのアプリケーションに共通する機能を提供するソフトウェア", hints: ["OSとアプリの中間", "DBMSが代表例"] },
+  // --- ヒューマンインタフェース・マルチメディア ---
+  { term: "ユニバーサルデザイン", cat: "T", desc: "年齢や能力、国籍などにかかわらず、誰もが利用しやすいように製品や環境を設計すること", hints: ["すべての人のための設計", "ピクトグラム"] },
+  { term: "アクセシビリティ", cat: "T", desc: "高齢者や障害者を含めて、誰もが情報やサービスを支障なく利用できること", hints: ["利用のしやすさ", "音声読み上げ"] },
+  { term: "レスポンシブWebデザイン", cat: "T", desc: "閲覧する画面の大きさに応じて、Webページのレイアウトを自動的に最適化する設計手法", hints: ["画面サイズに合わせる", "スマホとPCで同じURL"] },
+  { term: "VR", cat: "T", desc: "コンピュータで作られた仮想空間を、現実のように体験できる技術", hints: ["仮想現実", "ゴーグルを装着"] },
+  { term: "メタバース", cat: "T", desc: "インターネット上の3次元仮想空間で、アバターを通じて交流や経済活動ができるもの", hints: ["仮想空間の社会", "アバター"] },
+  { term: "解像度", cat: "T", desc: "画像を構成する画素の細かさを表す値", hints: ["画素の密度", "dpi"] },
+  { term: "JPEG", cat: "T", desc: "フルカラーの静止画を圧縮する方式で、写真によく使われる", hints: ["写真", "非可逆圧縮"] },
+  { term: "可逆圧縮", cat: "T", desc: "圧縮したデータを、元のデータと完全に同じ状態に戻すことができる圧縮方式", hints: ["完全に元に戻せる", "ZIP"] },
+  { term: "非可逆圧縮", cat: "T", desc: "圧縮率を高める代わりに、元のデータに完全には戻せない圧縮方式", hints: ["一部の情報が失われる", "写真や音楽"] },
+  // --- データベース ---
+  { term: "DBMS", cat: "T", desc: "データベースを管理し、データの整合性や同時アクセスなどを制御するソフトウェア", hints: ["データベース管理システム", "障害回復も担う"] },
+  { term: "トランザクション", cat: "T", desc: "データベースに対する、一連の処理をひとまとまりにした単位", hints: ["処理のまとまり", "すべて成功か、すべて取消しか"] },
+  { term: "コミット", cat: "T", desc: "一連の処理がすべて正常に終了したときに、データベースの更新内容を確定させること", hints: ["更新を確定", "処理のまとまりの終了"] },
+  { term: "ロールバック", cat: "T", desc: "処理の途中で障害が発生したとき、データベースを更新前の状態に戻すこと", hints: ["更新前に戻す", "取り消し"] },
+  { term: "デッドロック", cat: "T", desc: "複数の処理が互いに相手の資源の解放を待ち、処理が進まなくなる状態", hints: ["お互いに待ち合う", "排他制御の副作用"] },
+  // --- ネットワーク ---
+  { term: "WAN", cat: "T", desc: "離れた拠点のLAN同士を、通信事業者の回線を使って接続するネットワーク", hints: ["広域ネットワーク", "拠点間の接続"] },
+  { term: "無線LAN", cat: "T", desc: "ケーブルを使わずに、電波で通信するLAN", hints: ["Wi-Fi", "アクセスポイント"] },
+  { term: "WPA3", cat: "T", desc: "無線LANの通信を暗号化するセキュリティ規格", hints: ["無線LANの暗号化", "WPA2の後継"] },
+  { term: "アクセスポイント", cat: "T", desc: "無線LANの端末を、有線のネットワークなどに接続する中継機器", hints: ["無線LANの親機", "中継"] },
+  { term: "テザリング", cat: "T", desc: "スマートフォンなどの通信回線を使って、他の機器をインターネットに接続すること", hints: ["スマホを親機に", "モバイルルータの代わり"] },
+  { term: "OSI基本参照モデル", cat: "T", desc: "ネットワークの通信機能を、7つの階層に分けて定義したモデル", hints: ["7階層", "物理層からアプリケーション層"] },
+  { term: "プロトコル", cat: "T", desc: "コンピュータ同士が通信するために定めた約束事", hints: ["通信規約", "TCP/IP"] },
+  { term: "パケット", cat: "T", desc: "送信するデータを一定の大きさに分割し、宛先などの情報を付けたもの", hints: ["データの小包", "分割して送る"] },
+  { term: "ポート番号", cat: "T", desc: "通信先のコンピュータで、どのアプリケーションにデータを渡すかを識別する番号", hints: ["アプリの識別", "80番はHTTP"] },
+  { term: "NAT", cat: "T", desc: "組織内で使うアドレスと、インターネットで使うアドレスを相互に変換する技術", hints: ["アドレス変換", "1つのグローバルアドレスを共有"] },
+  { term: "グローバルIPアドレス", cat: "T", desc: "インターネット上で一意に割り当てられるIPアドレス", hints: ["世界で唯一", "インターネット用"] },
+  { term: "プライベートIPアドレス", cat: "T", desc: "組織内のLANなどで自由に割り当てられるIPアドレス", hints: ["社内用", "インターネットでは直接使えない"] },
+  { term: "IPv6", cat: "T", desc: "128ビットのアドレス空間を持つ、IPv4の後継となるインターネットプロトコル", hints: ["128ビット", "アドレス枯渇対策"] },
+  { term: "ドメイン名", cat: "T", desc: "IPアドレスの代わりに、コンピュータを識別するために使う人が覚えやすい名前", hints: ["example.co.jp", "DNSで変換"] },
+  { term: "URL", cat: "T", desc: "インターネット上の情報の場所を示す文字列", hints: ["Webページの住所", "https://〜"] },
+  { term: "HTTP", cat: "T", desc: "WebブラウザとWebサーバの間で、データをやり取りするためのプロトコル（暗号化なし）", hints: ["Webの通信", "ポート80番"] },
+  { term: "BCC", cat: "T", desc: "電子メールで、他の受信者にアドレスが知られないように送信する宛先の指定方法", hints: ["見えない宛先", "一斉送信のマナー"] },
+  { term: "プロキシサーバ", cat: "T", desc: "内部のコンピュータに代わってインターネットへアクセスし、通信を中継するサーバ", hints: ["代理サーバ", "アクセス制限やキャッシュ"] },
+  { term: "NAS", cat: "T", desc: "ネットワークに直接接続して、複数の利用者がファイルを共有できる記憶装置", hints: ["ネットワーク接続型ストレージ", "ファイル共有"] },
+  { term: "QRコード", cat: "T", desc: "縦と横の2方向に情報を持たせた2次元コード", hints: ["2次元コード", "スマホで読み取り"] },
+  // --- セキュリティ（脅威） ---
+  { term: "マルウェア", cat: "T", desc: "コンピュータウイルスやワームなど、悪意を持って作られたソフトウェアの総称", hints: ["悪意あるソフトの総称", "ウイルス・ワーム"] },
+  { term: "ワーム", cat: "T", desc: "他のファイルに寄生せず、自分自身を複製してネットワーク経由で感染を広げるマルウェア", hints: ["自己増殖", "単独で動く"] },
+  { term: "トロイの木馬", cat: "T", desc: "有用なソフトウェアを装ってインストールさせ、裏で不正な動作をするマルウェア", hints: ["正体を偽る", "ギリシャ神話"] },
+  { term: "スパイウェア", cat: "T", desc: "利用者に気付かれないように、個人情報などを収集して外部に送信するマルウェア", hints: ["こっそり情報収集", "外部へ送信"] },
+  { term: "キーロガー", cat: "T", desc: "キーボードの入力内容を記録し、パスワードなどを盗み取るソフトウェア", hints: ["入力を記録", "パスワードの窃取"] },
+  { term: "バックドア", cat: "T", desc: "攻撃者が、正規の手続きを経ずにシステムへ侵入するために仕掛けた裏口", hints: ["裏口", "再侵入用"] },
+  { term: "マクロウイルス", cat: "T", desc: "表計算ソフトや文書作成ソフトのマクロ機能を悪用したコンピュータウイルス", hints: ["文書ファイルに潜む", "マクロ機能"] },
+  { term: "ショルダーハッキング", cat: "T", desc: "他人がパスワードなどを入力しているところを、背後から盗み見ること", hints: ["肩越しにのぞく", "ソーシャルエンジニアリングの一種"] },
+  { term: "ビジネスメール詐欺", cat: "T", desc: "取引先や経営者になりすました偽のメールで、偽の口座に送金させる詐欺", hints: ["BEC", "偽の振込先"] },
+  { term: "ワンクリック詐欺", cat: "T", desc: "Webページ上のリンクなどをクリックしただけで、一方的に契約成立を告げて料金を請求する詐欺", hints: ["不当請求", "クリックしただけ"] },
+  { term: "パスワードリスト攻撃", cat: "T", desc: "他のサービスから流出したIDとパスワードの組を使って、不正ログインを試みる攻撃", hints: ["流出したリスト", "パスワードの使い回しを狙う"] },
+  { term: "辞書攻撃", cat: "T", desc: "辞書に載っている単語や、よく使われる文字列をパスワードとして試す攻撃", hints: ["よく使われる単語", "推測しやすいパスワード"] },
+  { term: "中間者攻撃", cat: "T", desc: "通信を行う2者の間に割り込み、通信内容を盗聴したり改ざんしたりする攻撃", hints: ["通信の間に割り込む", "MITM"] },
+  { term: "DNSキャッシュポイズニング", cat: "T", desc: "DNSサーバに偽の情報を記憶させ、利用者を偽のサイトに誘導する攻撃", hints: ["DNSに毒を盛る", "偽サイトへ誘導"] },
+  { term: "ドライブバイダウンロード", cat: "T", desc: "Webサイトを閲覧しただけで、利用者が気付かないうちにマルウェアをダウンロードさせる攻撃", hints: ["閲覧しただけで感染", "改ざんされたサイト"] },
+  { term: "水飲み場型攻撃", cat: "T", desc: "標的がよく閲覧するWebサイトを改ざんし、アクセスした標的をマルウェアに感染させる攻撃", hints: ["よく行く場所で待ち伏せ", "Webサイトの改ざん"] },
+  { term: "サプライチェーン攻撃", cat: "T", desc: "対策の弱い取引先や関連会社などを経由して、本来の標的に侵入する攻撃", hints: ["取引先経由", "弱いところから侵入"] },
+  { term: "バッファオーバフロー攻撃", cat: "T", desc: "プログラムが確保したメモリ領域を超える大量のデータを送り込み、不正な動作をさせる攻撃", hints: ["領域を超えるデータ", "メモリのあふれ"] },
+  { term: "セッションハイジャック", cat: "T", desc: "利用者のセッションIDを盗み取り、その利用者になりすまして通信を乗っ取る攻撃", hints: ["セッションの乗っ取り", "なりすまし"] },
+  { term: "クロスサイトリクエストフォージェリ", cat: "T", desc: "ログイン中の利用者に罠のリンクを踏ませ、意図しない処理をWebアプリに実行させる攻撃", hints: ["CSRF", "意図しない操作"] },
+  { term: "ボットネット", cat: "T", desc: "遠隔操作型のマルウェアに感染した多数のコンピュータで構成され、攻撃者の指令で一斉に動くネットワーク", hints: ["感染PCの集団", "C&Cサーバから指令"] },
+  { term: "脆弱性", cat: "T", desc: "ソフトウェアの設計ミスなどによって生じる、セキュリティ上の弱点", hints: ["セキュリティホール", "修正プログラムで対処"] },
+  { term: "シャドーIT", cat: "T", desc: "従業員が組織の許可を得ずに、私物の端末や外部サービスを業務に利用すること", hints: ["無許可のIT利用", "個人のクラウドサービス"] },
+  { term: "BYOD", cat: "T", desc: "従業員が私物のスマートフォンやパソコンを、業務に利用すること", hints: ["私物端末の業務利用", "許可が前提"] },
+  // --- セキュリティ（管理・対策） ---
+  { term: "リスクアセスメント", cat: "T", desc: "リスクを特定し、分析・評価する一連のプロセス", hints: ["リスクの特定・分析・評価", "リスク対応の前に行う"] },
+  { term: "リスク回避", cat: "T", desc: "リスクの原因となる業務や活動そのものをやめて、リスクをなくすこと", hints: ["原因をなくす", "撤退"] },
+  { term: "リスク移転", cat: "T", desc: "保険への加入や外部委託によって、リスクを他者に移すこと", hints: ["保険", "他者へ移す"] },
+  { term: "リスク低減", cat: "T", desc: "対策を講じて、リスクの発生確率や影響を小さくすること", hints: ["確率や影響を下げる", "対策の実施"] },
+  { term: "リスク保有", cat: "T", desc: "リスクが小さい場合などに、特に対策をとらずにそのまま受け入れること", hints: ["そのまま受け入れる", "小さなリスク"] },
+  { term: "情報セキュリティポリシー", cat: "T", desc: "組織の情報セキュリティに関する基本方針や対策基準を定めたもの", hints: ["セキュリティの基本方針", "基本方針・対策基準・実施手順"] },
+  { term: "否認防止", cat: "T", desc: "ある行為や事象が起きたことを、後から否定できないようにすること", hints: ["後から否定させない", "デジタル署名"] },
+  { term: "CSIRT", cat: "T", desc: "セキュリティインシデントの発生時に、対応や調査を行う組織内の専門チーム", hints: ["事故対応チーム", "シーサート"] },
+  { term: "SOC", cat: "T", desc: "24時間体制でネットワークや機器を監視し、サイバー攻撃の検知・分析を行う組織", hints: ["セキュリティ監視センター", "24時間監視"] },
+  { term: "セキュリティバイデザイン", cat: "T", desc: "システムの企画・設計段階から、セキュリティ対策を組み込んでおく考え方", hints: ["最初から組み込む", "設計段階"] },
+  { term: "ゼロトラスト", cat: "T", desc: "社内・社外を問わず、すべての通信やアクセスを信頼せずに常に検証するセキュリティの考え方", hints: ["何も信頼しない", "境界防御の限界"] },
+  { term: "IDS", cat: "T", desc: "ネットワークやサーバを監視し、不正な侵入を検知して管理者に通知するシステム", hints: ["侵入検知", "通知する"] },
+  { term: "IPS", cat: "T", desc: "不正な通信を検知し、自動的に遮断して侵入を防ぐシステム", hints: ["侵入防止", "自動で遮断"] },
+  { term: "ペネトレーションテスト", cat: "T", desc: "実際の攻撃手法を使ってシステムに侵入を試み、セキュリティ上の弱点を見つけるテスト", hints: ["侵入テスト", "疑似攻撃"] },
+  { term: "デジタルフォレンジックス", cat: "T", desc: "不正アクセスなどの事件が起きたとき、法的な証拠となるデータを収集・分析すること", hints: ["デジタル鑑識", "証拠保全"] },
+  { term: "電子透かし", cat: "T", desc: "画像などのデジタルコンテンツに、著作権者などの情報を人の目にわからないように埋め込む技術", hints: ["見えない情報を埋め込む", "不正コピー対策"] },
+  { term: "認証局", cat: "T", desc: "公開鍵の持ち主が本人であることを証明する、電子証明書を発行する機関", hints: ["CA", "信頼できる第三者"] },
+  { term: "電子証明書", cat: "T", desc: "公開鍵とその所有者を結び付け、信頼できる第三者機関が正当性を証明したデータ", hints: ["公開鍵の身分証明書", "認証局が発行"] },
+  { term: "PKI", cat: "T", desc: "公開鍵暗号と電子証明書を用いて、安全な通信や本人確認を実現する仕組み", hints: ["公開鍵基盤", "認証局が中心"] },
+  { term: "SSL/TLS", cat: "T", desc: "インターネット上の通信を暗号化し、改ざんやなりすましを防ぐプロトコル", hints: ["Webの鍵マークの正体", "通信の暗号化"] },
+  { term: "S/MIME", cat: "T", desc: "電子メールの暗号化と、デジタル署名を行うための規格", hints: ["メールの暗号化", "電子証明書を利用"] },
+  { term: "ハイブリッド暗号方式", cat: "T", desc: "公開鍵暗号方式で共通鍵を安全に受け渡し、データ本体は共通鍵暗号方式で暗号化する方式", hints: ["2つの方式の組合せ", "速さと安全性の両立"] },
+  { term: "ワンタイムパスワード", cat: "T", desc: "1回限りしか使えない、使い捨てのパスワード", hints: ["使い捨て", "毎回変わる"] },
+  { term: "リスクベース認証", cat: "T", desc: "いつもと異なる環境からのログインなど、リスクが高いと判断した場合に追加の認証を行う方式", hints: ["いつもと違うときだけ追加確認", "利用環境を分析"] },
+  { term: "アクセス権", cat: "T", desc: "利用者ごとに、ファイルやシステムに対して許可する操作（読取り・書込みなど）を設定したもの", hints: ["権限の設定", "最小権限の原則"] },
+  { term: "MDM", cat: "T", desc: "企業が従業員に支給したスマートフォンなどのモバイル端末を、一元的に管理する仕組み", hints: ["モバイル端末の一元管理", "紛失時の遠隔ロック"] },
+  { term: "セキュリティパッチ", cat: "T", desc: "ソフトウェアの脆弱性を修正するために、開発元から提供されるプログラム", hints: ["修正プログラム", "アップデート"] },
+  { term: "バックアップ", cat: "T", desc: "データの消失に備えて、データを別の媒体などに複製して保存しておくこと", hints: ["複製を保存", "フル・差分・増分"] },
+  { term: "差分バックアップ", cat: "T", desc: "前回のフルバックアップ以降に変更されたデータを、すべて保存する方式", hints: ["フルとの差", "復元はフル＋最新の1つ"] },
+  { term: "増分バックアップ", cat: "T", desc: "種類を問わず前回のバックアップ以降に変更されたデータだけを保存する方式", hints: ["前回から増えた分だけ", "復元に手間がかかる"] }
+];
+
+</script>
+  <script>
+/* ===== data/terms-next.js ===== */
+/*
+ * 次年度以降版（2027年度〜 新試験制度）用のデータ
+ * ------------------------------------------------------------
+ * 根拠：IPA「ITパスポート試験 シラバス案 Ver.0.1」（2026年8月31日公表）
+ *       IPA「情報処理技術者試験…の見直しの検討状況について」
+ * ※ シラバス案の段階のため、正式版で内容が変わる可能性があります。
+ *
+ * 新試験の出題分野は「ビジネス」「テクノロジ」「セキュリティ・倫理」の3つに再編されます。
+ *   B = ビジネス         （大分類 ビジネス変革／データ・AIの利活用／組織活動）
+ *   T = テクノロジ       （大分類 デジタル技術／システム開発など）
+ *   E = セキュリティ・倫理（大分類 セキュリティ／倫理・コンプライアンス）
+ *
+ * 1) NEXT_DEFAULT  … data/terms.js の用語を、今年度版の分野から機械的に振り分ける既定値
+ * 2) NEXT_OVERRIDES … 既定値と違う分野に入る用語（用語名: 分野）
+ * 3) TERMS_NEXT_ADD … 新シラバス案で新たに登場する用語（次年度以降版にだけ出題）
+ *    書き方は data/terms.js と同じで、cat に B / T / E を指定します。
+ */
+window.ITP = window.ITP || {};
+
+ITP.NEXT_DEFAULT = { S: "B", M: "B", T: "T" };
+
+ITP.NEXT_OVERRIDES = (function () {
+  const map = {};
+  const put = (cat, list) => list.forEach(t => { map[t] = cat; });
+
+  // テクノロジ系 → セキュリティ・倫理
+  put("E", ["ファイアウォール", "WAF", "DMZ", "VPN", "WPA3", "多要素認証", "生体認証", "シングルサインオン",
+    "公開鍵暗号方式", "共通鍵暗号方式", "デジタル署名", "ハッシュ関数", "フィッシング", "ランサムウェア", "DDoS攻撃",
+    "SQLインジェクション", "クロスサイトスクリプティング", "ソーシャルエンジニアリング", "ゼロデイ攻撃", "標的型攻撃",
+    "ブルートフォース攻撃", "ISMS", "機密性", "完全性", "可用性", "ボット", "マルウェア", "ワーム", "トロイの木馬",
+    "スパイウェア", "キーロガー", "バックドア", "マクロウイルス", "ショルダーハッキング", "ビジネスメール詐欺",
+    "ワンクリック詐欺", "パスワードリスト攻撃", "辞書攻撃", "中間者攻撃", "DNSキャッシュポイズニング",
+    "ドライブバイダウンロード", "水飲み場型攻撃", "サプライチェーン攻撃", "バッファオーバフロー攻撃",
+    "セッションハイジャック", "クロスサイトリクエストフォージェリ", "ボットネット", "脆弱性", "シャドーIT", "BYOD",
+    "リスクアセスメント", "リスク回避", "リスク移転", "リスク低減", "リスク保有", "情報セキュリティポリシー", "否認防止",
+    "CSIRT", "SOC", "セキュリティバイデザイン", "ゼロトラスト", "IDS", "IPS", "ペネトレーションテスト",
+    "デジタルフォレンジックス", "電子透かし", "認証局", "電子証明書", "PKI", "SSL/TLS", "S/MIME", "ハイブリッド暗号方式",
+    "ワンタイムパスワード", "リスクベース認証", "アクセス権", "MDM", "セキュリティパッチ", "バックアップ",
+    "差分バックアップ", "増分バックアップ"]);
+  // ストラテジ系（法務・標準化・AIのリスク）→ セキュリティ・倫理
+  put("E", ["著作権", "産業財産権", "特許権", "商標権", "実用新案権", "意匠権", "不正アクセス禁止法", "個人情報保護法",
+    "労働者派遣法", "請負契約", "準委任契約", "コンプライアンス", "不正競争防止法", "営業秘密", "ソフトウェアライセンス",
+    "クリエイティブコモンズ", "GDPR", "特定電子メール法", "情報流通プラットフォーム対処法", "サイバーセキュリティ基本法",
+    "PL法", "公益通報者保護法", "インボイス制度", "電子帳簿保存法", "ISO 9001", "ISO 14001", "JIS",
+    "デファクトスタンダード", "ハルシネーション"]);
+  // マネジメント系（セキュリティ関連）→ セキュリティ・倫理
+  put("E", ["セキュリティワイヤ", "情報セキュリティ監査"]);
+  // ストラテジ系（クラウド・AI技術・デジタル技術・システム企画）→ テクノロジ
+  put("T", ["SaaS", "IaaS", "PaaS", "オンプレミス", "ハウジングサービス", "ホスティングサービス", "機械学習",
+    "ディープラーニング", "大規模言語モデル", "IoT", "デジタルツイン", "インダストリー4.0", "スマートシティ", "MaaS",
+    "RFID", "GPS", "POSシステム", "CAD", "CAM", "グループウェア", "E-R図", "DFD", "要件定義", "非機能要件", "RPA"]);
+  // マネジメント系（システム開発）→ テクノロジ
+  put("T", ["外部設計", "内部設計", "システムテスト", "単体テスト", "結合テスト", "受入れテスト", "ブラックボックステスト",
+    "ホワイトボックステスト", "回帰テスト", "レビュー", "ウォークスルー", "インスペクション", "テスト駆動開発",
+    "ペアプログラミング", "リファクタリング", "デバッグ", "信頼度成長曲線", "オブジェクト指向", "カプセル化", "継承",
+    "UML", "ユースケース図", "RAD", "コーディング規約", "システム移行", "並行運用", "CMMI", "ウォーターフォールモデル",
+    "プロトタイピングモデル", "スパイラルモデル", "DevOps", "XP", "ソフトウェア保守", "リバースエンジニアリング", "共通フレーム"]);
+  return map;
+})();
+
+ITP.TERMS_NEXT_ADD = [
+  // ===== ビジネス =====
+  // --- ビジネス変革の方法論・マインド・スタンス ---
+  { term: "AX", cat: "B", desc: "AIを業務や事業に本格的に取り入れ、ビジネスモデルや組織のあり方を変革すること", hints: ["DXのAI版", "AIで事業を変える"] },
+  { term: "データドリブン経営", cat: "B", desc: "勘や経験ではなく、収集・分析したデータに基づいて意思決定を行う経営", hints: ["データで判断", "勘と経験からの脱却"] },
+  { term: "魔の川", cat: "B", desc: "研究段階の成果を、製品開発に結びつけるまでの間にある障壁", hints: ["研究と開発の間", "3つの障壁の最初"] },
+  { term: "死の谷", cat: "B", desc: "開発した製品を事業化するまでの間にある、資金や人材の不足などの障壁", hints: ["開発と事業化の間", "資金が尽きる"] },
+  { term: "ダーウィンの海", cat: "B", desc: "事業化した製品が、市場の競争を勝ち抜いて生き残るまでの障壁", hints: ["事業化と産業化の間", "市場競争で淘汰される"] },
+  { term: "バックキャスティング", cat: "B", desc: "将来のあるべき姿を先に描き、そこから逆算して今やるべきことを考える手法", hints: ["未来から逆算", "現状の延長で考える方法の反対"] },
+  { term: "アイディアソン", cat: "B", desc: "特定のテーマについて多様な参加者が集まり、短期間でアイデアを出し合うイベント", hints: ["アイデアとマラソン", "開発までは行わない"] },
+  { term: "チェンジマネジメント", cat: "B", desc: "組織の変革を円滑に進めるために、人々の意識や行動の変化を計画的に支援する手法", hints: ["変革への抵抗を減らす", "人と組織の変化"] },
+  { term: "心理的安全性", cat: "B", desc: "チームの中で、失敗や反対意見を恐れずに発言・行動できると感じられる状態", hints: ["安心して発言できる", "挑戦できるチームの土台"] },
+  { term: "KPT", cat: "B", desc: "振り返りで、続けること・問題点・次に挑戦することの3つの観点で整理する手法", hints: ["振り返りの手法", "3つの観点で整理"] },
+  { term: "OODAループ", cat: "B", desc: "観察・状況判断・意思決定・行動のサイクルを素早く回し、変化に対応する考え方", hints: ["4つのステップ", "計画から始めないサイクル"] },
+  { term: "デジタルガバナンス・コード", cat: "B", desc: "企業がDXを推進するために、経営者が取り組むべき事項をまとめた経済産業省の指針", hints: ["DX推進の指針", "DX認定制度"] },
+  { term: "デジタルスキル標準", cat: "B", desc: "DXを推進するために、すべてのビジネスパーソンや専門人材に求められるスキルを示した指針", hints: ["DSS", "DXリテラシー標準"] },
+  // --- デザインのアプローチ ---
+  { term: "人間中心設計", cat: "B", desc: "利用者のニーズや利用状況を理解し、利用者の評価を取り入れながら製品やサービスを設計する考え方", hints: ["利用者を中心に考える", "ISO 9241-210"] },
+  { term: "サービスデザイン", cat: "B", desc: "利用者の体験全体を視野に入れ、サービスの提供方法を総合的に設計する考え方", hints: ["体験全体の設計", "提供側の仕組みも含む"] },
+  { term: "ペルソナ", cat: "B", desc: "製品やサービスの典型的な利用者像を、名前や年齢、生活まで具体的に設定した架空の人物", hints: ["架空の利用者", "具体的な人物像"] },
+  { term: "カスタマージャーニーマップ", cat: "B", desc: "顧客が商品を知り、購入し、利用するまでの行動や感情の流れを時系列で可視化した図", hints: ["顧客の旅", "接点ごとの感情"] },
+  { term: "サービスブループリント", cat: "B", desc: "顧客の行動と、それを支える従業員や仕組みの動きを対応させて可視化した図", hints: ["サービスの設計図", "舞台裏も描く"] },
+  { term: "ユーザビリティテスト", cat: "B", desc: "実際の利用者に製品を操作してもらい、使いやすさの問題点を見つける評価手法", hints: ["実際に使ってもらう", "使いにくさを発見"] },
+  // --- 経営・組織論 ---
+  { term: "人的資本経営", cat: "B", desc: "人材を資本として捉え、その価値を最大限に引き出すことで企業価値の向上につなげる経営", hints: ["人材への投資", "情報開示も求められる"] },
+  { term: "リスキリング", cat: "B", desc: "新しい業務や変化に対応するために、必要なスキルを学び直して身につけること", hints: ["学び直し", "DX人材の育成"] },
+  { term: "アルムナイ採用", cat: "B", desc: "一度退職した元従業員を、再び雇用すること", hints: ["出戻り採用", "卒業生"] },
+  { term: "DE&I", cat: "B", desc: "多様性・公平性・包摂性を重視し、誰もが能力を発揮できる組織をつくる考え方", hints: ["ダイバーシティの発展形", "公平性と包摂性"] },
+  { term: "コーチング", cat: "B", desc: "対話を通じて相手の考えを引き出し、自発的な目標達成を支援する人材育成の手法", hints: ["答えを引き出す", "問いかけ"] },
+  { term: "メンタリング", cat: "B", desc: "経験豊富な先輩が、後輩の成長やキャリア形成を継続的に支援する手法", hints: ["先輩による支援", "メンターとメンティ"] },
+  { term: "カンパニー制組織", cat: "B", desc: "事業部を独立した会社のように扱い、大きな権限と責任を持たせる組織形態", hints: ["社内の疑似会社", "事業部制の発展形"] },
+  { term: "持株会社", cat: "B", desc: "他の会社の株式を保有し、グループ企業を支配・管理することを主な目的とする会社", hints: ["ホールディングス", "グループの親会社"] },
+  { term: "IPO", cat: "B", desc: "未上場企業が、株式を証券取引所に上場して一般の投資家に公開すること", hints: ["株式公開", "上場"] },
+  { term: "IR", cat: "B", desc: "企業が株主や投資家に向けて、経営状況や財務情報などを発信する活動", hints: ["投資家向け広報", "決算説明会"] },
+  { term: "カーボンフットプリント", cat: "B", desc: "製品やサービスのライフサイクル全体で排出される温室効果ガスの量を、CO2に換算して表示する仕組み", hints: ["炭素の足跡", "ライフサイクル全体"] },
+  // --- ガバナンス・監査／マネジメント ---
+  { term: "3つのラインモデル", cat: "B", desc: "業務部門・リスク管理部門・内部監査部門の3つの役割で、組織のリスク管理とガバナンスを整理するモデル", hints: ["3つの役割", "内部監査は第3線"] },
+  { term: "内部監査", cat: "B", desc: "組織内の独立した部門が、自社の業務や統制が適切に行われているかを評価する監査", hints: ["社内で行う監査", "経営者に報告"] },
+  { term: "外部監査", cat: "B", desc: "組織から独立した、社外の監査人が行う監査", hints: ["社外の監査人", "公認会計士など"] },
+  { term: "PMO", cat: "B", desc: "組織内の複数のプロジェクトを、横断的に支援・管理する部門", hints: ["プロジェクト管理の専門部署", "標準化と支援"] },
+  { term: "サービスカタログ", cat: "B", desc: "提供しているITサービスの内容や利用条件などを、一覧にまとめたもの", hints: ["サービスの一覧", "利用者に公開"] },
+  { term: "需要管理", cat: "B", desc: "ITサービスに対する利用者の需要を把握・予測し、供給能力と釣り合わせる活動", hints: ["需要の予測", "処理能力との調整"] },
+  // --- データマネジメント・データ利活用 ---
+  { term: "データマネジメント", cat: "B", desc: "データを収集から保管・活用・廃棄まで一貫して管理し、価値を引き出す活動", hints: ["データの一生を管理", "データ品質の確保"] },
+  { term: "データガバナンス", cat: "B", desc: "データを組織の資産として適切に管理・活用するための方針、体制、ルールを整えること", hints: ["データ管理のルールと体制", "責任者の明確化"] },
+  { term: "DIKWモデル", cat: "B", desc: "データ・情報・知識・知恵の4階層で、データが価値に変わる過程を表したモデル", hints: ["4つの階層", "ピラミッド"] },
+  { term: "メタデータ", cat: "B", desc: "データの意味や作成日時、形式など、データそのものを説明するためのデータ", hints: ["データについてのデータ", "項目の定義や作成者"] },
+  { term: "データのサイロ化", cat: "B", desc: "部門ごとにデータが分断・孤立して管理され、組織全体で活用できない状態", hints: ["データの孤立", "部門ごとに分断"] },
+  { term: "データ品質", cat: "B", desc: "データの正確性・完全性・一貫性・最新性などが、利用目的に合っている度合い", hints: ["正確さや一貫性", "悪いデータからは悪い結果"] },
+  { term: "データライフサイクル", cat: "B", desc: "データが生成されてから、保管・処理・活用を経て廃棄されるまでの一連の流れ", hints: ["データの一生", "生成から廃棄まで"] },
+  { term: "名寄せ", cat: "B", desc: "複数のデータの中から同一人物や同一企業のデータを見つけ出し、1つにまとめること", hints: ["重複データの統合", "表記ゆれへの対応"] },
+  { term: "擬似相関", cat: "B", desc: "2つのデータの間に直接の因果関係がないのに、別の要因の影響で相関があるように見える現象", hints: ["見せかけの相関", "隠れた第3の要因"] },
+  { term: "仮説検定", cat: "B", desc: "立てた仮説が統計的に正しいといえるかを、データにもとづいて判断する手法", hints: ["帰無仮説", "有意水準"] },
+  { term: "認知バイアス", cat: "B", desc: "先入観や思い込みによって、合理的でない判断をしてしまう心理的な傾向", hints: ["思い込み", "確証バイアス"] },
+  { term: "構造化データ", cat: "B", desc: "表形式のように、行と列などの決まった形式で整理されたデータ", hints: ["表形式", "データベースに格納しやすい"] },
+  { term: "非構造化データ", cat: "B", desc: "文章・画像・音声・動画など、決まった形式を持たないデータ", hints: ["形式がない", "画像や音声"] },
+  { term: "パーソナルデータ", cat: "B", desc: "個人情報に加えて、位置情報や購買履歴など、個人に関わる幅広い情報", hints: ["個人に関する情報全般", "購買履歴や位置情報"] },
+  // --- AI利活用 ---
+  { term: "マルチモーダルAI", cat: "B", desc: "文章・画像・音声など、種類の異なる複数のデータをまとめて扱えるAI", hints: ["複数の種類のデータ", "画像と文章を同時に理解"] },
+  { term: "RAG", cat: "B", desc: "生成AIが回答を作る際に、外部の文書やデータベースを検索して得た情報を参照させる手法", hints: ["検索拡張生成", "社内文書を参照させる"] },
+  { term: "AIエージェント", cat: "B", desc: "与えられた目標に向けて、AIが自律的に計画を立て、ツールを使いながら作業を実行する仕組み", hints: ["自律的に動くAI", "複数の作業を連続して実行"] },
+  { term: "ガードレール", cat: "B", desc: "AIが不適切な出力や危険な動作をしないように設ける、制約や安全対策の仕組み", hints: ["AIの安全柵", "出力を制限"] },
+
+  // ===== テクノロジ =====
+  { term: "過学習", cat: "T", desc: "AIが学習データに過度に適合してしまい、未知のデータに対する予測精度が低下する現象", hints: ["学習データに合わせすぎ", "汎化性能の低下"] },
+  { term: "トークン", cat: "T", desc: "大規模言語モデルが文章を処理する際の、単語や文字の断片などの単位", hints: ["文章を分割した単位", "利用料金の計算基準"] },
+  { term: "コンテキスト内学習", cat: "T", desc: "追加の学習をせずに、指示文の中に例を示すことで、AIに課題のやり方を理解させる方法", hints: ["例を示すだけ", "Few-shot"] },
+  { term: "サイバーフィジカルシステム", cat: "T", desc: "現実世界のデータをセンサで集め、仮想空間で分析した結果を現実世界に反映させる仕組み", hints: ["CPS", "現実と仮想の循環"] },
+  { term: "スマートファクトリー", cat: "T", desc: "IoTやAIなどを活用し、生産設備をネットワークでつないで生産性を高めた工場", hints: ["賢い工場", "設備の見える化"] },
+  { term: "フィジカルAI", cat: "T", desc: "ロボットや自動運転車などに組み込まれ、現実世界を認識して物理的に行動するAI", hints: ["体を持つAI", "ロボット"] },
+  { term: "スマートメーター", cat: "T", desc: "電力使用量をデジタルで計測し、通信機能で自動送信する電力量計", hints: ["次世代の電力計", "検針の自動化"] },
+  { term: "自動運転レベル", cat: "T", desc: "自動運転の技術を、運転支援から完全自動運転までの段階で示したもの", hints: ["レベル0〜5", "レベル3から条件付きでシステムが運転"] },
+  { term: "RASIS", cat: "T", desc: "信頼性・可用性・保守性・完全性・安全性の5つの観点で、システムを評価する指標", hints: ["5つの頭文字", "信頼性評価"] },
+  { term: "GPGPU", cat: "T", desc: "画像処理用の装置を、AIの学習など画像処理以外の汎用的な計算に利用する技術", hints: ["画像処理装置の汎用利用", "並列計算"] },
+  { term: "ハイブリッドクラウド", cat: "T", desc: "パブリッククラウドと、プライベートクラウドやオンプレミスを組み合わせて利用する形態", hints: ["組み合わせて使う", "機密データは社内に"] },
+  { term: "マルチクラウド", cat: "T", desc: "複数の事業者のクラウドサービスを、組み合わせて利用する形態", hints: ["複数の事業者", "特定事業者への依存を避ける"] },
+  { term: "コンテナ型仮想化", cat: "T", desc: "アプリケーションとその実行環境をひとまとめにし、OSを共有しながら動かす軽量な仮想化技術", hints: ["軽量な仮想化", "Docker"] },
+  { term: "eSIM", cat: "T", desc: "端末に組み込まれた、通信事業者の契約情報を書き換えられるSIM", hints: ["組み込み型", "カードの差し替え不要"] },
+  { term: "デジタルワークプレイス", cat: "T", desc: "クラウドやコラボレーションツールを活用し、場所を問わず働けるようにしたデジタルな職場環境", hints: ["デジタル上の職場", "どこでも働ける"] },
+  { term: "データマート", cat: "T", desc: "データウェアハウスから、特定の部門や目的に合わせてデータを切り出した小規模なデータベース", hints: ["部門向け", "小さなデータ倉庫"] },
+  { term: "データレイク", cat: "T", desc: "構造化・非構造化を問わず、さまざまなデータを元の形式のまま大量に蓄積する保存場所", hints: ["データの湖", "生データのまま保存"] },
+  { term: "ETL", cat: "T", desc: "複数のシステムからデータを抽出し、変換・加工してデータウェアハウスなどに格納する処理", hints: ["抽出・変換・書き出し", "データ統合"] },
+  { term: "射影", cat: "T", desc: "表から、特定の列だけを取り出す関係演算", hints: ["列を取り出す", "行を取り出すのは選択"] },
+  { term: "XR", cat: "T", desc: "VR・AR・MRなど、現実と仮想を融合させる技術の総称", hints: ["クロスリアリティ", "仮想現実などの総称"] },
+  { term: "MR", cat: "T", desc: "現実空間と仮想空間を融合させ、仮想の物体に触れたり操作したりできる技術", hints: ["複合現実", "現実と仮想の相互作用"] },
+  { term: "インフォグラフィック", cat: "T", desc: "情報やデータを、図やイラストなどを使って視覚的にわかりやすく表現したもの", hints: ["情報の視覚化", "図解"] },
+  { term: "インクルーシブデザイン", cat: "T", desc: "高齢者や障害者など、これまで設計から除外されがちだった人々を設計段階から巻き込んで行うデザイン", hints: ["排除しない設計", "当事者と一緒に作る"] },
+  { term: "LATCHの法則", cat: "T", desc: "情報を位置・五十音（アルファベット）・時間・分類・階層の5つの基準で整理する考え方", hints: ["5つの分類基準", "情報の整理"] },
+  { term: "デザインの4原則", cat: "T", desc: "近接・整列・反復・対比の4つで、情報を見やすく配置するための基本ルール", hints: ["見やすいレイアウト", "関連する要素を近づける"] },
+  { term: "加法混色", cat: "T", desc: "光の三原色（赤・緑・青）を混ぜて色を表現する方法で、混ぜるほど白に近づく", hints: ["光の混色", "ディスプレイ"] },
+  { term: "減法混色", cat: "T", desc: "色の三原色（シアン・マゼンタ・イエロー）を混ぜて色を表現する方法で、混ぜるほど黒に近づく", hints: ["インクの混色", "印刷"] },
+
+  // ===== セキュリティ・倫理 =====
+  // --- 脅威・対策 ---
+  { term: "ファイルレスマルウェア", cat: "E", desc: "実行ファイルをディスクに保存せず、メモリ上やOSの正規ツールを悪用して活動するマルウェア", hints: ["ファイルを残さない", "検知が難しい"] },
+  { term: "不正のトライアングル", cat: "E", desc: "不正行為は動機・機会・正当化の3つの要素がそろったときに起こるという理論", hints: ["3つの要素", "内部不正の理論"] },
+  { term: "ダークウェブ", cat: "E", desc: "通常の検索エンジンや閲覧ソフトではアクセスできず、匿名性が高く違法な取引などに使われるWeb空間", hints: ["匿名のWeb空間", "盗まれた情報の売買"] },
+  { term: "リークサイト", cat: "E", desc: "ランサムウェア攻撃などで盗んだ情報を公開し、被害組織を脅迫するために使われるWebサイト", hints: ["盗んだ情報の暴露", "二重脅迫"] },
+  { term: "プロンプトインジェクション", cat: "E", desc: "生成AIに悪意のある指示文を入力し、開発者が意図しない動作や情報漏えいを引き起こす攻撃", hints: ["AIへの悪意ある指示", "制限の回避"] },
+  { term: "MITB攻撃", cat: "E", desc: "PCに感染したマルウェアがブラウザの通信を乗っ取り、ネットバンキングの送金内容などを改ざんする攻撃", hints: ["ブラウザ内に潜む", "送金の改ざん"] },
+  { term: "ディープフェイク", cat: "E", desc: "AIを使って実在の人物の顔や声を合成し、本物そっくりの偽の動画や音声を作る技術", hints: ["AIによる偽動画", "本物そっくり"] },
+  { term: "耐量子計算機暗号", cat: "E", desc: "量子コンピュータでも解読が困難になるように設計された、次世代の暗号方式", hints: ["PQC", "量子コンピュータ対策"] },
+  { term: "パスキー", cat: "E", desc: "パスワードの代わりに、端末の生体認証などと公開鍵暗号を組み合わせてログインする認証方式", hints: ["パスワードレス", "FIDO"] },
+  { term: "EDR", cat: "E", desc: "パソコンやサーバなどの端末を監視し、侵入後の不審な挙動を検知して対応する仕組み", hints: ["端末の監視", "侵入後の対策"] },
+  { term: "イミュータブルバックアップ", cat: "E", desc: "一度保存したら、一定期間は変更や削除ができないようにしたバックアップ", hints: ["書き換え不可", "ランサムウェア対策"] },
+  { term: "ISMAP", cat: "E", desc: "政府が求めるセキュリティ要件を満たすクラウドサービスを、評価・登録する制度", hints: ["政府のクラウド評価制度", "登録サービスから調達"] },
+  { term: "PCI DSS", cat: "E", desc: "クレジットカード情報を安全に取り扱うための、カード業界の国際的なセキュリティ基準", hints: ["クレジットカード", "業界基準"] },
+  { term: "SECURITY ACTION", cat: "E", desc: "中小企業が情報セキュリティ対策に取り組むことを、自ら宣言する制度", hints: ["中小企業向け", "自己宣言"] },
+  { term: "J-CRAT", cat: "E", desc: "標的型サイバー攻撃の被害の低減と拡大防止のために、IPAが設置した相談・支援の組織", hints: ["サイバーレスキュー隊", "標的型攻撃の被害を支援"] },
+  // --- 情報倫理・AI倫理 ---
+  { term: "説明可能なAI", cat: "E", desc: "AIが出した予測や判断について、その根拠や理由を人間が理解できるようにする技術", hints: ["XAI", "ブラックボックス問題"] },
+  { term: "ヒューマンインザループ", cat: "E", desc: "AIシステムの判断や処理の過程に人間が関与し、確認や修正を行う仕組み", hints: ["HITL", "人間が最終確認"] },
+  { term: "人間中心のAI社会原則", cat: "E", desc: "人間の尊厳を尊重し、AIを人間中心で利用する社会を目指して日本政府が定めた基本原則", hints: ["内閣府", "7つの原則"] },
+  { term: "AI事業者ガイドライン", cat: "E", desc: "AIの開発者・提供者・利用者が取り組むべき事項をまとめた、日本政府のガイドライン", hints: ["経済産業省と総務省", "開発・提供・利用の3主体"] },
+  { term: "デジタルシティズンシップ", cat: "E", desc: "デジタル社会に主体的に参加し、責任ある使い方ができる能力や態度を身につけること", hints: ["デジタル社会の市民", "禁止より活用"] },
+  { term: "デジタルタトゥー", cat: "E", desc: "インターネット上に一度公開された情報が拡散され、完全に消すことが難しくなること", hints: ["消えない入れ墨", "拡散"] },
+  { term: "フィルターバブル", cat: "E", desc: "アルゴリズムが利用者の好みに合う情報ばかりを表示し、異なる意見に触れにくくなる状態", hints: ["情報の泡", "おすすめ表示の副作用"] },
+  { term: "エコーチェンバー", cat: "E", desc: "似た意見を持つ人同士が集まって交流し、特定の意見が増幅・強化される現象", hints: ["反響室", "SNSの閉じた空間"] },
+  { term: "ディスインフォメーション", cat: "E", desc: "意図的に作られ、拡散される偽の情報", hints: ["偽情報", "わざと広める"] },
+  { term: "ミスインフォメーション", cat: "E", desc: "意図せずに広まってしまった、誤った情報", hints: ["誤情報", "悪意はない"] },
+  // --- 法規 ---
+  { term: "AI推進法", cat: "E", desc: "AIの研究開発と活用を推進するための基本理念や、国の基本計画などを定めた法律", hints: ["2025年に成立", "正式名は人工知能関連技術の…推進に関する法律"] },
+  { term: "デジタル社会形成基本法", cat: "E", desc: "デジタル社会の形成に関する基本理念や国・自治体の責務を定めた法律で、デジタル庁設置の根拠となった", hints: ["デジタル庁", "IT基本法の後継"] },
+  { term: "サイバー対処能力強化法", cat: "E", desc: "重要インフラなどへのサイバー攻撃に、官民連携や通信情報の活用で国が対処する能力を強化する法律", hints: ["能動的サイバー防御", "2025年に成立"] },
+  { term: "中小受託取引適正化法", cat: "E", desc: "委託する事業者が中小の受託事業者に対して、代金の支払遅延や一方的な代金決定などをすることを禁止する法律", hints: ["旧下請法", "略称は取適法"] },
+  { term: "マイナンバー法", cat: "E", desc: "個人番号の利用範囲や、その適正な取扱いについて定めた法律", hints: ["個人番号", "社会保障・税・災害対策"] },
+  { term: "匿名加工情報", cat: "E", desc: "特定の個人を識別できないように個人情報を加工し、元に戻せないようにした情報", hints: ["復元できない加工", "データの利活用"] },
+  { term: "要配慮個人情報", cat: "E", desc: "人種・信条・病歴・犯罪歴など、不当な差別や偏見が生じないよう特に配慮が必要な個人情報", hints: ["取得に本人の同意が必要", "病歴など"] },
+  { term: "オプトアウト", cat: "E", desc: "本人が拒否の意思を示さない限り、同意したものとして扱う方式", hints: ["拒否しない限り同意", "事前同意方式の反対"] }
+];
+
+</script>
+  <script>
+/* ===== data/calc.js ===== */
+/*
+ * 計算問題データ
+ * ------------------------------------------------------------
+ *   id      : 問題ID（重複不可。学習記録・復習リストに使います）
+ *   type    : 種類（"基数" / "稼働率" / "損益・財務" / "データ量" / "その他"）
+ *   q       : 問題文
+ *   choices : 選択肢4つ（表示時にシャッフルされます）
+ *   answer  : 正解の選択肢番号（0始まり。choices の何番目が正解か）
+ *   exp     : 解説
+ */
+window.ITP = window.ITP || {};
+ITP.CALC_TYPES = ["基数", "稼働率", "損益・財務", "データ量", "その他"];
+ITP.CALC = [
+  // ===== 基数 =====
+  { id: "c01", type: "基数", q: "2進数の 1011 を10進数で表すと？", choices: ["11", "9", "13", "22"], answer: 0,
+    exp: "右の桁から 1, 2, 4, 8 の重みがあります。1011 → 8 + 0 + 2 + 1 = 11" },
+  { id: "c02", type: "基数", q: "10進数の 13 を2進数で表すと？", choices: ["1101", "1011", "1110", "1001"], answer: 0,
+    exp: "13 = 8 + 4 + 1 なので、8・4・2・1 の位が 1・1・0・1 → 1101" },
+  { id: "c03", type: "基数", q: "2進数の 110010 を10進数で表すと？", choices: ["50", "48", "52", "25"], answer: 0,
+    exp: "重みは左から 32, 16, 8, 4, 2, 1。1が立っているのは 32・16・2 なので 32 + 16 + 2 = 50" },
+  { id: "c04", type: "基数", q: "10進数の 25 を2進数で表すと？", choices: ["11001", "10011", "11010", "10101"], answer: 0,
+    exp: "25 = 16 + 8 + 1 なので、16・8・4・2・1 の位が 1・1・0・0・1 → 11001" },
+  { id: "c05", type: "基数", q: "2進数の 101 と 011 を足すと、答えは2進数でいくつ？", choices: ["1000", "110", "1110", "1001"], answer: 0,
+    exp: "10進数にすると 5 + 3 = 8。8 を2進数にすると 1000" },
+  { id: "c06", type: "基数", q: "16進数の 1F を10進数で表すと？", choices: ["31", "16", "25", "30"], answer: 0,
+    exp: "16進数の F は 15。1F = 1×16 + 15 = 31" },
+  { id: "c07", type: "基数", q: "8ビットで表現できる値は何通り？", choices: ["256通り", "8通り", "16通り", "128通り"], answer: 0,
+    exp: "1ビットで2通りなので、8ビットでは 2の8乗 = 256通り" },
+  { id: "c08", type: "基数", q: "2進数の 0.1 を10進数で表すと？", choices: ["0.5", "0.1", "0.2", "0.25"], answer: 0,
+    exp: "小数点以下の第1位の重みは 2の−1乗 = 1/2。よって 0.1(2) = 0.5" },
+
+  // ===== 稼働率 =====
+  { id: "c09", type: "稼働率", q: "MTBFが900時間、MTTRが100時間の装置の稼働率は？", choices: ["0.9", "0.8", "0.95", "0.99"], answer: 0,
+    exp: "稼働率 = MTBF ÷（MTBF + MTTR）= 900 ÷ 1000 = 0.9" },
+  { id: "c10", type: "稼働率", q: "稼働率0.9の装置2台を直列に接続したシステムの稼働率は？", choices: ["0.81", "0.9", "0.99", "1.8"], answer: 0,
+    exp: "直列は両方動いて初めて稼働するので掛け算。0.9 × 0.9 = 0.81" },
+  { id: "c11", type: "稼働率", q: "稼働率0.9の装置2台を並列に接続したシステムの稼働率は？（どちらか1台が動けばよい）", choices: ["0.99", "0.81", "0.9", "0.999"], answer: 0,
+    exp: "並列は「両方とも止まる」とき以外は稼働。1 −（1 − 0.9）×（1 − 0.9）= 1 − 0.01 = 0.99" },
+  { id: "c12", type: "稼働率", q: "稼働率0.8の装置と0.9の装置を直列に接続したシステムの稼働率は？", choices: ["0.72", "0.85", "0.98", "0.17"], answer: 0,
+    exp: "直列なので掛け算。0.8 × 0.9 = 0.72" },
+  { id: "c13", type: "稼働率", q: "MTBFが480時間、MTTRが20時間の装置の稼働率は？", choices: ["0.96", "0.94", "0.98", "0.04"], answer: 0,
+    exp: "480 ÷（480 + 20）= 480 ÷ 500 = 0.96" },
+  { id: "c14", type: "稼働率", q: "稼働率0.8の装置2台を並列に接続したシステムの稼働率は？（どちらか1台が動けばよい）", choices: ["0.96", "0.64", "0.8", "0.98"], answer: 0,
+    exp: "1 −（1 − 0.8）×（1 − 0.8）= 1 − 0.04 = 0.96" },
+
+  // ===== 損益・財務 =====
+  { id: "c15", type: "損益・財務", q: "固定費が200万円、変動費率が0.6のとき、損益分岐点売上高は？", choices: ["500万円", "333万円", "320万円", "800万円"], answer: 0,
+    exp: "損益分岐点売上高 = 固定費 ÷（1 − 変動費率）= 200 ÷ 0.4 = 500万円" },
+  { id: "c16", type: "損益・財務", q: "売上高1,000万円、変動費600万円、固定費300万円のときの利益は？", choices: ["100万円", "400万円", "700万円", "300万円"], answer: 0,
+    exp: "利益 = 売上高 − 変動費 − 固定費 = 1,000 − 600 − 300 = 100万円" },
+  { id: "c17", type: "損益・財務", q: "販売単価1,000円、1個あたりの変動費600円、固定費40万円の商品。損益分岐点となる販売数量は？", choices: ["1,000個", "400個", "667個", "1,500個"], answer: 0,
+    exp: "1個売るごとに 1,000 − 600 = 400円 が固定費の回収にあてられます。400,000 ÷ 400 = 1,000個" },
+  { id: "c18", type: "損益・財務", q: "売上高800万円、変動費480万円、固定費200万円の会社の損益分岐点売上高は？", choices: ["500万円", "333万円", "680万円", "280万円"], answer: 0,
+    exp: "変動費率 = 480 ÷ 800 = 0.6。損益分岐点売上高 = 200 ÷（1 − 0.6）= 500万円" },
+  { id: "c19", type: "損益・財務", q: "売上高500万円、売上原価300万円、販売費及び一般管理費120万円のときの営業利益は？", choices: ["80万円", "200万円", "180万円", "380万円"], answer: 0,
+    exp: "売上総利益 = 500 − 300 = 200万円。営業利益 = 200 − 120 = 80万円" },
+  { id: "c20", type: "損益・財務", q: "当期純利益が50億円、自己資本が500億円の企業のROEは？", choices: ["10%", "5%", "20%", "1%"], answer: 0,
+    exp: "ROE = 当期純利益 ÷ 自己資本 × 100 = 50 ÷ 500 × 100 = 10%" },
+  { id: "c21", type: "損益・財務", q: "200万円を投資して30万円の利益を得たときのROIは？", choices: ["15%", "30%", "6.7%", "1.5%"], answer: 0,
+    exp: "ROI = 利益 ÷ 投資額 × 100 = 30 ÷ 200 × 100 = 15%" },
+
+  // ===== データ量 =====
+  { id: "c22", type: "データ量", q: "2Mバイトのファイルを、8Mビット/秒の回線で送ると何秒かかる？（伝送効率100%）", choices: ["2秒", "0.25秒", "1秒", "16秒"], answer: 0,
+    exp: "1バイト = 8ビット。2Mバイト = 16Mビット。16 ÷ 8 = 2秒" },
+  { id: "c23", type: "データ量", q: "横1,000×縦800画素、1画素あたり24ビットの画像のデータ量は？（圧縮なし）", choices: ["2.4Mバイト", "19.2Mバイト", "800kバイト", "24Mバイト"], answer: 0,
+    exp: "画素数 = 800,000。24ビット = 3バイト なので 800,000 × 3 = 2,400,000バイト = 2.4Mバイト" },
+  { id: "c24", type: "データ量", q: "1Gバイトのファイルを、100Mビット/秒・伝送効率80%の回線で送ると何秒かかる？（1G = 1,000M）", choices: ["100秒", "80秒", "125秒", "10秒"], answer: 0,
+    exp: "1Gバイト = 8,000Mビット。実効速度 = 100 × 0.8 = 80Mビット/秒。8,000 ÷ 80 = 100秒" },
+  { id: "c25", type: "データ量", q: "1文字2バイトの文字で、1ページ400字の文書100ページ分のデータ量は？", choices: ["80kバイト", "40kバイト", "800kバイト", "8kバイト"], answer: 0,
+    exp: "400字 × 100ページ × 2バイト = 80,000バイト = 80kバイト" },
+  { id: "c26", type: "データ量", q: "1秒間に8,000回標本化し、1回を8ビットで量子化する音声。1分間のデータ量は？", choices: ["480kバイト", "64kバイト", "3.84Mバイト", "8kバイト"], answer: 0,
+    exp: "1秒 = 8,000 × 8 = 64,000ビット = 8,000バイト。60秒で 480,000バイト = 480kバイト" },
+
+  // ===== その他 =====
+  { id: "c27", type: "その他", q: "成功確率60%で100万円の利益、失敗すると50万円の損失になる企画。利益の期待値は？", choices: ["40万円", "50万円", "60万円", "80万円"], answer: 0,
+    exp: "100 × 0.6 +（−50）× 0.4 = 60 − 20 = 40万円" },
+  { id: "c28", type: "その他", q: "8ビットの 10110011 と 00001111 の AND（論理積）をとると？", choices: ["00000011", "10111111", "10110000", "11111100"], answer: 0,
+    exp: "AND は両方が1の桁だけ1になります。下位4ビットだけ取り出す「マスク」の考え方で 0011 が残り → 00000011" },
+  { id: "c29", type: "その他", q: "作業A(3日)→B(5日) と、作業C(4日)→D(2日) を並行で行い、BとDが両方終わってから作業E(2日)を行う。全体の最短日数は？", choices: ["10日", "8日", "12日", "16日"], answer: 0,
+    exp: "A→B は 8日、C→D は 6日。長いほう（8日）がクリティカルパスで、そこにEの2日を足して 10日" },
+  { id: "c30", type: "その他", q: "1人で6日かかる仕事をするAさんと、1人で3日かかるBさん。2人で一緒にやると何日で終わる？", choices: ["2日", "3日", "4.5日", "9日"], answer: 0,
+    exp: "1日あたりの仕事量は A = 1/6、B = 1/3。合計 1/6 + 2/6 = 1/2 なので 2日" },
+
+  // ===== 基数（追加） =====
+  { id: "c31", type: "基数", q: "2進数の 11111111 を10進数で表すと？", choices: ["255", "256", "127", "128"], answer: 0,
+    exp: "128 + 64 + 32 + 16 + 8 + 4 + 2 + 1 = 255（＝2の8乗 − 1）" },
+  { id: "c32", type: "基数", q: "10進数の 100 を2進数で表すと？", choices: ["1100100", "1010100", "1100010", "1001100"], answer: 0,
+    exp: "100 = 64 + 32 + 4。64・32・16・8・4・2・1 の位が 1・1・0・0・1・0・0 → 1100100" },
+  { id: "c33", type: "基数", q: "16進数の A5 を10進数で表すと？", choices: ["165", "105", "155", "175"], answer: 0,
+    exp: "A は 10。A5 = 10 × 16 + 5 = 165" },
+  { id: "c34", type: "基数", q: "10進数の 200 を16進数で表すと？", choices: ["C8", "B8", "C2", "8C"], answer: 0,
+    exp: "200 ÷ 16 = 12 余り 8。12 は C なので C8" },
+  { id: "c35", type: "基数", q: "2進数の 10101100 を16進数で表すと？", choices: ["AC", "CA", "A6", "5C"], answer: 0,
+    exp: "4桁ずつ区切る：1010 = 10 = A、1100 = 12 = C → AC" },
+  { id: "c36", type: "基数", q: "2進数の 1100 から 0101 を引くと、答えは2進数でいくつ？", choices: ["111", "101", "1001", "110"], answer: 0,
+    exp: "10進数で 12 − 5 = 7。7 を2進数にすると 111" },
+  { id: "c37", type: "基数", q: "2進数の 101 と 11 を掛けると、答えは2進数でいくつ？", choices: ["1111", "1011", "1101", "10001"], answer: 0,
+    exp: "10進数で 5 × 3 = 15。15 を2進数にすると 1111" },
+  { id: "c38", type: "基数", q: "2進数の値を、左に1ビットシフトすると値は何倍になる？（あふれは考えない）", choices: ["2倍", "1/2倍", "4倍", "10倍"], answer: 0,
+    exp: "2進数では1桁左にずらすと各桁の重みが2倍になるので、値は2倍（右に1ビットなら1/2倍）" },
+  { id: "c39", type: "基数", q: "2進数の 0.11 を10進数で表すと？", choices: ["0.75", "0.11", "0.3", "0.5"], answer: 0,
+    exp: "小数第1位の重みは 0.5、第2位は 0.25。0.5 + 0.25 = 0.75" },
+  { id: "c40", type: "基数", q: "16ビットで表現できる値は何通り？", choices: ["65,536通り", "32,768通り", "256通り", "1,024通り"], answer: 0,
+    exp: "2の16乗 = 65,536通り" },
+  { id: "c41", type: "基数", q: "10進数の 0.625 を2進数で表すと？", choices: ["0.101", "0.011", "0.110", "0.111"], answer: 0,
+    exp: "0.625 = 0.5 + 0.125。重み 0.5・0.25・0.125 の位が 1・0・1 → 0.101" },
+  { id: "c42", type: "基数", q: "16進数の FF を2進数で表すと？", choices: ["11111111", "11110000", "10101010", "1111"], answer: 0,
+    exp: "16進数1桁は2進数4桁に対応。F = 1111 なので FF = 1111 1111" },
+
+  // ===== 稼働率（追加） =====
+  { id: "c43", type: "稼働率", q: "MTBFが950時間、MTTRが50時間の装置の稼働率は？", choices: ["0.95", "0.9", "0.05", "0.99"], answer: 0,
+    exp: "950 ÷（950 + 50）= 950 ÷ 1,000 = 0.95" },
+  { id: "c44", type: "稼働率", q: "稼働率0.95の装置2台を直列に接続したシステムの稼働率は？", choices: ["0.9025", "0.95", "0.9975", "0.9"], answer: 0,
+    exp: "直列は掛け算。0.95 × 0.95 = 0.9025" },
+  { id: "c45", type: "稼働率", q: "稼働率0.95の装置2台を並列に接続したシステムの稼働率は？（どちらか1台が動けばよい）", choices: ["0.9975", "0.9025", "0.95", "0.9995"], answer: 0,
+    exp: "1 −（1 − 0.95）×（1 − 0.95）= 1 − 0.0025 = 0.9975" },
+  { id: "c46", type: "稼働率", q: "稼働率0.9の装置3台を直列に接続したシステムの稼働率は？", choices: ["0.729", "0.81", "0.9", "0.999"], answer: 0,
+    exp: "0.9 × 0.9 × 0.9 = 0.729" },
+  { id: "c47", type: "稼働率", q: "稼働率0.9の装置3台を並列に接続したシステムの稼働率は？（1台でも動けばよい）", choices: ["0.999", "0.99", "0.729", "0.9999"], answer: 0,
+    exp: "3台とも止まる確率は 0.1 × 0.1 × 0.1 = 0.001。1 − 0.001 = 0.999" },
+  { id: "c48", type: "稼働率", q: "稼働率0.9の装置Aと、稼働率0.9の装置2台を並列にした部分Bを、直列に接続したシステムの稼働率は？", choices: ["0.891", "0.81", "0.99", "0.729"], answer: 0,
+    exp: "部分Bの稼働率は 1 − 0.1 × 0.1 = 0.99。全体は直列なので 0.9 × 0.99 = 0.891" },
+  { id: "c49", type: "稼働率", q: "稼働率が0.98、MTBFが490時間の装置のMTTRは？", choices: ["10時間", "20時間", "9.8時間", "2時間"], answer: 0,
+    exp: "0.98 = 490 ÷（490 + MTTR）より、490 + MTTR = 500。MTTR = 10時間" },
+  { id: "c50", type: "稼働率", q: "24時間運用で稼働率が0.99のシステム。1日あたりの停止時間の平均は？", choices: ["14.4分", "24分", "1.44分", "2.4分"], answer: 0,
+    exp: "停止している割合は 0.01。24時間 × 0.01 = 0.24時間 = 14.4分" },
+  { id: "c51", type: "稼働率", q: "MTBFが200時間の装置の、1時間あたりの故障率は？", choices: ["0.005", "0.05", "0.002", "0.2"], answer: 0,
+    exp: "故障率は MTBF の逆数。1 ÷ 200 = 0.005" },
+  { id: "c52", type: "稼働率", q: "稼働率0.8の装置2台を並列にした組を、2組直列に接続したシステムの稼働率は？", choices: ["0.9216", "0.96", "0.4096", "0.9984"], answer: 0,
+    exp: "1組の稼働率は 1 − 0.2 × 0.2 = 0.96。2組を直列にして 0.96 × 0.96 = 0.9216" },
+
+  // ===== 損益・財務（追加） =====
+  { id: "c53", type: "損益・財務", q: "固定費が300万円、変動費率が0.4のとき、損益分岐点売上高は？", choices: ["500万円", "750万円", "420万円", "120万円"], answer: 0,
+    exp: "300 ÷（1 − 0.4）= 300 ÷ 0.6 = 500万円" },
+  { id: "c54", type: "損益・財務", q: "売上高2,000万円、変動費1,200万円、固定費600万円の会社の損益分岐点売上高は？", choices: ["1,500万円", "1,000万円", "1,800万円", "800万円"], answer: 0,
+    exp: "変動費率 = 1,200 ÷ 2,000 = 0.6。600 ÷（1 − 0.6）= 1,500万円" },
+  { id: "c55", type: "損益・財務", q: "販売単価500円、1個あたりの変動費300円、固定費100万円の商品。損益分岐点となる販売数量は？", choices: ["5,000個", "2,000個", "3,334個", "10,000個"], answer: 0,
+    exp: "1個あたりの儲け（限界利益）は 500 − 300 = 200円。1,000,000 ÷ 200 = 5,000個" },
+  { id: "c56", type: "損益・財務", q: "固定費200万円、変動費率0.6の会社が、利益100万円を達成するために必要な売上高は？", choices: ["750万円", "500万円", "300万円", "1,000万円"], answer: 0,
+    exp: "必要売上高 =（固定費 + 目標利益）÷（1 − 変動費率）=（200 + 100）÷ 0.4 = 750万円" },
+  { id: "c57", type: "損益・財務", q: "売上高1,000万円、売上原価700万円のとき、売上総利益率（粗利率）は？", choices: ["30%", "70%", "3%", "43%"], answer: 0,
+    exp: "売上総利益 = 1,000 − 700 = 300万円。300 ÷ 1,000 × 100 = 30%" },
+  { id: "c58", type: "損益・財務", q: "営業利益300万円、営業外収益50万円、営業外費用80万円のとき、経常利益は？", choices: ["270万円", "330万円", "430万円", "220万円"], answer: 0,
+    exp: "経常利益 = 営業利益 + 営業外収益 − 営業外費用 = 300 + 50 − 80 = 270万円" },
+  { id: "c59", type: "損益・財務", q: "総資本が1,000億円、自己資本が400億円の企業の自己資本比率は？", choices: ["40%", "60%", "2.5%", "250%"], answer: 0,
+    exp: "自己資本比率 = 自己資本 ÷ 総資本 × 100 = 400 ÷ 1,000 × 100 = 40%" },
+  { id: "c60", type: "損益・財務", q: "流動資産が600万円、流動負債が300万円の企業の流動比率は？", choices: ["200%", "50%", "300%", "150%"], answer: 0,
+    exp: "流動比率 = 流動資産 ÷ 流動負債 × 100 = 600 ÷ 300 × 100 = 200%" },
+  { id: "c61", type: "損益・財務", q: "当期純利益が20億円、総資産が400億円の企業のROAは？", choices: ["5%", "20%", "2%", "8%"], answer: 0,
+    exp: "ROA = 利益 ÷ 総資産 × 100 = 20 ÷ 400 × 100 = 5%" },
+  { id: "c62", type: "損益・財務", q: "取得原価100万円、耐用年数5年、残存価額0円の機械を定額法で償却するとき、1年あたりの減価償却費は？", choices: ["20万円", "25万円", "10万円", "50万円"], answer: 0,
+    exp: "定額法は毎年同じ額。（100 − 0）÷ 5 = 20万円" },
+  { id: "c63", type: "損益・財務", q: "1日の使用量が20個、発注から納品まで5日、安全在庫が30個のとき、発注点は？", choices: ["130個", "100個", "150個", "30個"], answer: 0,
+    exp: "発注点 = 1日の使用量 × 調達期間 + 安全在庫 = 20 × 5 + 30 = 130個" },
+  { id: "c64", type: "損益・財務", q: "売上高5,000万円、営業利益400万円のとき、売上高営業利益率は？", choices: ["8%", "12.5%", "4%", "80%"], answer: 0,
+    exp: "400 ÷ 5,000 × 100 = 8%" },
+  { id: "c65", type: "損益・財務", q: "売上高1,200万円、総資本600万円の企業の総資本回転率は？", choices: ["2回", "0.5回", "6回", "1.2回"], answer: 0,
+    exp: "総資本回転率 = 売上高 ÷ 総資本 = 1,200 ÷ 600 = 2回" },
+  { id: "c66", type: "損益・財務", q: "売上高800万円、変動費500万円、固定費200万円のとき、限界利益は？", choices: ["300万円", "100万円", "500万円", "600万円"], answer: 0,
+    exp: "限界利益 = 売上高 − 変動費 = 800 − 500 = 300万円（固定費は引かない）" },
+
+  // ===== データ量（追加） =====
+  { id: "c67", type: "データ量", q: "4kバイトのファイル1,000個の合計データ量は？（1M = 1,000k）", choices: ["4Mバイト", "40Mバイト", "400kバイト", "4Gバイト"], answer: 0,
+    exp: "4k × 1,000 = 4,000kバイト = 4Mバイト" },
+  { id: "c68", type: "データ量", q: "32Gバイトの記録媒体に、1枚4Mバイトの写真は何枚保存できる？（1G = 1,000M）", choices: ["8,000枚", "800枚", "4,000枚", "80,000枚"], answer: 0,
+    exp: "32Gバイト = 32,000Mバイト。32,000 ÷ 4 = 8,000枚" },
+  { id: "c69", type: "データ量", q: "横640×縦480画素、1画素8ビットの画像のデータ量は？（圧縮なし）", choices: ["307.2kバイト", "2,457.6kバイト", "38.4kバイト", "921.6kバイト"], answer: 0,
+    exp: "640 × 480 = 307,200画素。8ビット = 1バイトなので 307,200バイト = 307.2kバイト" },
+  { id: "c70", type: "データ量", q: "1,920×1,080画素、1画素24ビット、毎秒30フレームの動画。圧縮しない場合、1秒間のデータ量は約いくら？", choices: ["約187Mバイト", "約6.2Mバイト", "約62Mバイト", "約1.5Gバイト"], answer: 0,
+    exp: "1フレーム = 2,073,600画素 × 3バイト = 6,220,800バイト。× 30 = 186,624,000バイト ≒ 187Mバイト" },
+  { id: "c71", type: "データ量", q: "10Mビット/秒の回線で、30秒間に送れるデータ量は？（伝送効率100%）", choices: ["37.5Mバイト", "300Mバイト", "3.75Mバイト", "2.4Gバイト"], answer: 0,
+    exp: "10 × 30 = 300Mビット。8で割って 37.5Mバイト" },
+  { id: "c72", type: "データ量", q: "50Mバイトのファイルを、100Mビット/秒・伝送効率50%の回線で送ると何秒かかる？", choices: ["8秒", "4秒", "0.5秒", "16秒"], answer: 0,
+    exp: "50Mバイト = 400Mビット。実効速度 = 100 × 0.5 = 50Mビット/秒。400 ÷ 50 = 8秒" },
+  { id: "c73", type: "データ量", q: "1秒間に44,100回標本化し、16ビットで量子化するステレオ（2チャンネル）音声。1秒間のデータ量は？", choices: ["176.4kバイト", "88.2kバイト", "1,411.2kバイト", "705.6kバイト"], answer: 0,
+    exp: "44,100 × 16 × 2 = 1,411,200ビット。8で割って 176,400バイト = 176.4kバイト" },
+  { id: "c74", type: "データ量", q: "全角文字は1文字2バイト、半角文字は1文字1バイトとする。全角50文字と半角30文字の合計データ量は？", choices: ["130バイト", "80バイト", "160バイト", "110バイト"], answer: 0,
+    exp: "50 × 2 + 30 × 1 = 100 + 30 = 130バイト" },
+  { id: "c75", type: "データ量", q: "10Mバイトのファイルを圧縮したら2.5Mバイトになった。圧縮後の大きさは元の何%？", choices: ["25%", "75%", "40%", "4%"], answer: 0,
+    exp: "2.5 ÷ 10 × 100 = 25%" },
+  { id: "c76", type: "データ量", q: "1分間に600件、1件500バイトのログが出力される。1日（24時間）分のログのデータ量は？", choices: ["432Mバイト", "7.2Mバイト", "43.2Mバイト", "4.32Gバイト"], answer: 0,
+    exp: "1日の件数 = 600 × 60 × 24 = 864,000件。× 500バイト = 432,000,000バイト = 432Mバイト" },
+
+  // ===== その他（追加） =====
+  { id: "c77", type: "その他", q: "晴れの確率70%なら売上50万円、雨の確率30%なら売上20万円。売上の期待値は？", choices: ["41万円", "35万円", "70万円", "50万円"], answer: 0,
+    exp: "50 × 0.7 + 20 × 0.3 = 35 + 6 = 41万円" },
+  { id: "c78", type: "その他", q: "4ビットの 1100 と 1010 の OR（論理和）をとると？", choices: ["1110", "1000", "0110", "0001"], answer: 0,
+    exp: "OR はどちらかが1なら1。各桁 1|1=1、1|0=1、0|1=1、0|0=0 → 1110" },
+  { id: "c79", type: "その他", q: "4ビットの 1100 と 1010 の XOR（排他的論理和）をとると？", choices: ["0110", "1110", "1000", "1001"], answer: 0,
+    exp: "XOR は2つが異なるときだけ1。1と1→0、1と0→1、0と1→1、0と0→0 → 0110" },
+  { id: "c80", type: "その他", q: "作業A(2日)の後に、作業B(4日)と作業C(6日)を並行で行い、B・Cが両方終わったら作業D(3日)を行う。全体の最短日数は？", choices: ["11日", "9日", "15日", "13日"], answer: 0,
+    exp: "A → C → D の 2 + 6 + 3 = 11日 がクリティカルパス（Bのルートは9日）" },
+  { id: "c81", type: "その他", q: "作業A(2日)の後に作業B(4日)と作業C(6日)を並行で行い、両方終わったら作業D(3日)を行う。作業Bの余裕日数（遅れても全体に影響しない日数）は？", choices: ["2日", "0日", "4日", "6日"], answer: 0,
+    exp: "BはCより 6 − 4 = 2日 短いので、2日まで遅れても全体の日数は変わらない" },
+  { id: "c82", type: "その他", q: "開発規模が24人月の作業を、4人で行うと何か月かかる？（全員の生産性は同じ）", choices: ["6か月", "4か月", "96か月", "20か月"], answer: 0,
+    exp: "24人月 ÷ 4人 = 6か月" },
+  { id: "c83", type: "その他", q: "1人月あたり2kステップを作成できるとき、40kステップのプログラムの開発工数は？", choices: ["20人月", "80人月", "2人月", "42人月"], answer: 0,
+    exp: "40k ÷ 2k = 20人月" },
+  { id: "c84", type: "その他", q: "整列済みの1,000件のデータを2分探索法で探すとき、最大の比較回数は？", choices: ["10回", "500回", "1,000回", "100回"], answer: 0,
+    exp: "1回ごとに範囲が半分になる。2の10乗 = 1,024 ≧ 1,000 なので最大10回" },
+  { id: "c85", type: "その他", q: "100件のデータを線形探索法で探すとき、最大の比較回数は？", choices: ["100回", "50回", "7回", "10回"], answer: 0,
+    exp: "先頭から順に調べるので、最悪の場合は全件の100回（平均は約50回）" },
+  { id: "c86", type: "その他", q: "空のスタックに 1、2 の順でデータを積み、1回取り出し、3を積んで1回取り出した。取り出したデータの順は？", choices: ["2 → 3", "1 → 3", "1 → 2", "3 → 2"], answer: 0,
+    exp: "スタックは後入れ先出し。1回目は最後に積んだ 2、次に積んだ 3 を2回目に取り出す" },
+  { id: "c87", type: "その他", q: "空のキューに 1、2、3 の順でデータを入れ、2回取り出した。取り出したデータの順は？", choices: ["1 → 2", "3 → 2", "2 → 3", "1 → 3"], answer: 0,
+    exp: "キューは先入れ先出し。入れた順に 1、2 と取り出される" },
+  { id: "c88", type: "その他", q: "英小文字（26種類）だけを使った4文字のパスワードは何通り作れる？", choices: ["456,976通り", "104通り", "17,576通り", "11,881,376通り"], answer: 0,
+    exp: "1文字26通りが4文字分。26 × 26 × 26 × 26 = 456,976通り" },
+  { id: "c89", type: "その他", q: "年間の発生確率が10%、1回発生すると500万円の損失になるリスク。年間の予想損失額は？", choices: ["50万円", "500万円", "5万円", "5,000万円"], answer: 0,
+    exp: "予想損失額 = 発生確率 × 損失額 = 0.1 × 500 = 50万円" },
+  { id: "c90", type: "その他", q: "前年の売上高800万円が、今年は1,000万円になった。前年比の伸び率は？", choices: ["25%", "20%", "125%", "80%"], answer: 0,
+    exp: "増加額 200万円 ÷ 前年 800万円 × 100 = 25%（前年比は125%）" }
+];
+
+</script>
+  <!-- 共通処理 -->
+  <script>
+/* ===== js/core.js ===== */
+/*
+ * 共通処理：試験の版（モード）、学習記録の保存（ブラウザ内）、便利関数
+ */
+window.ITP = window.ITP || {};
+
+/* ---------- 試験の版（モード） ---------- */
+ITP.MODES = {
+  now: {
+    label: "今年度版", short: "2026年度版",
+    exam: "2026年度の試験（2027年3月まで）", basis: "シラバス Ver.6.4",
+    cats: {
+      S: { name: "ストラテジ", color: "s", desc: "経営・法務・企業活動・システム戦略" },
+      M: { name: "マネジメント", color: "m", desc: "開発・プロジェクト・サービス管理・監査" },
+      T: { name: "テクノロジ", color: "t", desc: "コンピュータ・ネットワーク・セキュリティ" }
+    }
+  },
+  next: {
+    label: "次年度以降版", short: "2027年度〜版",
+    exam: "2027年度からの新試験（120分・100問）", basis: "シラバス案 Ver.0.1（2026年8月公表）",
+    cats: {
+      B: { name: "ビジネス", color: "s", desc: "DX・データ/AI活用・経営・組織・マネジメント" },
+      T: { name: "テクノロジ", color: "t", desc: "デジタル技術・クラウド・AI技術・システム開発" },
+      E: { name: "セキュリティ・倫理", color: "e", desc: "脅威と対策・法規・情報倫理・AI倫理" }
+    }
+  }
+};
+
+/** モードに合わせて ITP.TERMS（出題する用語）と ITP.CATS（分野）を組み立てる */
+ITP.setMode = function (mode) {
+  if (!ITP.MODES[mode]) mode = "now";
+  ITP.mode = mode;
+  ITP.CATS = ITP.MODES[mode].cats;
+  if (mode === "next") {
+    const ov = ITP.NEXT_OVERRIDES || {}, def = ITP.NEXT_DEFAULT || {};
+    ITP.TERMS = ITP.TERMS_NOW.map(t => Object.assign({}, t, { cat: ov[t.term] || def[t.cat] }))
+      .concat((ITP.TERMS_NEXT_ADD || []).map(t => Object.assign({}, t, { isNew: true })));
+  } else {
+    ITP.TERMS = ITP.TERMS_NOW.map(t => Object.assign({}, t));
+  }
+  if (ITP.store) ITP.store.setMode(mode);
+};
+
+/* ---------- 便利関数 ---------- */
+ITP.util = {
+  shuffle(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  },
+  esc(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  },
+  fmtTime(sec) {
+    sec = Math.max(0, Math.round(sec));
+    const m = Math.floor(sec / 60), s = sec % 60;
+    return m + ":" + String(s).padStart(2, "0");
+  },
+  catTag(cat) {
+    const c = ITP.CATS[cat];
+    return `<span class="tag tag-${c.color}">${c.name}</span>`;
+  },
+  /** 新シラバス案で追加された用語の目印 */
+  newTag(t) {
+    return t && t.isNew ? `<span class="tag tag-new" title="新試験のシラバス案で登場する用語">NEW</span>` : "";
+  },
+  /** 分野指定（"all" / 分野キー / "review"）から用語リストを返す */
+  termsFor(cat) {
+    if (cat === "review") {
+      const set = new Set(ITP.store.reviewTerms());
+      return ITP.TERMS.filter(t => set.has(t.term));
+    }
+    if (cat === "new") return ITP.TERMS.filter(t => t.isNew);
+    if (ITP.CATS[cat]) return ITP.TERMS.filter(t => t.cat === cat);
+    return ITP.TERMS.slice();
+  },
+  /** 学習レベルの低い用語を優先しつつシャッフル */
+  pickWeighted(list, n) {
+    const shuffled = ITP.util.shuffle(list);
+    shuffled.sort((a, b) => ITP.store.level(a.term) - ITP.store.level(b.term));
+    return ITP.util.shuffle(shuffled.slice(0, n));
+  },
+  /** ゲーム画面の見出し */
+  head(icon, title, sub) {
+    return `<div class="game-head">
+      <a href="#/" class="back" aria-label="ホームに戻る">‹</a>
+      <div><h1><span aria-hidden="true">${icon}</span> ${title}</h1>${sub ? `<p>${sub}</p>` : ""}</div>
+    </div>`;
+  },
+  toast(msg, kind) {
+    const el = document.getElementById("toast");
+    el.textContent = msg;
+    el.className = "show" + (kind ? " " + kind : "");
+    clearTimeout(ITP.util._toastTimer);
+    ITP.util._toastTimer = setTimeout(() => { el.className = ""; }, 1800);
+  },
+  /** 分野選択ボタン群のHTML */
+  catPicker(selected, withReview) {
+    const opts = [["all", "すべて"]].concat(Object.keys(ITP.CATS).map(k => [k, ITP.CATS[k].name]));
+    if (ITP.TERMS.some(t => t.isNew)) opts.push(["new", "新シラバス用語"]);
+    if (withReview) opts.push(["review", "復習リスト"]);
+    if (!opts.some(o => o[0] === selected)) selected = "all";
+    return `<div class="chips" data-group="cat">` + opts.map(([v, l]) =>
+      `<button type="button" class="chip ${v === selected ? "on" : ""} ${v === "review" ? "chip-review" : ""}" data-value="${v}">${l} <small>${ITP.util.termsFor(v).length}</small></button>`
+    ).join("") + `</div>`;
+  },
+  /** チップ選択の共通挙動。選ばれた値を返す関数を返す */
+  bindChips(root) {
+    root.querySelectorAll(".chips").forEach(group => {
+      group.addEventListener("click", e => {
+        const b = e.target.closest(".chip");
+        if (!b) return;
+        group.querySelectorAll(".chip").forEach(x => x.classList.remove("on"));
+        b.classList.add("on");
+      });
+    });
+    return name => {
+      const on = root.querySelector(`.chips[data-group="${name}"] .chip.on`);
+      return on ? on.dataset.value : null;
+    };
+  }
+};
+
+/* ---------- 学習記録 ---------- */
+(function () {
+  const KEY = "itpass-gamelab-v1";
+  const blank = () => ({ mode: "now", terms: {}, reviewTerms: [], reviewCalc: [], best: {} });
+  let state = blank();
+  try {
+    const raw = localStorage.getItem(KEY);
+    if (raw) state = Object.assign(blank(), JSON.parse(raw));
+  } catch (e) { /* 保存できない環境でも動くようにする */ }
+
+  const save = () => {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { }
+    if (ITP.store.onChange) ITP.store.onChange();
+  };
+  const addUnique = (arr, v) => { if (!arr.includes(v)) arr.push(v); };
+  const remove = (arr, v) => { const i = arr.indexOf(v); if (i >= 0) arr.splice(i, 1); };
+
+  /*
+   * 習熟レベル（0〜3）
+   *   正解 / 「知ってる」 … +1
+   *   不正解 / 「知らない」… 0 に戻して復習リストへ
+   *   レベル2以上を「習得済み」としてゲージに表示
+   */
+  ITP.store = {
+    MASTER_LEVEL: 2,
+    getMode() { return state.mode || "now"; },
+    setMode(m) { if (state.mode !== m) { state.mode = m; save(); } },
+    level(term) { return (state.terms[term] && state.terms[term].lv) || 0; },
+    correct(term) {
+      const t = state.terms[term] || (state.terms[term] = { lv: 0 });
+      t.lv = Math.min(3, t.lv + 1);
+      remove(state.reviewTerms, term);
+      save();
+    },
+    wrong(term) {
+      state.terms[term] = { lv: 0 };
+      addUnique(state.reviewTerms, term);
+      save();
+    },
+    /** 仕分けゲームでのミス：レベルを1下げて復習リストへ */
+    soft(term) {
+      const t = state.terms[term] || (state.terms[term] = { lv: 0 });
+      t.lv = Math.max(0, t.lv - 1);
+      addUnique(state.reviewTerms, term);
+      save();
+    },
+    /** 今のモードで出題される用語だけを返す（他モード専用の用語は保持したまま非表示） */
+    reviewTerms() {
+      const set = new Set(ITP.TERMS.map(x => x.term));
+      return state.reviewTerms.filter(t => set.has(t));
+    },
+    removeReview(term) { remove(state.reviewTerms, term); save(); },
+    calcCorrect(id) { remove(state.reviewCalc, id); save(); },
+    calcWrong(id) { addUnique(state.reviewCalc, id); save(); },
+    reviewCalc() { return state.reviewCalc.filter(id => ITP.CALC.some(c => c.id === id)); },
+    removeCalc(id) { remove(state.reviewCalc, id); save(); },
+    reviewCount() { return this.reviewTerms().length + this.reviewCalc().length; },
+    best(key) { return state.best[key]; },
+    /** better(新, 旧) が true なら記録更新。更新したら true を返す */
+    setBest(key, val, better) {
+      const old = state.best[key];
+      if (old === undefined || better(val, old)) { state.best[key] = val; save(); return true; }
+      return false;
+    },
+    progress(cat) {
+      const list = ITP.TERMS.filter(t => !cat || t.cat === cat);
+      let mastered = 0, learning = 0;
+      list.forEach(t => {
+        const lv = this.level(t.term);
+        if (lv >= this.MASTER_LEVEL) mastered++; else if (lv > 0) learning++;
+      });
+      return { total: list.length, mastered, learning };
+    },
+    reset() { const m = state.mode; state = blank(); state.mode = m; save(); }
+  };
+})();
+
+ITP.setMode(ITP.store.getMode());
+
+</script>
+  <!-- 各ゲーム -->
+  <script>
+/* ===== js/games/swipe.js ===== */
+/*
+ * ① スワイプ用語カード
+ *   右スワイプ＝知ってる / 左スワイプ＝知らない。タップで意味を表示。
+ */
+window.ITP = window.ITP || {};
+ITP.games = ITP.games || {};
+
+ITP.games.swipe = {
+  title: "スワイプ用語カード",
+  render(root, params) {
+    const U = ITP.util;
+    let timers = [];
+    let keyHandler = null;
+
+    function setup() {
+      const preset = params.cat || "all";
+      root.innerHTML = `
+        ${U.head("🃏", "スワイプ用語カード", "知ってたら右へ、知らなかったら左へ。カードをタップすると意味が見られます。")}
+        <div class="panel setup">
+          <h2>分野</h2>
+          ${U.catPicker(preset, true)}
+          <h2>枚数</h2>
+          <div class="chips" data-group="n">
+            <button type="button" class="chip on" data-value="10">10枚</button>
+            <button type="button" class="chip" data-value="20">20枚</button>
+            <button type="button" class="chip" data-value="40">40枚</button>
+          </div>
+          <button type="button" class="btn btn-primary btn-block" id="start">はじめる</button>
+          <p class="note">まだ覚えていない用語から優先して出題します。</p>
+        </div>`;
+      const get = U.bindChips(root);
+      root.querySelector("#start").addEventListener("click", () => {
+        const cat = get("cat"), n = +get("n");
+        const pool = U.termsFor(cat);
+        if (!pool.length) { U.toast("この分野には出題できる用語がありません"); return; }
+        play(U.pickWeighted(pool, n), cat, n);
+      });
+      if (params.start && U.termsFor(preset).length) {
+        play(U.pickWeighted(U.termsFor(preset), 20), preset, 20);
+      }
+    }
+
+    function play(deck, cat, n) {
+      let idx = 0;
+      const known = [], unknown = [];
+      root.innerHTML = `
+        ${U.head("🃏", "スワイプ用語カード")}
+        <div class="swipe-wrap">
+          <div class="progress-line"><span id="sw-bar"></span></div>
+          <p class="counter" id="sw-count"></p>
+          <div class="swipe-stage" id="stage"></div>
+          <div class="swipe-actions">
+            <button type="button" class="btn btn-no" id="no"><span aria-hidden="true">←</span> 知らない</button>
+            <button type="button" class="btn btn-yes" id="yes">知ってる <span aria-hidden="true">→</span></button>
+          </div>
+          <p class="note center">PCでは ← → キーでも操作できます／スペースキーで裏返し</p>
+        </div>`;
+      const stage = root.querySelector("#stage");
+      let current = null, busy = false;
+
+      function showCard() {
+        root.querySelector("#sw-count").textContent = `${idx + 1} / ${deck.length}`;
+        root.querySelector("#sw-bar").style.width = (idx / deck.length) * 100 + "%";
+        const t = deck[idx];
+        stage.innerHTML = `
+          <div class="swipe-card" id="card" tabindex="0" role="button" aria-label="${U.esc(t.term)}。タップで意味を表示">
+            <span class="stamp stamp-yes">知ってる</span>
+            <span class="stamp stamp-no">知らない</span>
+            <div class="flip">
+              <div class="face face-front">
+                <span>${U.catTag(t.cat)} ${U.newTag(t)}</span>
+                <div class="sc-term">${U.esc(t.term)}</div>
+                <div class="sc-tip">タップで意味を見る</div>
+              </div>
+              <div class="face face-back">
+                ${U.catTag(t.cat)}
+                <div class="sc-term-sm">${U.esc(t.term)}</div>
+                <div class="sc-desc">${U.esc(t.desc)}</div>
+              </div>
+            </div>
+          </div>`;
+        current = stage.querySelector("#card");
+        bindDrag(current);
+        busy = false;
+      }
+
+      function decide(isKnown) {
+        if (busy || !current) return;
+        busy = true;
+        const t = deck[idx];
+        if (isKnown) { known.push(t); ITP.store.correct(t.term); }
+        else { unknown.push(t); ITP.store.wrong(t.term); }
+        current.style.transition = "transform .3s ease, opacity .3s ease";
+        current.style.transform = `translateX(${isKnown ? 120 : -120}vw) rotate(${isKnown ? 25 : -25}deg)`;
+        current.style.opacity = "0";
+        timers.push(setTimeout(() => {
+          idx++;
+          if (idx >= deck.length) finish(); else showCard();
+        }, 260));
+      }
+
+      function bindDrag(card) {
+        let sx = 0, sy = 0, dx = 0, dragging = false, moved = false;
+        const yes = card.querySelector(".stamp-yes"), no = card.querySelector(".stamp-no");
+        card.addEventListener("pointerdown", e => {
+          if (busy) return;
+          dragging = true; moved = false; sx = e.clientX; sy = e.clientY; dx = 0;
+          card.setPointerCapture(e.pointerId);
+          card.style.transition = "none";
+        });
+        card.addEventListener("pointermove", e => {
+          if (!dragging) return;
+          dx = e.clientX - sx;
+          if (Math.abs(dx) > 6 || Math.abs(e.clientY - sy) > 6) moved = true;
+          card.style.transform = `translateX(${dx}px) rotate(${dx / 18}deg)`;
+          yes.style.opacity = Math.max(0, Math.min(1, dx / 90));
+          no.style.opacity = Math.max(0, Math.min(1, -dx / 90));
+        });
+        const end = () => {
+          if (!dragging) return;
+          dragging = false;
+          if (dx > 90) return decide(true);
+          if (dx < -90) return decide(false);
+          card.style.transition = "transform .25s ease";
+          card.style.transform = "";
+          yes.style.opacity = 0; no.style.opacity = 0;
+          if (!moved) card.classList.toggle("flipped");
+        };
+        card.addEventListener("pointerup", end);
+        card.addEventListener("pointercancel", end);
+        card.addEventListener("keydown", e => {
+          if (e.key === "Enter") { e.preventDefault(); card.classList.toggle("flipped"); }
+        });
+      }
+
+      keyHandler = e => {
+        if (e.key === "ArrowRight") decide(true);
+        else if (e.key === "ArrowLeft") decide(false);
+        else if (e.key === " " && current) { e.preventDefault(); current.classList.toggle("flipped"); }
+      };
+      document.addEventListener("keydown", keyHandler);
+      root.querySelector("#yes").addEventListener("click", () => decide(true));
+      root.querySelector("#no").addEventListener("click", () => decide(false));
+      showCard();
+
+      function finish() {
+        document.removeEventListener("keydown", keyHandler);
+        keyHandler = null;
+        const rate = Math.round((known.length / deck.length) * 100);
+        root.innerHTML = `
+          ${U.head("🃏", "スワイプ用語カード")}
+          <div class="panel result">
+            <div class="result-big">${rate}<small>%</small></div>
+            <p class="result-sub">知ってる ${known.length}枚 ／ 知らない ${unknown.length}枚</p>
+            <p class="result-msg">${rate === 100 ? "全部知ってた！次は別の分野にも挑戦しよう" : rate >= 70 ? "いい調子！知らなかった用語だけもう一周しよう" : "「聞いたことある」が増えれば十分。知らなかった用語をもう一周しよう"}</p>
+            <div class="btn-row">
+              ${unknown.length ? `<button type="button" class="btn btn-primary" id="again-unknown">知らなかった${unknown.length}枚をもう一度</button>` : ""}
+              <button type="button" class="btn" id="again">別のカードで遊ぶ</button>
+              <a class="btn btn-ghost" href="#/">ホームへ</a>
+            </div>
+          </div>
+          ${unknown.length ? `<div class="panel"><h2>知らなかった用語</h2><p class="note">復習リストに追加しました。</p>
+            <ul class="term-list">${unknown.map(t => `<li>${U.catTag(t.cat)}<b>${U.newTag(t)}${U.esc(t.term)}</b><span>${U.esc(t.desc)}</span></li>`).join("")}</ul></div>` : ""}`;
+        const ag = root.querySelector("#again-unknown");
+        if (ag) ag.addEventListener("click", () => play(U.shuffle(unknown), cat, n));
+        root.querySelector("#again").addEventListener("click", () => {
+          const pool = U.termsFor(cat);
+          if (!pool.length) { setup(); return; }
+          play(U.pickWeighted(pool, n), cat, n);
+        });
+      }
+    }
+
+    setup();
+    return () => {
+      timers.forEach(clearTimeout);
+      if (keyHandler) document.removeEventListener("keydown", keyHandler);
+    };
+  }
+};
+
+</script>
+  <script>
+/* ===== js/games/memory.js ===== */
+/*
+ * ② 神経衰弱マッチング
+ *   「用語」カードと「意味」カードのペアをそろえる。タイムと手数を記録。
+ */
+window.ITP = window.ITP || {};
+ITP.games = ITP.games || {};
+
+ITP.games.memory = {
+  title: "神経衰弱マッチング",
+  render(root, params) {
+    const U = ITP.util;
+    let timers = [], tick = null;
+    const LEVELS = { easy: { pairs: 4, label: "かんたん" }, normal: { pairs: 6, label: "ふつう" }, hard: { pairs: 8, label: "むずかしい" } };
+
+    function setup() {
+      const bestHtml = Object.keys(LEVELS).map(k => {
+        const b = ITP.store.best("memory_" + k);
+        return `<li><span>${LEVELS[k].label}</span><b>${b ? U.fmtTime(b.time) + "（" + b.moves + "手）" : "—"}</b></li>`;
+      }).join("");
+      root.innerHTML = `
+        ${U.head("🧠", "神経衰弱マッチング", "「用語」と「意味」のカードをめくって、ペアをそろえよう。")}
+        <div class="panel setup">
+          <h2>分野</h2>
+          ${U.catPicker(params.cat || "all", false)}
+          <h2>難しさ</h2>
+          <div class="chips" data-group="lv">
+            <button type="button" class="chip on" data-value="easy">かんたん（4ペア）</button>
+            <button type="button" class="chip" data-value="normal">ふつう（6ペア）</button>
+            <button type="button" class="chip" data-value="hard">むずかしい（8ペア）</button>
+          </div>
+          <button type="button" class="btn btn-primary btn-block" id="start">はじめる</button>
+          <h2>ベスト記録</h2>
+          <ul class="best-list">${bestHtml}</ul>
+        </div>`;
+      const get = U.bindChips(root);
+      root.querySelector("#start").addEventListener("click", () => play(get("cat"), get("lv")));
+    }
+
+    function play(cat, lv) {
+      const pairs = LEVELS[lv].pairs;
+      const terms = U.shuffle(U.termsFor(cat)).slice(0, pairs);
+      const cards = U.shuffle(terms.flatMap((t, i) => [
+        { pair: i, kind: "term", text: t.term, cat: t.cat },
+        { pair: i, kind: "desc", text: t.desc, cat: t.cat }
+      ]));
+      let open = [], matched = 0, moves = 0, start = null, lock = false;
+
+      root.innerHTML = `
+        ${U.head("🧠", "神経衰弱マッチング")}
+        <div class="mem-stats">
+          <span>⏱ <b id="m-time">0:00</b></span>
+          <span>手数 <b id="m-moves">0</b></span>
+          <span>ペア <b id="m-pairs">0</b>/${pairs}</span>
+        </div>
+        <div class="mem-grid mem-${lv}" id="grid">
+          ${cards.map((c, i) => `
+            <button type="button" class="mem-card" data-i="${i}" aria-label="カード${i + 1}（裏向き）">
+              <span class="mem-inner">
+                <span class="mem-face mem-back" aria-hidden="true">?</span>
+                <span class="mem-face mem-front mem-${c.kind} cat-${ITP.CATS[c.cat].color}">
+                  <span class="mem-kind">${c.kind === "term" ? "用語" : "意味"}</span>
+                  <span class="mem-text">${U.esc(c.text)}</span>
+                </span>
+              </span>
+            </button>`).join("")}
+        </div>
+        <p class="note center">同じ用語の「用語」カードと「意味」カードがペアです。</p>`;
+
+      const grid = root.querySelector("#grid");
+      const els = [...grid.querySelectorAll(".mem-card")];
+
+      grid.addEventListener("click", e => {
+        const btn = e.target.closest(".mem-card");
+        if (!btn || lock) return;
+        const i = +btn.dataset.i;
+        if (btn.classList.contains("open") || btn.classList.contains("done")) return;
+        if (!start) {
+          start = Date.now();
+          tick = setInterval(() => { root.querySelector("#m-time").textContent = U.fmtTime((Date.now() - start) / 1000); }, 250);
+        }
+        btn.classList.add("open");
+        btn.setAttribute("aria-label", (cards[i].kind === "term" ? "用語：" : "意味：") + cards[i].text);
+        open.push(i);
+        if (open.length < 2) return;
+
+        moves++;
+        root.querySelector("#m-moves").textContent = moves;
+        const [a, b] = open;
+        open = [];
+        if (cards[a].pair === cards[b].pair && cards[a].kind !== cards[b].kind) {
+          matched++;
+          root.querySelector("#m-pairs").textContent = matched;
+          timers.push(setTimeout(() => {
+            els[a].classList.add("done"); els[b].classList.add("done");
+            if (matched === pairs) finish();
+          }, 350));
+        } else {
+          lock = true;
+          timers.push(setTimeout(() => {
+            [a, b].forEach(k => {
+              els[k].classList.remove("open");
+              els[k].setAttribute("aria-label", `カード${k + 1}（裏向き）`);
+              els[k].classList.add("shake");
+            });
+            timers.push(setTimeout(() => els.forEach(x => x.classList.remove("shake")), 400));
+            lock = false;
+          }, 1000));
+        }
+      });
+
+      function finish() {
+        clearInterval(tick); tick = null;
+        const time = (Date.now() - start) / 1000;
+        const rec = ITP.store.setBest("memory_" + lv, { time, moves }, (n, o) => n.time < o.time);
+        const perfect = moves === pairs;
+        timers.push(setTimeout(() => {
+          root.innerHTML = `
+            ${U.head("🧠", "神経衰弱マッチング")}
+            <div class="panel result">
+              ${rec ? `<div class="badge-new">ベスト記録更新！</div>` : ""}
+              <div class="result-big">${U.fmtTime(time)}</div>
+              <p class="result-sub">${LEVELS[lv].label}・${moves}手でクリア${perfect ? "（ノーミス！）" : ""}</p>
+              <div class="btn-row">
+                <button type="button" class="btn btn-primary" id="again">もう一度</button>
+                <button type="button" class="btn" id="change">設定を変える</button>
+                <a class="btn btn-ghost" href="#/">ホームへ</a>
+              </div>
+            </div>
+            <div class="panel"><h2>今回のペア</h2>
+              <ul class="term-list">${terms.map(t => `<li>${U.catTag(t.cat)}<b>${U.newTag(t)}${U.esc(t.term)}</b><span>${U.esc(t.desc)}</span></li>`).join("")}</ul>
+            </div>`;
+          root.querySelector("#again").addEventListener("click", () => play(cat, lv));
+          root.querySelector("#change").addEventListener("click", setup);
+        }, 600));
+      }
+    }
+
+    setup();
+    return () => { timers.forEach(clearTimeout); clearInterval(tick); };
+  }
+};
+
+</script>
+  <script>
+/* ===== js/games/sort.js ===== */
+/*
+ * ③ 3分野仕分けレース
+ *   60秒で、流れてくる用語を3つの箱へドラッグ（またはタップ）して仕分ける。
+ */
+window.ITP = window.ITP || {};
+ITP.games = ITP.games || {};
+
+ITP.games.sort = {
+  title: "3分野仕分けレース",
+  render(root) {
+    const U = ITP.util;
+    const LIMIT = 60;
+    let timers = [], tick = null, keyHandler = null;
+
+    function setup() {
+      const best = ITP.store.best("sort_" + ITP.mode);
+      const keys = Object.keys(ITP.CATS);
+      root.innerHTML = `
+        ${U.head("📦", "3分野仕分けレース", "用語がどの分野に属するかを、60秒でできるだけたくさん仕分けよう。")}
+        <div class="panel setup">
+          <ul class="howto">
+            <li>カードを下の箱へ<b>ドラッグ</b>するか、<b>箱をタップ</b>して仕分けます</li>
+            <li>連続正解で<b>コンボボーナス</b>。間違えると復習リストに入ります</li>
+            <li>PCでは <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> キーでも操作できます</li>
+          </ul>
+          <div class="bins-preview">
+            ${keys.map(k => `${U.catTag(k)}<small>${ITP.CATS[k].desc}</small>`).join("")}
+          </div>
+          <p class="note">${ITP.MODES[ITP.mode].label}（${ITP.MODES[ITP.mode].basis}）の分野で仕分けます。</p>
+          <button type="button" class="btn btn-primary btn-block" id="start">スタート</button>
+          <p class="note center">ベストスコア：<b>${best !== undefined ? best + "点" : "—"}</b></p>
+        </div>`;
+      root.querySelector("#start").addEventListener("click", play);
+    }
+
+    function play() {
+      const deck = U.shuffle(ITP.TERMS);
+      let i = 0, score = 0, combo = 0, maxCombo = 0, correct = 0;
+      const misses = [];
+      const endAt = Date.now() + LIMIT * 1000;
+      let ended = false;
+
+      root.innerHTML = `
+        ${U.head("📦", "3分野仕分けレース")}
+        <div class="sort-hud">
+          <div class="time-line"><span id="s-bar"></span></div>
+          <div class="hud-row">
+            <span>残り <b id="s-time">${LIMIT}</b>秒</span>
+            <span class="combo" id="s-combo"></span>
+            <span><b id="s-score">0</b>点</span>
+          </div>
+        </div>
+        <div class="sort-stage" id="stage"></div>
+        <div class="bins" id="bins">
+          ${Object.keys(ITP.CATS).map((k, n) => `<button type="button" class="bin bin-${ITP.CATS[k].color}" data-cat="${k}"><span class="bin-key">${n + 1}</span>${ITP.CATS[k].name}</button>`).join("")}
+        </div>`;
+
+      const stage = root.querySelector("#stage");
+      const bins = [...root.querySelectorAll(".bin")];
+      let card = null, locked = false;
+
+      function next() {
+        if (ended) return;
+        if (i >= deck.length) { i = 0; }
+        const t = deck[i];
+        stage.innerHTML = `<div class="sort-card" id="card">${U.newTag(t)}<span class="sort-term">${U.esc(t.term)}</span><span class="sort-tip">ドラッグして箱へ</span></div>`;
+        card = stage.querySelector("#card");
+        bindDrag(card);
+        locked = false;
+      }
+
+      function answer(cat) {
+        if (locked || ended) return;
+        locked = true;
+        const t = deck[i];
+        i++;
+        const ok = t.cat === cat;
+        const bin = bins.find(b => b.dataset.cat === cat);
+        if (ok) {
+          combo++; correct++;
+          maxCombo = Math.max(maxCombo, combo);
+          const gain = 10 + Math.min(combo - 1, 10) * 2;
+          score += gain;
+          flash(bin, "ok");
+          card.classList.add("gone-ok");
+        } else {
+          combo = 0;
+          misses.push(t);
+          ITP.store.soft(t.term);
+          flash(bin, "ng");
+          card.classList.add("gone-ng");
+          U.toast(`「${t.term}」は ${ITP.CATS[t.cat].name}`, "ng");
+        }
+        root.querySelector("#s-score").textContent = score;
+        root.querySelector("#s-combo").textContent = combo >= 2 ? `🔥 ${combo}コンボ` : "";
+        timers.push(setTimeout(next, ok ? 180 : 450));
+      }
+
+      function flash(el, kind) {
+        el.classList.remove("ok", "ng");
+        void el.offsetWidth;
+        el.classList.add(kind);
+        timers.push(setTimeout(() => el.classList.remove(kind), 350));
+      }
+
+      function binAt(x, y) {
+        return bins.find(b => {
+          const r = b.getBoundingClientRect();
+          return x >= r.left && x <= r.right && y >= r.top - 20 && y <= r.bottom;
+        });
+      }
+
+      function bindDrag(el) {
+        let sx = 0, sy = 0, dragging = false;
+        el.addEventListener("pointerdown", e => {
+          if (locked) return;
+          dragging = true; sx = e.clientX; sy = e.clientY;
+          el.setPointerCapture(e.pointerId);
+          el.classList.add("dragging");
+        });
+        el.addEventListener("pointermove", e => {
+          if (!dragging) return;
+          el.style.transform = `translate(${e.clientX - sx}px, ${e.clientY - sy}px) rotate(${(e.clientX - sx) / 25}deg)`;
+          const over = binAt(e.clientX, e.clientY);
+          bins.forEach(b => b.classList.toggle("hover", b === over));
+        });
+        const end = e => {
+          if (!dragging) return;
+          dragging = false;
+          el.classList.remove("dragging");
+          bins.forEach(b => b.classList.remove("hover"));
+          const over = binAt(e.clientX, e.clientY);
+          if (over) { answer(over.dataset.cat); }
+          else { el.style.transform = ""; }
+        };
+        el.addEventListener("pointerup", end);
+        el.addEventListener("pointercancel", () => { dragging = false; el.classList.remove("dragging"); el.style.transform = ""; });
+      }
+
+      bins.forEach(b => b.addEventListener("click", () => answer(b.dataset.cat)));
+      keyHandler = e => {
+        const k = Object.keys(ITP.CATS)[+e.key - 1];
+        if (k) answer(k);
+      };
+      document.addEventListener("keydown", keyHandler);
+
+      tick = setInterval(() => {
+        const left = Math.max(0, (endAt - Date.now()) / 1000);
+        root.querySelector("#s-time").textContent = Math.ceil(left);
+        root.querySelector("#s-bar").style.width = (left / LIMIT) * 100 + "%";
+        if (left <= 10) root.querySelector(".sort-hud").classList.add("hurry");
+        if (left <= 0) finish();
+      }, 100);
+      next();
+
+      function finish() {
+        if (ended) return;
+        ended = true;
+        clearInterval(tick); tick = null;
+        document.removeEventListener("keydown", keyHandler); keyHandler = null;
+        const total = correct + misses.length;
+        const rate = total ? Math.round((correct / total) * 100) : 0;
+        const rec = ITP.store.setBest("sort_" + ITP.mode, score, (n, o) => n > o);
+        root.innerHTML = `
+          ${U.head("📦", "3分野仕分けレース")}
+          <div class="panel result">
+            ${rec && score > 0 ? `<div class="badge-new">ベストスコア更新！</div>` : ""}
+            <div class="result-big">${score}<small>点</small></div>
+            <p class="result-sub">${total}枚中 ${correct}枚正解（正答率 ${rate}%）・最大 ${maxCombo}コンボ</p>
+            <div class="btn-row">
+              <button type="button" class="btn btn-primary" id="again">もう一度</button>
+              <a class="btn btn-ghost" href="#/">ホームへ</a>
+            </div>
+          </div>
+          ${misses.length ? `<div class="panel"><h2>間違えた用語</h2><p class="note">正しい分野と意味を確認しよう（復習リストに追加しました）。</p>
+            <ul class="term-list">${misses.map(t => `<li>${U.catTag(t.cat)}<b>${U.newTag(t)}${U.esc(t.term)}</b><span>${U.esc(t.desc)}</span></li>`).join("")}</ul></div>` : ""}`;
+        root.querySelector("#again").addEventListener("click", play);
+      }
+    }
+
+    setup();
+    return () => {
+      timers.forEach(clearTimeout);
+      clearInterval(tick);
+      if (keyHandler) document.removeEventListener("keydown", keyHandler);
+    };
+  }
+};
+
+</script>
+  <script>
+/* ===== js/games/hint.js ===== */
+/*
+ * ⑤ ヒント開示クイズ
+ *   ヒントを1つずつ開いて4択で答える。少ないヒントで当てるほど高得点（30→20→10点）。
+ */
+window.ITP = window.ITP || {};
+ITP.games = ITP.games || {};
+
+ITP.games.hint = {
+  title: "ヒント開示クイズ",
+  render(root, params) {
+    const U = ITP.util;
+    const POINTS = [30, 20, 10];
+    let timers = [];
+
+    function setup() {
+      const preset = params.cat || "all";
+      const best = ITP.store.best("hint_" + ITP.mode);
+      root.innerHTML = `
+        ${U.head("🔍", "ヒント開示クイズ", "ヒントを見ながら用語を当てよう。ヒントが少ないうちに答えるほど高得点！")}
+        <div class="panel setup">
+          <div class="point-rule">
+            <div><b>30点</b><small>ヒント1つで正解</small></div>
+            <div><b>20点</b><small>ヒント2つで正解</small></div>
+            <div><b>10点</b><small>ヒント3つで正解</small></div>
+          </div>
+          <h2>分野</h2>
+          ${U.catPicker(preset, true)}
+          <h2>問題数</h2>
+          <div class="chips" data-group="n">
+            <button type="button" class="chip" data-value="5">5問</button>
+            <button type="button" class="chip on" data-value="10">10問</button>
+            <button type="button" class="chip" data-value="20">20問</button>
+          </div>
+          <button type="button" class="btn btn-primary btn-block" id="start">はじめる</button>
+          <p class="note center">ベストスコア（10問）：<b>${best !== undefined ? best + "点" : "—"}</b></p>
+        </div>`;
+      const get = U.bindChips(root);
+      root.querySelector("#start").addEventListener("click", () => {
+        const cat = get("cat"), n = +get("n");
+        const pool = U.termsFor(cat);
+        if (!pool.length) { U.toast("この分野には出題できる用語がありません"); return; }
+        play(U.pickWeighted(pool, n), cat, n);
+      });
+      if (params.start && U.termsFor(preset).length) {
+        const pool = U.termsFor(preset);
+        play(U.pickWeighted(pool, Math.min(10, pool.length)), preset, 10);
+      }
+    }
+
+    // 説明文の末尾から「何の種類の用語か」を判定（攻撃なら攻撃同士、法律なら法律同士で選択肢を作るため）
+    const KINDS = ["攻撃", "法律", "権利", "マルウェア", "指標", "分析する手法", "手法", "方式", "契約", "テスト", "組織", "図", "装置", "プロトコル", "ネットワーク", "データ構造", "規格", "制度", "活動", "仕組み", "技術", "考え方", "状態", "現象", "AI", "メモリ", "利益", "資産", "費用", "形態", "情報", "ソフトウェア", "サービス", "設計"];
+    const kindOf = d => KINDS.find(k => d.replace(/[（(].*?[)）]$/, "").endsWith(k)) || "";
+
+    function choicesFor(t) {
+      // 同じ分野・同じ種類の用語を優先して、紛らわしい選択肢を3つ選ぶ
+      const k = kindOf(t.desc);
+      const sameCat = U.shuffle(ITP.TERMS.filter(x => x.cat === t.cat && x.term !== t.term));
+      const sameKind = k ? U.shuffle(ITP.TERMS.filter(x => x.term !== t.term && kindOf(x.desc) === k)) : [];
+      const picked = [];
+      [sameKind.filter(x => x.cat === t.cat), sameKind, sameCat, U.shuffle(ITP.TERMS.filter(x => x.term !== t.term))]
+        .forEach(list => list.forEach(x => { if (picked.length < 3 && !picked.includes(x)) picked.push(x); }));
+      return U.shuffle([t, ...picked]);
+    }
+
+    function play(qs, cat, n) {
+      let qi = 0, score = 0;
+      const log = [];
+
+      function showQ() {
+        const t = qs[qi];
+        const hints = [t.hints[0], t.hints[1], t.desc];
+        const opts = choicesFor(t);
+        let shown = 1, answered = false;
+
+        root.innerHTML = `
+          ${U.head("🔍", "ヒント開示クイズ")}
+          <div class="quiz-top">
+            <span class="counter">第${qi + 1}問 / ${qs.length}</span>
+            <span class="score-pill">${score}点</span>
+          </div>
+          <div class="progress-line"><span style="width:${(qi / qs.length) * 100}%"></span></div>
+          <div class="panel">
+            <div class="q-head">${U.catTag(t.cat)}${U.newTag(t)}<span class="q-title">この用語はなに？</span><span class="worth" id="worth">${POINTS[0]}点</span></div>
+            <ol class="hint-list" id="hints"></ol>
+            <button type="button" class="btn btn-ghost btn-block" id="more">ヒントをもう1つ見る（−10点）</button>
+          </div>
+          <div class="choices" id="choices">
+            ${opts.map((o, k) => `<button type="button" class="choice" data-k="${k}">${U.esc(o.term)}</button>`).join("")}
+          </div>
+          <div id="feedback"></div>`;
+
+        const hintsEl = root.querySelector("#hints"), more = root.querySelector("#more");
+        function renderHints() {
+          hintsEl.innerHTML = hints.map((h, k) =>
+            k < shown ? `<li class="hint open"><span class="hint-no">ヒント${k + 1}</span>${U.esc(h)}</li>`
+                      : `<li class="hint locked"><span class="hint-no">ヒント${k + 1}</span>？？？</li>`).join("");
+          root.querySelector("#worth").textContent = answered ? "" : POINTS[shown - 1] + "点";
+          more.hidden = shown >= 3 || answered;
+        }
+        renderHints();
+        more.addEventListener("click", () => { if (shown < 3) { shown++; renderHints(); } });
+
+        root.querySelector("#choices").addEventListener("click", e => {
+          const b = e.target.closest(".choice");
+          if (!b || answered) return;
+          answered = true;
+          const pick = opts[+b.dataset.k];
+          const ok = pick.term === t.term;
+          const gain = ok ? POINTS[shown - 1] : 0;
+          score += gain;
+          if (ok) ITP.store.correct(t.term); else ITP.store.wrong(t.term);
+          log.push({ t, ok, gain });
+          root.querySelectorAll(".choice").forEach((c, k) => {
+            c.disabled = true;
+            if (opts[k].term === t.term) c.classList.add("correct");
+            else if (c === b) c.classList.add("wrong");
+          });
+          shown = 3; renderHints();
+          root.querySelector(".score-pill").textContent = score + "点";
+          const fb = root.querySelector("#feedback");
+          fb.innerHTML = `
+            <div class="feedback ${ok ? "fb-ok" : "fb-ng"}">
+              <b>${ok ? `正解！ +${gain}点` : `ざんねん… 正解は「${U.esc(t.term)}」`}</b>
+              <p>${U.esc(t.desc)}</p>
+            </div>
+            <button type="button" class="btn btn-primary btn-block" id="next">${qi + 1 < qs.length ? "次の問題へ" : "結果を見る"}</button>`;
+          const nx = fb.querySelector("#next");
+          nx.addEventListener("click", () => { qi++; qi < qs.length ? showQ() : finish(); });
+          nx.focus({ preventScroll: true });
+          fb.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        });
+      }
+
+      function finish() {
+        const max = qs.length * POINTS[0];
+        const correct = log.filter(l => l.ok).length;
+        const rec = qs.length === 10 && cat !== "review" && ITP.store.setBest("hint_" + ITP.mode, score, (a, b) => a > b);
+        const wrongs = log.filter(l => !l.ok).map(l => l.t);
+        root.innerHTML = `
+          ${U.head("🔍", "ヒント開示クイズ")}
+          <div class="panel result">
+            ${rec && score > 0 ? `<div class="badge-new">ベストスコア更新！</div>` : ""}
+            <div class="result-big">${score}<small> / ${max}点</small></div>
+            <p class="result-sub">${qs.length}問中 ${correct}問正解</p>
+            <div class="btn-row">
+              <button type="button" class="btn btn-primary" id="again">もう一度</button>
+              <button type="button" class="btn" id="change">設定を変える</button>
+              <a class="btn btn-ghost" href="#/">ホームへ</a>
+            </div>
+          </div>
+          <div class="panel"><h2>ふりかえり</h2>
+            <ul class="term-list">${log.map(l => `<li class="${l.ok ? "" : "is-ng"}">${U.catTag(l.t.cat)}<b>${l.ok ? "○" : "×"} ${U.esc(l.t.term)}${l.ok ? `<em>+${l.gain}点</em>` : ""}</b><span>${U.esc(l.t.desc)}</span></li>`).join("")}</ul>
+            ${wrongs.length ? `<p class="note">間違えた用語は復習リストに追加しました。</p>` : ""}
+          </div>`;
+        root.querySelector("#again").addEventListener("click", () => {
+          const pool = U.termsFor(cat);
+          if (!pool.length) { setup(); return; }
+          play(U.pickWeighted(pool, n), cat, n);
+        });
+        root.querySelector("#change").addEventListener("click", () => { params = {}; setup(); });
+      }
+
+      showQ();
+    }
+
+    setup();
+    return () => timers.forEach(clearTimeout);
+  }
+};
+
+</script>
+  <script>
+/* ===== js/games/calc.js ===== */
+/*
+ * ⑧ 計算ミニゲーム
+ *   2進数・稼働率・損益分岐点などの計算問題を4択でタイムアタック。
+ */
+window.ITP = window.ITP || {};
+ITP.games = ITP.games || {};
+
+ITP.games.calc = {
+  title: "計算ミニゲーム",
+  render(root, params) {
+    const U = ITP.util;
+    let tick = null;
+
+    function pool(type) {
+      if (type === "review") {
+        const set = new Set(ITP.store.reviewCalc());
+        return ITP.CALC.filter(c => set.has(c.id));
+      }
+      return type === "all" ? ITP.CALC.slice() : ITP.CALC.filter(c => c.type === type);
+    }
+
+    function setup() {
+      const preset = params.type || "all";
+      const rc = ITP.store.reviewCalc().length;
+      const types = [["all", "すべて"], ...ITP.CALC_TYPES.map(t => [t, t]), ["review", `復習リスト (${rc})`]];
+      const best = ITP.store.best("calc");
+      root.innerHTML = `
+        ${U.head("🧮", "計算ミニゲーム", "試験に出る計算問題を、テンポよく解いてみよう。紙とペンを用意するのがおすすめです。")}
+        <div class="panel setup">
+          <h2>問題の種類</h2>
+          <div class="chips" data-group="type">
+            ${types.map(([v, l]) => `<button type="button" class="chip ${v === preset ? "on" : ""} ${v === "review" ? "chip-review" : ""}" data-value="${v}">${l}${v !== "all" && v !== "review" ? ` (${pool(v).length})` : ""}</button>`).join("")}
+          </div>
+          <h2>問題数</h2>
+          <div class="chips" data-group="n">
+            <button type="button" class="chip on" data-value="5">5問</button>
+            <button type="button" class="chip" data-value="10">10問</button>
+          </div>
+          <button type="button" class="btn btn-primary btn-block" id="start">スタート</button>
+          <p class="note center">ベスト記録（すべて・10問）：<b>${best ? `${best.correct}問正解 / ${U.fmtTime(best.time)}` : "—"}</b></p>
+        </div>`;
+      const get = U.bindChips(root);
+      root.querySelector("#start").addEventListener("click", () => {
+        const type = get("type"), n = +get("n");
+        const p = pool(type);
+        if (!p.length) { U.toast("この種類には出題できる問題がありません"); return; }
+        play(U.shuffle(p).slice(0, n), type, n);
+      });
+      if (params.start && pool(preset).length) play(U.shuffle(pool(preset)).slice(0, 10), preset, 10);
+    }
+
+    function play(qs, type, n) {
+      let qi = 0, correct = 0;
+      const log = [];
+      const start = Date.now();
+      clearInterval(tick);
+
+      function showQ() {
+        const q = qs[qi];
+        const order = U.shuffle(q.choices.map((c, k) => k));
+        root.innerHTML = `
+          ${U.head("🧮", "計算ミニゲーム")}
+          <div class="quiz-top">
+            <span class="counter">第${qi + 1}問 / ${qs.length}</span>
+            <span class="score-pill">⏱ <span id="c-time">${U.fmtTime((Date.now() - start) / 1000)}</span></span>
+          </div>
+          <div class="progress-line"><span style="width:${(qi / qs.length) * 100}%"></span></div>
+          <div class="panel">
+            <div class="q-head"><span class="tag tag-calc">${U.esc(q.type)}</span></div>
+            <p class="calc-q">${U.esc(q.q)}</p>
+          </div>
+          <div class="choices" id="choices">
+            ${order.map(k => `<button type="button" class="choice" data-k="${k}">${U.esc(q.choices[k])}</button>`).join("")}
+          </div>
+          <div id="feedback"></div>`;
+
+        root.querySelector("#choices").addEventListener("click", e => {
+          const b = e.target.closest(".choice");
+          if (!b || b.disabled) return;
+          const ok = +b.dataset.k === q.answer;
+          if (ok) { correct++; ITP.store.calcCorrect(q.id); } else ITP.store.calcWrong(q.id);
+          log.push({ q, ok });
+          root.querySelectorAll(".choice").forEach(c => {
+            c.disabled = true;
+            if (+c.dataset.k === q.answer) c.classList.add("correct");
+            else if (c === b) c.classList.add("wrong");
+          });
+          const fb = root.querySelector("#feedback");
+          fb.innerHTML = `
+            <div class="feedback ${ok ? "fb-ok" : "fb-ng"}">
+              <b>${ok ? "正解！" : `ざんねん… 正解は「${U.esc(q.choices[q.answer])}」`}</b>
+              <p>${U.esc(q.exp)}</p>
+            </div>
+            <button type="button" class="btn btn-primary btn-block" id="next">${qi + 1 < qs.length ? "次の問題へ" : "結果を見る"}</button>`;
+          const nx = fb.querySelector("#next");
+          nx.addEventListener("click", () => { qi++; qi < qs.length ? showQ() : finish(); });
+          nx.focus({ preventScroll: true });
+          fb.scrollIntoView({ behavior: "smooth", block: "nearest" });
+        });
+      }
+
+      tick = setInterval(() => {
+        const el = root.querySelector("#c-time");
+        if (el) el.textContent = U.fmtTime((Date.now() - start) / 1000);
+      }, 500);
+
+      function finish() {
+        clearInterval(tick); tick = null;
+        const time = (Date.now() - start) / 1000;
+        const rec = type === "all" && qs.length === 10 &&
+          ITP.store.setBest("calc", { correct, time }, (a, b) => a.correct > b.correct || (a.correct === b.correct && a.time < b.time));
+        const rate = Math.round((correct / qs.length) * 100);
+        root.innerHTML = `
+          ${U.head("🧮", "計算ミニゲーム")}
+          <div class="panel result">
+            ${rec ? `<div class="badge-new">ベスト記録更新！</div>` : ""}
+            <div class="result-big">${correct}<small> / ${qs.length}問</small></div>
+            <p class="result-sub">正答率 ${rate}%・タイム ${U.fmtTime(time)}</p>
+            <div class="btn-row">
+              <button type="button" class="btn btn-primary" id="again">もう一度</button>
+              <button type="button" class="btn" id="change">設定を変える</button>
+              <a class="btn btn-ghost" href="#/">ホームへ</a>
+            </div>
+          </div>
+          <div class="panel"><h2>ふりかえり</h2>
+            <ul class="calc-log">${log.map(l => `
+              <li class="${l.ok ? "" : "is-ng"}">
+                <span class="cl-mark">${l.ok ? "○" : "×"}</span>
+                <div><p>${U.esc(l.q.q)}</p><p class="cl-ans">答え：<b>${U.esc(l.q.choices[l.q.answer])}</b></p><p class="cl-exp">${U.esc(l.q.exp)}</p></div>
+              </li>`).join("")}</ul>
+            ${log.some(l => !l.ok) ? `<p class="note">間違えた問題は復習リストに追加しました。</p>` : ""}
+          </div>`;
+        root.querySelector("#again").addEventListener("click", () => {
+          const p = pool(type);
+          if (!p.length) { setup(); return; }
+          play(U.shuffle(p).slice(0, n), type, n);
+        });
+        root.querySelector("#change").addEventListener("click", () => { params = {}; setup(); });
+      }
+
+      showQ();
+    }
+
+    setup();
+    return () => clearInterval(tick);
+  }
+};
+
+</script>
+  <script>
+/* ===== js/games/review.js ===== */
+/*
+ * 復習リスト
+ *   どのゲームで間違えた用語・計算問題も、ここにまとめて表示される。
+ *   正解すると自動でリストから外れる。
+ */
+window.ITP = window.ITP || {};
+ITP.games = ITP.games || {};
+
+ITP.games.review = {
+  title: "復習リスト",
+  render(root) {
+    const U = ITP.util;
+
+    function draw() {
+      const terms = U.termsFor("review");
+      const calcSet = new Set(ITP.store.reviewCalc());
+      const calcs = ITP.CALC.filter(c => calcSet.has(c.id));
+      const empty = !terms.length && !calcs.length;
+
+      root.innerHTML = `
+        ${U.head("📝", "復習リスト", "ゲームで間違えた用語・問題がたまります。正解するとリストから自動で消えます。")}
+        ${empty ? `
+          <div class="panel empty">
+            <div class="empty-icon" aria-hidden="true">🎉</div>
+            <p><b>復習リストは空です</b></p>
+            <p class="note">ゲームで間違えた用語や問題がここに表示されます。</p>
+            <a class="btn btn-primary" href="#/">ゲームで遊ぶ</a>
+          </div>` : ""}
+        ${terms.length ? `
+          <div class="panel">
+            <div class="panel-head"><h2>用語（${terms.length}語）</h2></div>
+            <div class="btn-row left">
+              <a class="btn btn-primary" href="#/swipe?cat=review&start=1">🃏 スワイプで復習</a>
+              <a class="btn" href="#/hint?cat=review&start=1">🔍 クイズで復習</a>
+            </div>
+            <ul class="term-list removable">
+              ${terms.map(t => `<li>${U.catTag(t.cat)}<b>${U.newTag(t)}${U.esc(t.term)}</b><span>${U.esc(t.desc)}</span>
+                <button type="button" class="rm" data-term="${U.esc(t.term)}" aria-label="${U.esc(t.term)}をリストから外す">✓ 覚えた</button></li>`).join("")}
+            </ul>
+          </div>` : ""}
+        ${calcs.length ? `
+          <div class="panel">
+            <div class="panel-head"><h2>計算問題（${calcs.length}問）</h2></div>
+            <div class="btn-row left">
+              <a class="btn btn-primary" href="#/calc?type=review&start=1">🧮 解き直す</a>
+            </div>
+            <ul class="calc-log removable">
+              ${calcs.map(q => `<li><span class="tag tag-calc">${U.esc(q.type)}</span>
+                <div><p>${U.esc(q.q)}</p><p class="cl-ans">答え：<b>${U.esc(q.choices[q.answer])}</b></p><p class="cl-exp">${U.esc(q.exp)}</p></div>
+                <button type="button" class="rm" data-calc="${q.id}" aria-label="この問題をリストから外す">✓ 覚えた</button></li>`).join("")}
+            </ul>
+          </div>` : ""}`;
+
+      root.querySelectorAll(".rm").forEach(b => b.addEventListener("click", () => {
+        if (b.dataset.term) ITP.store.removeReview(b.dataset.term);
+        if (b.dataset.calc) ITP.store.removeCalc(b.dataset.calc);
+        draw();
+      }));
+    }
+
+    draw();
+  }
+};
+
+</script>
+  <script>
+/* ===== js/games/dict.js ===== */
+/*
+ * 用語辞典
+ *   収録用語を検索・分野別に一覧できる。各用語の習熟レベルも表示。
+ */
+window.ITP = window.ITP || {};
+ITP.games = ITP.games || {};
+
+ITP.games.dict = {
+  title: "用語辞典",
+  render(root) {
+    const U = ITP.util;
+    const LV_LABEL = ["未学習", "学習中", "習得済み", "習得済み"];
+
+    root.innerHTML = `
+      ${U.head("📖", "用語辞典", `${ITP.MODES[ITP.mode].label}の収録用語 ${ITP.TERMS.length}語。用語名や説明の言葉で検索できます。`)}
+      <div class="panel dict-tools">
+        <label class="search">
+          <span aria-hidden="true">🔎</span>
+          <input type="search" id="q" placeholder="例：クラウド、暗号、AI" autocomplete="off" aria-label="用語を検索">
+        </label>
+        <span class="filter-label">分野</span>
+        ${U.catPicker("all", true)}
+        <span class="filter-label">覚えた度合い</span>
+        <div class="chips" data-group="lv">
+          <button type="button" class="chip on" data-value="any">すべて</button>
+          <button type="button" class="chip" data-value="todo">まだ覚えていない</button>
+          <button type="button" class="chip" data-value="done">習得済み</button>
+        </div>
+      </div>
+      <p class="counter" id="count" aria-live="polite"></p>
+      <ul class="dict-list" id="list"></ul>`;
+
+    const get = U.bindChips(root);
+    const q = root.querySelector("#q"), list = root.querySelector("#list"), count = root.querySelector("#count");
+    const norm = s => s.toLowerCase().normalize("NFKC");
+    const sorted = ITP.TERMS.slice().sort((a, b) => a.term.localeCompare(b.term, "ja"));
+
+    function draw() {
+      const word = norm(q.value.trim());
+      const lv = get("lv");
+      const pool = new Set(U.termsFor(get("cat")).map(t => t.term));
+      const hits = sorted.filter(t => {
+        if (!pool.has(t.term)) return false;
+        const L = ITP.store.level(t.term);
+        if (lv === "todo" && L >= ITP.store.MASTER_LEVEL) return false;
+        if (lv === "done" && L < ITP.store.MASTER_LEVEL) return false;
+        return !word || norm(t.term).includes(word) || norm(t.desc).includes(word);
+      });
+      count.textContent = `${hits.length}語`;
+      list.innerHTML = hits.length ? hits.map(t => {
+        const L = ITP.store.level(t.term);
+        return `<li>
+          <div class="dl-head">${U.catTag(t.cat)}${U.newTag(t)}<b>${U.esc(t.term)}</b>
+            <span class="lv lv-${Math.min(L, 2)}" title="${LV_LABEL[L]}" aria-label="${LV_LABEL[L]}">${"●".repeat(Math.min(L, 3))}${"○".repeat(3 - Math.min(L, 3))}</span>
+          </div>
+          <p>${U.esc(t.desc)}</p>
+        </li>`;
+      }).join("") : `<li class="dict-empty">見つかりませんでした。別の言葉で検索してみてください。</li>`;
+    }
+
+    q.addEventListener("input", draw);
+    root.querySelectorAll(".chips").forEach(g => g.addEventListener("click", () => setTimeout(draw)));
+    draw();
+  }
+};
+
+</script>
+  <!-- 画面切り替え・ホーム（最後に読み込む） -->
+  <script>
+/* ===== js/app.js ===== */
+/*
+ * 画面の切り替え（ルーター）とホーム画面
+ */
+window.ITP = window.ITP || {};
+ITP.games = ITP.games || {};
+
+(function () {
+  const U = ITP.util;
+  const app = document.getElementById("app");
+  let cleanup = null;
+
+  const GAME_LIST = [
+    { key: "swipe", icon: "🃏", name: "スワイプ用語カード", desc: "知ってたら右、知らなかったら左。まずは用語と仲良くなろう", time: "3分" },
+    { key: "memory", icon: "🧠", name: "神経衰弱マッチング", desc: "「用語」と「意味」のペアをそろえよう。タイムを縮めて記録更新", time: "2〜4分" },
+    { key: "sort", icon: "📦", name: "3分野仕分けレース", desc: "60秒で、用語を試験の3分野に仕分けよう", time: "1分" },
+    { key: "hint", icon: "🔍", name: "ヒント開示クイズ", desc: "ヒントが少ないうちに当てるほど高得点。推理でもOK", time: "3〜5分" },
+    { key: "calc", icon: "🧮", name: "計算ミニゲーム", desc: "2進数・稼働率・損益分岐点など、頻出の計算問題に慣れよう", time: "5分" }
+  ];
+
+  function gauge(cat) {
+    const c = ITP.CATS[cat], p = ITP.store.progress(cat), cls = c.color;
+    const m = p.total ? (p.mastered / p.total) * 100 : 0;
+    const l = p.total ? (p.learning / p.total) * 100 : 0;
+    return `
+      <div class="gauge">
+        <div class="gauge-head"><span class="gauge-label ${cls}">${c.name}</span><span class="gauge-num"><b>${p.mastered}</b> / ${p.total}語</span></div>
+        <div class="gauge-bar" role="img" aria-label="${c.name} 習得 ${p.mastered}語、学習中 ${p.learning}語、全${p.total}語">
+          <span class="seg-m ${cls}" style="width:${m}%"></span><span class="seg-l ${cls}" style="width:${l}%"></span>
+        </div>
+      </div>`;
+  }
+
+  function modeSwitch() {
+    return `
+      <section class="panel mode-panel">
+        <h2>試験の版を選ぶ</h2>
+        <div class="mode-switch" role="radiogroup" aria-label="試験の版">
+          ${Object.keys(ITP.MODES).map(k => {
+            const m = ITP.MODES[k], on = k === ITP.mode;
+            return `<button type="button" class="mode-opt ${on ? "on" : ""}" data-mode="${k}" role="radio" aria-checked="${on}">
+              <span class="mode-name">${m.label}</span>
+              <span class="mode-exam">${m.exam}</span>
+              <span class="mode-cats">${Object.values(m.cats).map(c => `<span class="tag tag-${c.color}">${c.name}</span>`).join("")}</span>
+            </button>`;
+          }).join("")}
+        </div>
+        <p class="note">${ITP.mode === "next"
+          ? `IPAの${ITP.MODES.next.basis}にもとづく内容です。正式版で変わる可能性があります。新シラバスで登場する用語には <span class="tag tag-new">NEW</span> が付きます。`
+          : `${ITP.MODES.now.basis}にもとづく内容です。2026年度中に受験する人はこちら。`}</p>
+      </section>`;
+  }
+
+  function renderHome() {
+    const all = ITP.store.progress();
+    const pct = all.total ? Math.round((all.mastered / all.total) * 100) : 0;
+    const rc = ITP.store.reviewCount();
+    const newCount = ITP.TERMS.filter(t => t.isNew).length;
+    app.innerHTML = `
+      <section class="hero">
+        <p class="hero-kicker">ITパスポート対策</p>
+        <h1>遊んでいるうちに、<br>用語が身につく。</h1>
+        <p class="hero-sub">1回3分から。ログイン不要で、スマホでもPCでも遊べます。</p>
+      </section>
+
+      ${modeSwitch()}
+
+      <section class="panel progress-panel">
+        <div class="panel-head">
+          <h2>あなたの進捗 <small class="muted">（${ITP.MODES[ITP.mode].label}）</small></h2>
+          <span class="big-pct">${pct}<small>%</small></span>
+        </div>
+        ${Object.keys(ITP.CATS).map(gauge).join("")}
+        <p class="legend"><span class="lg lg-m"></span>習得済み（2回以上正解）　<span class="lg lg-l"></span>学習中</p>
+      </section>
+
+      ${rc ? `<a class="review-banner" href="#/review">
+        <span class="rb-icon">📝</span>
+        <span><b>復習リストに ${rc} 件</b><br><small>間違えた用語・問題をまとめて復習しよう</small></span>
+        <span class="rb-arrow">›</span></a>` : ""}
+
+      <section>
+        <h2 class="section-title">ゲームを選ぶ</h2>
+        <div class="game-grid">
+          ${GAME_LIST.map(g => `
+            <a class="game-card" href="#/${g.key}">
+              <span class="gc-icon" aria-hidden="true">${g.icon}</span>
+              <span class="gc-body">
+                <span class="gc-name">${g.name}</span>
+                <span class="gc-desc">${g.desc}</span>
+              </span>
+              <span class="gc-time">${g.time}</span>
+            </a>`).join("")}
+          <a class="game-card game-card-dict" href="#/dict">
+            <span class="gc-icon" aria-hidden="true">📖</span>
+            <span class="gc-body">
+              <span class="gc-name">用語辞典</span>
+              <span class="gc-desc">全${ITP.TERMS.length}語を検索・分野別に一覧。覚えた度合いもひと目でわかる</span>
+            </span>
+          </a>
+        </div>
+      </section>
+
+      <footer class="foot">
+        <p>収録（${ITP.MODES[ITP.mode].label}）：用語 ${ITP.TERMS.length}語${newCount ? `（うち新シラバス用語 ${newCount}語）` : ""}／計算問題 ${ITP.CALC.length}問</p>
+        <p>学習記録はこのブラウザにだけ保存され、両方の版で共通です。</p>
+        <button type="button" class="link-btn" id="reset-btn">学習記録をリセット</button>
+      </footer>`;
+
+    app.querySelectorAll(".mode-opt").forEach(b => b.addEventListener("click", () => {
+      if (b.dataset.mode === ITP.mode) return;
+      ITP.setMode(b.dataset.mode);
+      renderHome();
+      updateChrome();
+      U.toast(`${ITP.MODES[ITP.mode].label}に切り替えました`);
+    }));
+    document.getElementById("reset-btn").addEventListener("click", () => {
+      if (confirm("進捗・復習リスト・ベスト記録をすべて消去します。よろしいですか？")) {
+        ITP.store.reset();
+        renderHome();
+        U.toast("学習記録をリセットしました");
+      }
+    });
+  }
+
+  /** ヘッダーの表示（復習件数・現在の版） */
+  function updateChrome() {
+    const n = ITP.store.reviewCount();
+    const b = document.getElementById("review-badge");
+    b.textContent = n;
+    b.hidden = n === 0;
+    const chip = document.getElementById("mode-chip");
+    chip.textContent = ITP.MODES[ITP.mode].short;
+    chip.className = "mode-chip mode-" + ITP.mode;
+  }
+  ITP.store.onChange = updateChrome;
+
+  function parseHash() {
+    const h = location.hash.replace(/^#\/?/, "");
+    const [path, query] = h.split("?");
+    const params = {};
+    (query || "").split("&").filter(Boolean).forEach(kv => {
+      const [k, v] = kv.split("=");
+      params[decodeURIComponent(k)] = decodeURIComponent(v || "");
+    });
+    return { path: path || "", params };
+  }
+
+  function route() {
+    if (cleanup) { try { cleanup(); } catch (e) { } cleanup = null; }
+    document.getElementById("toast").className = "";
+    const { path, params } = parseHash();
+    document.body.dataset.page = path || "home";
+    window.scrollTo(0, 0);
+    const mod = ITP.games[path];
+    if (mod) {
+      document.title = mod.title + "｜ITパス ゲームラボ";
+      cleanup = mod.render(app, params) || null;
+    } else {
+      document.title = "ITパス ゲームラボ";
+      renderHome();
+    }
+    updateChrome();
+    app.focus({ preventScroll: true });
+  }
+
+  window.addEventListener("hashchange", route);
+  route();
+})();
+
+</script>
+</body>
+</html>
